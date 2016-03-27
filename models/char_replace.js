@@ -11,4 +11,4 @@ var chatSchema = new schema({
 });
 
 
-module.exports = mongoose.model('chat',chatSchema);
+module.exports = mongoose.model('character_replacements',chatSchema);

@@ -50,6 +50,19 @@ app.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$urlRo
                 controller:"remove_characterController"
             }
         }
+    }).
+        state('replace_character',{
+        url:'/replace_character',
+        views:{
+            navbar:{
+                templateUrl:"components/navbar/navbarView.html",
+                controller:'navbarController'
+            },
+            content:{
+                templateUrl:"components/replace_character/replace_characterView.html",
+                controller:"replace_characterController"
+            }
+        }
     });
 }]);
 
