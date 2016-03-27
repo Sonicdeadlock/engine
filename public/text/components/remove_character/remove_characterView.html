@@ -1,0 +1,14 @@
+<div class="col-md-10 col-md-offset-1">
+    <div class="form-group">
+        <input class="form-control" placeholder="Remove text" ng-model="remove">
+    </div>
+    <div>
+        <div class="col-md-6">
+            <textarea ng-model="text"></textarea>
+        </div>
+        <div class="col-md-6">
+            <textarea ng-bind="output"></textarea>
+        </div>
+    </div>
+    <button class="btn btn-primary" ng-click="evaluate()">Evaluate</button>
+</div>
