@@ -1,0 +1,35 @@
+{
+  "name": "engine",
+  "description": "An Engine to manipulate things",
+  "main": "server.js",
+  "authors": [
+    "Alex Thomas"
+  ],
+  "license": "MIT",
+  "moduleType": [],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap-css": "^3.3.6",
+    "angular": "^1.5.3",
+    "angular-animate": "^1.5.3",
+    "angular-bootstrap": "^1.2.5",
+    "angular-cookies": "^1.5.3",
+    "angular-motion": "^0.4.3",
+    "angular-resource": "^1.5.3",
+    "angular-sanitize": "^1.5.3",
+    "angular-scroll-glue": "^2.0.6",
+    "angular-strap": "^2.3.7",
+    "angular-ui-router": "^0.2.18",
+    "bootstrap-additions": "^0.3.1",
+    "font-awesome": "^4.5.0",
+    "jquery": "^2.2.2",
+    "lodash": "^4.6.1"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "name": "engine",
+  "version": "1.0.0",
+  "description": "An Engine to manipulate things",
+  "main": "server.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/Sonicdeadlock/engine"
+  },
+  "author": "Alex Thomas",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.15.0",
+    "bower": "^1.7.7",
+    "connect-mongo": "0.8.2",
+    "crypto": "0.0.3",
+    "express": "^4.13.4",
+    "express-session": "^1.13.0",
+    "lodash": "^4.6.1",
+    "mongoose": "^4.4.10",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0"
+  }
+}
