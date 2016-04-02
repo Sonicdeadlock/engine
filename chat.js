@@ -9,10 +9,12 @@ var chat = db.model('chat');
 var roomModel = require('./models/room');
 var room = db.model('room');
 var textMod = require('./classes/textMod');
+var commands = require('./classes/commands');
 
 
 
 var users = [];
+var serverUser = {_id:-1,username:'Server',group:{name:undefined}};
 module.exports = {connect:connect,disconnect:disconnect};
 function connect(socket){
     var user = socket.client.request.user;
@@ -22,7 +24,9 @@ function connect(socket){
 
     function getUsersForCommunication(room){
         //TODO: determine only users who need to see the chat
-        return _.filter(users,{room:room});
+        return _.filter(users,function(o){
+            return o.room._id == room._id;
+        });
     }
 
     socket.on('chatClientToServer',function(message){
@@ -51,7 +55,13 @@ function connect(socket){
                         chat.username = impersonate.name;
                     _.forEach(getUsersForCommunication(chatRoom),function(u){
                         u.socket.emit('chatServerToClient',chat);
-                    })
+                    });
+                    if(commands.isCommand(text))
+                       commands.execute(text,function(serverText){
+                           _.forEach(getUsersForCommunication(chatRoom),function(u){
+                               u.socket.emit('chatServerToClient',new chatObj(serverUser,chatRoom,serverText));
+                           })
+                       },user);
                 })
 
 

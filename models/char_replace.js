@@ -5,10 +5,10 @@ var mongoose = require('mongoose');
 var schema = mongoose.Schema;
 var db = require('../db');
 
-var chatSchema = new schema({
+var character_replacementSchema = new schema({
     character:String,
     replacements:[String]
 });
 
 
-module.exports = mongoose.model('character_replacements',chatSchema);
+module.exports = mongoose.model('character_replacements',character_replacementSchema);
