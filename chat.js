@@ -27,7 +27,12 @@ function connect(socket){
 
     socket.on('chatClientToServer',function(message){
         if(message.text && chatRoom){
-            if(message.mods){
+                var impersonate = undefined;
+            if(message.text.indexOf('!impersonate')==0 && user.hasPermission('impersonate')){
+                var split = message.text.split(' ');
+                impersonate = {name:split[1]};
+                message.text = _.slice(split,2).join(' ');
+            }
                 var prom = new Promise(function(resolve,reject){resolve(message.text)});
                 for(var i=0;i<message.mods.length;i++){
                     var mod = message.mods[i];
@@ -42,17 +47,13 @@ function connect(socket){
                 }
                 prom.then(function(text){
                     var chat = new chatObj(user,chatRoom,text);
+                    if(impersonate)
+                        chat.username = impersonate.name;
                     _.forEach(getUsersForCommunication(chatRoom),function(u){
                         u.socket.emit('chatServerToClient',chat);
                     })
                 })
-            }
-            else{
-                var chat = new chatObj(user,chatRoom,message.text);
-                _.forEach(getUsersForCommunication(chatRoom),function(u){
-                    u.socket.emit('chatServerToClient',chat);
-                })
-            }
+
 
         }
 

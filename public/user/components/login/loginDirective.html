@@ -1,0 +1,20 @@
+<div class="popover" ng-controller="loginController">
+    <div class="popover-title">
+        <p>Login</p>
+    </div>
+    <div class="popover-content">
+        <form class="">
+            <div class="input-group margin-bottom-sm">
+                <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+                <input class="form-control" type="text" placeholder="Username" ng-model="username">
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
+                <input class="form-control" type="password" placeholder="Password" ng-model="password">
+            </div>
+            <button class="btn btn-primary form-control" ng-click="login()">Login</button>
+
+        </form>
+    </div>
+</div>
+<div class="alert top-right" ><div id="alert-container"></div></div>

@@ -1,0 +1,55 @@
+<div class="container" ng-hide="chatRoom!= undefined">
+    <div ng-show="hasPermission('addRoom')">
+        <a bs-modal data-title="Add Room" data-placement="center" data-template-url="components/chat/addRoomTemplate.html"> <h3><span class="fa fa-plus-square" data-title="Add Room"></span> Add Room</h3></a>
+    </div>
+    <div>
+        <room ng-repeat="room in rooms">
+
+        </room>
+    </div>
+</div>
+
+
+<div style="height: 70%" id="topDiv" ng-show="chatRoom!= undefined">
+    <div class="pull-left container-fluid">
+        <a bs-aside="menuAside" data-content-template="components/chat/menuTemplate.html"  data-container="#chatArea" data-placement="left"  data-animation="am-fade-and-slide-left"><span bs-tooltip data-title="Settings" data-placement="right" class="fa fa-cog fa-3x"></span></a>
+        <a bs-aside="{title:'Mods'}" data-title="asdf" data-content-template="components/chat/chatModMenuTemplate.html"  data-container="#topDiv" data-placement="left"  data-animation="am-fade-and-slide-left"><span bs-tooltip data-title="Mods" data-placement="right" class="fa fa-cog fa-3x"></span></a>
+        <br class="hidden-sm hidden-xs"/>
+        <br class="hidden-sm hidden-xs"/>
+
+        <a ng-click="chats=[]"><span bs-tooltip data-title="Clear Chat" data-placement="right" class="fa fa-3x fa-trash"></span></a>
+    </div>
+    <div class="well col-sm-12 col-md-10 pull-left" style="height:100%">
+        <div id='chatArea' style="overflow:auto;height:100%;width:100%" scroll-glue>
+            <p ng-repeat="chat in chats">
+                <small ng-show="showRank">[{{chat.rank}}]</small>
+                <b><a ui-sref="userPage({userId:chat.user})" >{{chat.username}}</a>:</b>
+                <span ng-bind-html="chat.text"></span>
+                <small class="chat_time" ng-show="showTime">{{chat.time | date:'mediumTime'}}</small>
+            </p>
+            <p id='typing' style="position:absolute;bottom:0px;">{{typing}}</p>
+        </div>
+        <br><br>
+        <form >
+            <div ng-show="logged_in_user">
+                <div class='input-group'>
+                    <input class="form-control" ng-model='chatBox'  id='chatBox' ng-keydown="keyHandle($event)">
+                    <div class="input-group-btn">
+
+                        <button class="btn btn-primary " id="chatButton" ng-click="sendChat()">send</button>
+                        <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li ng-repeat="item in distplayHistory" ><a ng-click="$parent.chatBox = item">{{item}}</a></li>
+
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+
+
