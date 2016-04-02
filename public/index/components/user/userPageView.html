@@ -1,0 +1,59 @@
+<div class="container-fluid">
+    <div class="pull-right container-fluid">
+        <button type="button" class="btn btn-primary" ui-sref="compose({userId:userData._id})">Compose <span class="fa fa-pencil-square-o"></span></button>
+    </div>
+    <h3>User</h3>
+    <table class="table table-striped">
+        <tr ng-if="userData.firstName">
+            <td>First Name</td>
+            <td>{{userData.firstName}}</td>
+        </tr>
+        <tr ng-if="userData.lastName">
+            <td>Last Name</td>
+            <td>{{userData.lastName}}</td>
+        </tr>
+        <tr ng-if="userData.username">
+            <td>Username</td>
+            <td>{{userData.username}}</td>
+        </tr>
+        <tr ng-if="userData.email">
+            <td>Email</td>
+            <td>{{userData.email}}</td>
+        </tr>
+    </table>
+    <div ng-if="userData.group">
+        <hr>
+        <h3>Group</h3>
+        <table class="table table-striped">
+            <tr>
+                <td>Group Name</td>
+                <td>{{userData.group.name}}</td>
+            </tr>
+            <tr>
+                <td>ID</td>
+                <td>{{userData.group._id}}</td>
+            </tr>
+            <tr>
+                <td>Default Group</td>
+                <td>{{userData.group.default}}</td>
+            </tr>
+            <tr>
+                <td>Has Access to User data </td>
+                <td>
+                    <ul>
+                        <li ng-repeat="access in userData.group.userAccess.split(' ')">{{access}}</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td>Permissions</td>
+                <td>
+                    <ul>
+                        <li ng-repeat="permission in userData.group.permissions">{{permission}}</li>
+                    </ul>
+                </td>
+            </tr>
+        </table>
+
+    </div>
+</div>

@@ -1,0 +1,48 @@
+<div class="panel panel-default col-md-2 col-sm-4" id="sidePanel">
+    <ul class="nav nav-pills nav-stacked"> <!-- Select sent recived  -->
+        <li ng-class="{active:showSent}"><a ng-click="toggleView('sent')">Sent</a></li>
+        <li ng-class="{active:showReceived}"><a ng-click="toggleView('received')" >Received</a></li>
+    </ul>
+    <br/>
+    <div class="input-group"> <!-- search -->
+        <div class="input-group-addon"><span class='fa fa-search'></span></div>
+        <input type="text" class="form-control"  placeholder="Search" ng-model='searchText'>
+    </div>
+    <br/>   
+    <ul class="list-group message-list" ng-show="showSent" > <!-- list of sent -->
+        <li class="list-group-item" ng-repeat="message in sent | orderBy:'-time' | filter:searchText" ng-class="{selected:message._id==activeMessage._id}" ng-click="setActiveMessage(message);">
+            <b>{{message.title}}</b>
+            <br/>
+            <p>{{message.toUser.username}}</p>
+            <small>{{message.time | date:"medium"}}</small>
+        </li>
+    </ul>
+    
+    <ul class="list-group message-list" ng-show="showReceived"> <!-- list of received -->
+        <li class="list-group-item" ng-repeat="message in recived | orderBy:'-time' | filter:searchText" ng-class="{selected:message._id==activeMessage._id}" ng-click="setActiveMessage(message);">
+            <b ng-if="!message.read">{{message.title}}</b>
+            <span ng-if="message.read">{{message.title}}</span>
+            <br/>
+            <p>{{message.fromUser.username}}</p>
+            <small>{{message.time | date:"medium"}}</small>
+        </li>
+    </ul>
+</div>
+<div class="pull-right container-fluid">
+        <button type="button" class="btn btn-primary" ui-sref="compose">Compose <span class="fa fa-pencil-square-o"></span></button>
+
+    </div>
+<div class="panel panel-default col-md-10 col-sm-8" ng-if="activeMessage">
+    <div class=" panel-body">
+        <div class="container-fluid pull-right">
+            <a ng-click="delete(activeMessage)"><span class="fa fa-trash fa-2x text-danger"></span></a>
+            <a ui-sref='compose({userId:activeMessage.fromUser._id})'><span class="fa fa-reply fa-2x"></span></a>
+        </div>
+        <h2 class="pull-left">{{activeMessage.title}}</h2>
+    </div>
+
+    <br/>
+    <p><b>{{showSent?"To":"From"}}:</b> {{showSent?activeMessage.toUser.username:activeMessage.fromUser.username}}</p>
+    <hr>
+    <p>{{activeMessage.body}}</p>
+</div>
