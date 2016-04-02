@@ -13,6 +13,13 @@
             <ul class="nav navbar-nav">
                 <li ><a class="navbar-brand" ui-sref="home">Home</a></li>
                 <li><a href="/text">text</a></li>
+                <li><a ui-sref="chat">Chat</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="" ng-if="!logged_in_user"><a title="Login" data-template-url="user/components/login/loginDirective.html"   data-placement="bottom" data-animation="am-flip-x" data-container='body' bs-popover>Login</a></li>
+                <li ng-if="!logged_in_user"><a href="/user#/register?next={{$state.$current.url.source}}">Register</a></li>
+                <li class="" ng-if="logged_in_user"><a ng-click="logout()">Logout</a></li>
+                <li class="" ng-if="logged_in_user"><a>Welcome {{logged_in_user.firstName}}</a></li>
             </ul>
         </div>
     </div>

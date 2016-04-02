@@ -34,7 +34,7 @@ userSchema.methods.hasPermission = function(perm){
     if(this.group.permissions.indexOf('god')!=-1 || this.group.permissions.indexOf('sudo')!=-1) return true;
     if(this.group.permissions.indexOf(perm)!=-1) return true;
     return false;
-}
+};
 
 userSchema.statics.hasPermission = function(user,perm){
     if(!user.group) return false;

@@ -8,7 +8,7 @@ var char_replaceModel = require('../models/char_replace');
 var char_replace = db.model('character_replacements');
 
 
-function leet(text,chance){
+function leet(chance,text){
      chance = chance/100;
     return char_replace.find({}).then(function(replacements){
         var result = _.map(text.split(' '),function(word){

@@ -1,0 +1,11 @@
+<div class="col-md-3 well" ng-click="enterRoom(room)">
+    <b>{{room.name}}</b>
+    <small>{{room.description}}</small>
+    <p ng-show="room.requirements && room.requirements.rank" class="text-danger" style="position:absolute">{{room.requirements.rank}} only*</p><br>
+    <button ng-click='deleteRoom(room)' class="btn btn-danger" ng-show="hasPermission('Room Admin') && (room.deleteable||hasPermission('god'))"><span class='fa fa-remove'></span> Delete</button>
+    <div ng-show="showPasswordInput">
+        <label>Password</label>
+        <input ng-model='roomPassword' type="password" class="form-control">
+        <button class="btn btn-success" ng-click='enterRoom()'>Go</button>
+    </div>
+</div>

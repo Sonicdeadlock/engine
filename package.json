@@ -13,15 +13,19 @@
   "author": "Alex Thomas",
   "license": "MIT",
   "dependencies": {
+    "angular-socket-io": "^0.7.0",
     "body-parser": "^1.15.0",
     "bower": "^1.7.7",
     "connect-mongo": "0.8.2",
+    "cookie-parser": "^1.4.1",
     "crypto": "0.0.3",
     "express": "^4.13.4",
     "express-session": "^1.13.0",
     "lodash": "^4.6.1",
     "mongoose": "^4.4.10",
     "passport": "^0.3.2",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "passport.socketio": "^3.6.1",
+    "socket.io": "^1.4.5"
   }
 }

@@ -14,6 +14,11 @@ var chatSchema = new schema({
         type:schema.Types.ObjectId,
         ref:'user',
         field:'_id'
+    },
+    room:{
+        type:schema.Types.ObjectId,
+        ref:'room',
+        field:"_id"
     }
 });
 

@@ -13,7 +13,7 @@ router.route('/remove').post(function(req,res){
 });
 
 router.route('/leet').post(function(req,res){
-    textMod.leet(req.body.text,req.body.chance)
+    textMod.leet(req.body.chance,req.body.text)
         .then(function(result){
             res.send(result);
         })
