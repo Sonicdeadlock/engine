@@ -28,7 +28,7 @@ app.run(['$rootScope', '$state', '$stateParams','$http', function ($rootScope, $
     });
     $rootScope.hasPermission = function(perm){
         var user = $rootScope.logged_in_user;
-        if(!user || !user.group) return false;
+        if(!user || !user.group || !user.group.permissions) return false;
         var permissions = user.group.permissions;
         if(permissions.indexOf('god')!=-1 || permissions.indexOf('sudo')!=-1) return true;
         if(permissions.indexOf(perm)!=-1) return true;
