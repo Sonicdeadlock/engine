@@ -35,6 +35,11 @@ function connect(socket){
             }
         })
     });
+    socket.on('getRooms',function(){
+        room.find({}).then(function(results){
+            socket.emit('chatRooms',results);
+        });
+    })
 }
 
 function disconnect(socket){

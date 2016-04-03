@@ -21,6 +21,8 @@ angular.module('controllers').controller('chatController',function($scope,$http,
     var history = [];
     $scope.newRoom = {deleteable:true};
     $scope.chatRoom = undefined;
+    $scope.rooms =[];
+    socket.emit('getRooms',{});
     socket.on('chatServerToClient',function(message){
        $scope.chats.push(message);
         if(document.body.className=='blurred'){
@@ -44,7 +46,6 @@ angular.module('controllers').controller('chatController',function($scope,$http,
     });
     $scope.sendChat = function(){
         socket.emit('chatClientToServer',{text:$scope.chatBox,mods:$scope.mods});
-        console.log($scope.mods);
         history.push($scope.chatBox);
         historyId = history.length -1;
         $scope.distplayHistory = _.chain(history)
