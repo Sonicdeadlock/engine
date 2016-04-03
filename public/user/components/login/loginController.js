@@ -9,7 +9,7 @@ angular.module('controllers').controller('loginController',function($scope,$http
             errors=[];
             if(socket){
                 socket.disconnect();
-                socket.connect();
+                setTimeout(socket.connect,300);
             }
 
 
