@@ -25,6 +25,7 @@ app.run(['$rootScope', '$state', '$stateParams','$http', function ($rootScope, $
     $http.get('/auth/self').success(function(data){
         $rootScope.logged_in_user = data;
 
+
     });
     $rootScope.hasPermission = function(perm){
         var user = $rootScope.logged_in_user;

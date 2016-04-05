@@ -44,6 +44,13 @@ angular.module('controllers').controller('chatController',function($scope,$http,
            socket.emit('chatEnterRoom',$scope.chatRoom);
        }
     });
+
+    $scope.exitRoom = function(){
+      socket.emit('chatLeaveRoom',{});
+        $scope.chatRoom = undefined;
+        $scope.chats = [];
+        $scope.emit('getRooms',{});
+    };
     $scope.sendChat = function(){
         socket.emit('chatClientToServer',{text:$scope.chatBox,mods:$scope.mods});
         history.push($scope.chatBox);
