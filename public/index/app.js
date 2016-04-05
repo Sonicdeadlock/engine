@@ -77,6 +77,31 @@ app.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$urlRo
                     controller:"userPageController"
                 }
             }
+        }).state('inbox',{
+            url:'/messages/inbox?id',
+            views:{
+                navbar:{
+                    templateUrl:"components/navbar/navbarView.html",
+                    controller:"navbarController"
+                },
+                content:{
+                    templateUrl:"components/messages/inboxView.html",
+                    controller:"inboxController"
+                }
+            }
+        })
+        .state('compose',{
+            url:'/messages/compose?userId',
+            views:{
+                navbar:{
+                    templateUrl:"components/navbar/navbarView.html",
+                    controller:"navbarController"
+                },
+                content:{
+                    templateUrl:"components/messages/composeView.html",
+                    controller:"composeController"
+                }
+            }
         });
 }]);
 app.factory('socket', function (socketFactory) {

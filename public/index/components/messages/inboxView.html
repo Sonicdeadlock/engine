@@ -1,3 +1,4 @@
+<div class="container">
 <div class="panel panel-default col-md-2 col-sm-4" id="sidePanel">
     <ul class="nav nav-pills nav-stacked"> <!-- Select sent recived  -->
         <li ng-class="{active:showSent}"><a ng-click="toggleView('sent')">Sent</a></li>
@@ -45,4 +46,5 @@
     <p><b>{{showSent?"To":"From"}}:</b> {{showSent?activeMessage.toUser.username:activeMessage.fromUser.username}}</p>
     <hr>
     <p>{{activeMessage.body}}</p>
+</div>
 </div>
