@@ -7,7 +7,8 @@ angular.module('controllers').controller('loginController',function($scope,$http
                 error.$scope.$hide();
             });
             errors=[];
-            if(socket){
+            console.log(socket);
+            if(socket && socket.connect && socket.disconnect){
                 socket.disconnect();
                 setTimeout(socket.connect,300);
             }

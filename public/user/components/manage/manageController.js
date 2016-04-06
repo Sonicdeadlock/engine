@@ -2,11 +2,7 @@
  * Created by alexthomas on 7/21/15.
  */
 angular.module('controllers').controller('manageController',function($scope,$http,$state){
-    function updateUser(){
-        $http.get('/api/users/self').success(function(data){
-            $scope.user = data;
-        });
-    }function updateUsers(){
+    function updateUsers(){
         $http.get('/api/users').success(function(data){
             $scope.users = data;
         });
@@ -16,20 +12,13 @@ angular.module('controllers').controller('manageController',function($scope,$htt
             $scope.groups = data;
         })
     }
-    $scope.userHasPermission = function(perm){
-        var user = $scope.user;
-        if(!user || !user.group) return false;
-        var permissions = user.group.permissions;
-        if(permissions.indexOf('god')!=-1 || permissions.indexOf('sudo')!=-1) return true;
-        if(permissions.indexOf(perm)!=-1) return true;
-        return false;
-    };
+
     $scope.newGroup = function(){
         $scope.selectedGroup={
             permissions:[]
         };
     };
-    updateUser();
+
     updateGroups();
     updateUsers();
     $scope.newGroup();
@@ -41,7 +30,6 @@ angular.module('controllers').controller('manageController',function($scope,$htt
     $scope.submit = function(){
         $http.put('/api/users',$scope.user).
         success(function(){
-                updateUser();
                 $scope.edit=false;
         }).
         error(function(data,status){

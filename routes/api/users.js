@@ -12,9 +12,7 @@ var userController = require('../../controllers/userController');
 
 
 
-function hash (salt, raw) {
-    return crypto.pbkdf2Sync(raw, salt, config.hash.itterations, config.hash.length).toString('base64');
-};
+
 
 
 router.route('/getUser')
@@ -28,6 +26,17 @@ router.route('/getUser')
                    res.json(obj);
 
            });
+    });
+
+router.route('/')
+    .get(function(req,res){
+       if(req.user && req.user.hasPermission('User Admin')){
+           user.find({},req.user.group.userAccess).then(function(results){
+               res.json(results);
+           })
+       } else{
+           res.status(403).send('Unauthorized')
+       }
     });
 
 
