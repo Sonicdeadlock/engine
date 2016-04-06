@@ -108,7 +108,7 @@ function chatObj(sendUser,chatRoom,text){
     c.save();
     var formatedText = text;//TODO: format,sterilize text
     var self = this;
-    return banned_word.find({}).then(function(badWords){
+    return banned_word.find({}).cache().exec().then(function(badWords){
         badWords.forEach(function(badWord){//TODO: count every time the user sends a bad word
             formatedText = formatedText.replace(new RegExp('('+badWord.regex.trim()+')+','g'),'<span class="text-danger">[CENSORED]</span>');
         });

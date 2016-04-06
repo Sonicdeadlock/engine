@@ -3,6 +3,7 @@
  */
 var config = require('./config');
 var mongoose = require('mongoose');
+require('mongoose-cache').install(mongoose, {max:500,maxAge:1000*60*2,debug:true});
 
 module.exports = mongoose.connect(config.db.host + config.db.name)
     .connection

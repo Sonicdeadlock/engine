@@ -23,6 +23,7 @@
     "express-session": "^1.13.0",
     "lodash": "^4.6.1",
     "mongoose": "^4.4.10",
+    "mongoose-cache": "^0.1.4",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
     "passport.socketio": "^3.6.1",

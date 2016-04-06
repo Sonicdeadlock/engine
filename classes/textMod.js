@@ -10,7 +10,7 @@ var char_replace = db.model('character_replacements');
 
 function leet(chance,text){
      chance = chance/100;
-    return char_replace.find({}).then(function(replacements){
+    return char_replace.find({}).cache().exec().then(function(replacements){
         var result = _.map(text.split(' '),function(word){
             word = _.map(word,function(character){
                 if(Math.random()>chance)//if the chance is not meet dont chance the character
