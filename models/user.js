@@ -24,6 +24,9 @@ var userSchema = new schema({
         textColor:String,
         textBackgroundColor:String,
         textFont:String
+    },
+    strikes:{
+        chat:{default:0,type:Number}
     }
 });
 

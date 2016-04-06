@@ -8,6 +8,8 @@ var chatModel = require('./models/chat');
 var chat = db.model('chat');
 var roomModel = require('./models/room');
 var room = db.model('room');
+var bannedWordModel = require('./models/banned_word');
+var banned_word = db.model('banned_word');
 var textMod = require('./classes/textMod');
 var commands = require('./classes/commands');
 
@@ -50,18 +52,23 @@ function connect(socket){
                     }
                 }
                 prom.then(function(text){
-                    var chat = new chatObj(user,chatRoom,text);
-                    if(impersonate)
-                        chat.username = impersonate.name;
-                    _.forEach(getUsersForCommunication(chatRoom),function(u){
-                        u.socket.emit('chatServerToClient',chat);
+                    (new chatObj(user,chatRoom,text)).then(function(chat){
+                        if(impersonate)
+                            chat.username = impersonate.name;
+                        _.forEach(getUsersForCommunication(chatRoom),function(u){
+                            u.socket.emit('chatServerToClient',chat);
+                        });
+                        if(commands.isCommand(text))
+                            commands.execute(text,function(serverText){
+                                _.forEach(getUsersForCommunication(chatRoom),function(u){
+                                    (new chatObj(serverUser,chatRoom,serverText)).then(function(serverChat){
+                                        u.socket.emit('chatServerToClient',serverChat);
+                                    })
+
+                                })
+                            },user);
                     });
-                    if(commands.isCommand(text))
-                       commands.execute(text,function(serverText){
-                           _.forEach(getUsersForCommunication(chatRoom),function(u){
-                               u.socket.emit('chatServerToClient',new chatObj(serverUser,chatRoom,serverText));
-                           })
-                       },user);
+
                 })
 
 
@@ -100,15 +107,23 @@ function chatObj(sendUser,chatRoom,text){
     var c = new chat(this);
     c.save();
     var formatedText = text;//TODO: format,sterilize text
-    var reg_exUrl = new RegExp(/(((http|https|ftp|ftps)\:\/\/|www\.)[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?)|(\d{1,3}\.){3}\d{1,3}(\/\S*)?/g);
-    var matches = formatedText.match(reg_exUrl) || [];
-    for (var i = matches.length - 1; i >= 0; i--) {
-        var match = matches[i];
-        formatedText = formatedText.replace(match, "<a target='_blank' href='" + match + "'>" + match + "</a>");
-    }
-    this.text = formatedText;
-    this.username = sendUser.username;
-    this.rank = sendUser.group.name;
-    this.formating = sendUser.chat;
+    var self = this;
+    return banned_word.find({}).then(function(badWords){
+        badWords.forEach(function(badWord){//TODO: count every time the user sends a bad word
+            formatedText = formatedText.replace(new RegExp('('+badWord.regex.trim()+')+','g'),'<span class="text-danger">[CENSORED]</span>');
+        });
+        var reg_exUrl = new RegExp(/(((http|https|ftp|ftps)\:\/\/|www\.)[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?)|(\d{1,3}\.){3}\d{1,3}(\/\S*)?/g);
+        var matches = formatedText.match(reg_exUrl) || [];
+        for (var i = matches.length - 1; i >= 0; i--) {
+            var match = matches[i];
+            formatedText = formatedText.replace(match, "<a target='_blank' href='" + match + "'>" + match + "</a>");
+        }
+        self.text = formatedText;
+        self.username = sendUser.username;
+        self.rank = sendUser.group.name;
+        self.formating = sendUser.chat;
+        return self;
+    });
+
 
 }

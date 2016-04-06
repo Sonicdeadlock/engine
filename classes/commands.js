@@ -5,6 +5,8 @@ var _ = require('lodash');
 var db = require('../db');
 var contentModel = require('../models/content');
 var content = db.model('content');
+var bannedWordModel = require('../models/banned_word');
+var banned_word = db.model('banned_word');
 
 var commands = {
     '!test':function(text,emitCallback){
@@ -18,7 +20,7 @@ var commands = {
                 });
             });
         }else{
-            emitCallback('You Don\'t have permission to request jokes');
+            emitCallback('You Don\'t have permission to request jokes!');
         }
     },
     '!addJoke':function(text,emitCallback,user){
@@ -29,7 +31,7 @@ var commands = {
                 emitCallback('Joke Added');
             })
         }else{
-            emitCallback('You Don\'t have permission to add jokes');
+            emitCallback('You Don\'t have permission to add jokes!');
         }
     },
     '!proverb':function(text,emitCallback,user){
@@ -40,7 +42,7 @@ var commands = {
                 });
             });
         }else{
-            emitCallback('You Don\'t have permission to request proverbs');
+            emitCallback('You Don\'t have permission to request proverbs!');
         }
     },
     '!addProverb':function(text,emitCallback,user){
@@ -51,7 +53,20 @@ var commands = {
                 emitCallback('Proverb Added');
             })
         }else{
-            emitCallback('You Don\'t have permission to add proverbs');
+            emitCallback('You Don\'t have permission to add proverbs!');
+        }
+    },
+    '!addBannedWord':function(text,emitCallback,user){
+        if(user.hasPermission('Chat Admin')){
+            var word = text.substr('!addBannedWord'.length);
+            (new banned_word({word:word})).save()
+                .then(function(){
+                    emitCallback('Banned Word Added');
+                },function(err){
+                    console.log(err);
+                })
+        }else{
+            emitCallback('You Don\'t have permission to ban words!');
         }
     }
 };
