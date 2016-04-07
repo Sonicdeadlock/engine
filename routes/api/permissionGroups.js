@@ -10,7 +10,7 @@ var permissionGroup = db.model('permissionGroup');
 
 router.route('/')
     .post(function(req,res){
-        if(!(req.session.user)){
+        if(!(req.user)){
             res.status(403).send('Forbidden. Authentication required!');
         }else if(!user.hasPermission(req.user,'Group Admin')){
             res.status(403).send('Forbidden. Authorization required!');
