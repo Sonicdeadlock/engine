@@ -1,0 +1,22 @@
+
+  {
+    "name":"user",
+    "permissions":[],
+    "default":true,
+    "userAccess":"username"
+  }
+  {
+    "name":"super admin",
+    "permissions":[
+      "super",
+      "sudo",
+      "all",
+      "god",
+      "Group Admin",
+      "User Admin",
+      "Admin",
+      "Super Admin"
+    ],
+    "default":false,
+    "userAccess":""
+  }
