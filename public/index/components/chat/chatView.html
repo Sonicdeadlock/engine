@@ -19,9 +19,9 @@
         <a ng-click="exitRoom()"><span class="fa fa-arrow-circle-left fa-3x"></span></a>
         <a ng-click="chats=[]"><span bs-tooltip data-title="Clear Chat" data-placement="right" class="fa fa-3x fa-trash"></span></a>
     </div>
-    <div class="well col-sm-12 col-md-10 pull-left" style="height:550px">
+    <div class="col-sm-12 col-md-10 pull-left remove-padding" style="height:550px">
         <div id='chatArea' style="overflow:auto;height:100%;width:100%" scroll-glue>
-            <p ng-repeat="chat in chats" ng-class="{'chat-has-username':hasUsername(chat)}">
+            <p ng-repeat="chat in chats" ng-class="{'chat-has-username':hasUsername(chat)}" class="chat">
                 <small ng-show="showRank">[{{chat.rank}}]</small>
                 <b><a ui-sref="userPage({userId:chat.user})" >{{chat.username}}</a>:</b>
                 <span ng-bind-html="chat.text"></span>
