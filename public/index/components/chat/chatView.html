@@ -4,7 +4,6 @@
     </div>
     <div>
         <room ng-repeat="room in rooms">
-        <room ng-repeat="room in rooms">
 
         </room>
     </div>
@@ -22,7 +21,7 @@
     </div>
     <div class="well col-sm-12 col-md-10 pull-left" style="height:550px">
         <div id='chatArea' style="overflow:auto;height:100%;width:100%" scroll-glue>
-            <p ng-repeat="chat in chats">
+            <p ng-repeat="chat in chats" ng-class="{'chat-has-username':hasUsername(chat)}">
                 <small ng-show="showRank">[{{chat.rank}}]</small>
                 <b><a ui-sref="userPage({userId:chat.user})" >{{chat.username}}</a>:</b>
                 <span ng-bind-html="chat.text"></span>

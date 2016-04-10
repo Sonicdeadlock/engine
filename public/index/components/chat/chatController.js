@@ -116,6 +116,13 @@ angular.module('controllers').controller('chatController',function($scope,$http,
         $scope.chatRoom = room;
     };
 
+    $scope.hasUsername = function(chat){
+        if($rootScope.logged_in_user)
+            return chat.text.indexOf($rootScope.logged_in_user.username) != -1;
+        else
+            return false;
+    };
+
 
     //settings
     $scope.showRank=$cookies.getObject('showRank');
