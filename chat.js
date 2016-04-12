@@ -27,7 +27,7 @@ function connect(socket){
     function getUsersForCommunication(room){
         //TODO: determine only users who need to see the chat
         return _.filter(users,function(o){
-            return o.room._id == room._id;
+            return o.room && o.room._id == room._id;
         });
     }
 
