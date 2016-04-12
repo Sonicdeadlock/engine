@@ -56,6 +56,28 @@ var commands = {
             emitCallback('You Don\'t have permission to add proverbs!');
         }
     },
+    '!pickupLine':function(text,emitCallback,user){
+        if(user.hasPermission('Pickup Line')){
+            content.count({type:'pickupLine'}).exec().then(function(count){
+                content.findOne({type:'pickupLine'}).skip(_.random(count)).then(function(result){
+                    emitCallback(result.content)
+                });
+            });
+        }else{
+            emitCallback('You Don\'t have permission to request Pickup Lines!');
+        }
+    },
+    '!addPickupLine':function(text,emitCallback,user){
+        if(user.hasPermission('Pickup Line Admin')){
+            var joke = text.substr('!addPickupLine'.length);
+            (new content({type:'pickupLine',content:joke})).save()
+                .then(function(){
+                    emitCallback('Pickup Line Added');
+                })
+        }else{
+            emitCallback('You Don\'t have permission to add Pickup Lines!');
+        }
+    },
     '!addBannedWord':function(text,emitCallback,user){
         if(user.hasPermission('Chat Admin')){
             var word = text.substr('!addBannedWord'.length);
