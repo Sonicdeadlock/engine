@@ -47,7 +47,7 @@ function userEnterRoom(user,room){//required to be exposed
 }
 
 function userExitRoom(user,room){//required to be exposed
-    var matchRoom = _.find(rooms,['room._id',room._id]);
+    var matchRoom = _.find(rooms,{roomId:room._id});
     //check if the user is in a battle
     matchRoom.players = _.reject(matchRoom.players,{_id:user._id});
 }
