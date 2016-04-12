@@ -12,7 +12,7 @@ var bannedWordModel = require('./models/banned_word');
 var banned_word = db.model('banned_word');
 var textMod = require('./classes/textMod');
 var commands = require('./classes/commands');
-
+var basicBot = require('./bots/basicBot');
 
 
 var users = [];
@@ -67,6 +67,17 @@ function connect(socket){
 
                                 })
                             },user);
+                        chatRoom.bots.forEach(function(bot){
+                            if(bot.name == 'basic'){
+                                basicBot.chatInduction(user,chatRoom,text,function(text){
+                                    _.forEach(getUsersForCommunication(chatRoom),function(u){
+                                        u.socket.emit('chatServerToClient',{text:text,time: _.now()});
+                                    });
+                                },function(text){
+                                    socket.emit('chatServerToClient',{text:text,time: _.now()});
+                                });
+                            }
+                        });
                     });
 
                 })
@@ -79,6 +90,11 @@ function connect(socket){
     socket.on('chatEnterRoom',function(roomData){
         if(true){ //TODO: check permissions to enter the room
             chatRoom = roomData;
+            chatRoom.bots.forEach(function(bot){
+               if(bot.name == 'basic'){
+                   basicBot.userEnterRoom(user,chatRoom);
+               }
+            });
             userCollectionObj.room = roomData;
             _.forEach(getUsersForCommunication(chatRoom),function(u){
                 u.socket.emit('chatRoomEntrance',user.username);
@@ -88,6 +104,11 @@ function connect(socket){
     socket.on('chatLeaveRoom',function(){
         _.forEach(getUsersForCommunication(chatRoom),function(u){
             u.socket.emit('chatRoomExit',user.username);
+        });
+        chatRoom.bots.forEach(function(bot){
+            if(bot.name == 'basic'){
+                basicBot.userExitRoom(user,chatRoom);
+            }
         });
         chatRoom = undefined;
         userCollectionObj.room = undefined;

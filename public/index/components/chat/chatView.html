@@ -22,8 +22,8 @@
     <div class="col-sm-12 col-md-10 pull-left remove-padding" style="height:550px">
         <div id='chatArea' style="overflow:auto;height:100%;width:100%" scroll-glue>
             <p ng-repeat="chat in chats" ng-class="{'chat-has-username':hasUsername(chat)}" class="chat">
-                <small ng-show="showRank">[{{chat.rank}}]</small>
-                <b><a ui-sref="userPage({userId:chat.user})" >{{chat.username}}</a>:</b>
+                <small ng-show="showRank && chat.rank">[{{chat.rank}}]</small>
+                <b ng-show="chat.username"><a ui-sref="userPage({userId:chat.user})" >{{chat.username}}</a>:</b>
                 <span ng-bind-html="chat.text"></span>
                 <small class="chat_time pull-right" ng-show="showTime">{{chat.time | date:'mediumTime'}}</small>
             </p>

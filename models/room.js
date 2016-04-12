@@ -8,7 +8,10 @@ var roomSchema = new schema({
     name:String,
     deleteable:Boolean,
     description:String,
-    password:String
+    password:String,
+    bots:[{
+        name:String
+    }]
 });
 
 module.exports = mongoose.model('room',roomSchema);
