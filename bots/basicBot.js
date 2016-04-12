@@ -80,7 +80,7 @@ function chatInduction(user,room,chat,roomChatCallback,userChatCallback){
                     }else{
                         room.battle.challangedPlayer = otherPlayer;
                         room.battle.playerOne = player;
-                        roomChatCallback(user.username+' challanged' + player.user.username+' to battle');
+                        roomChatCallback(user.username+' challanged ' + otherPlayer.user.username+' to battle');
                     }
                 }
             }
