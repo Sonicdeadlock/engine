@@ -57,9 +57,24 @@ function chatInduction(user,room,chat,roomChatCallback,userChatCallback){
     var player = _.find(room.players,['user._id',user._id]);
     if(_.startsWith(chat,'!UserStats')){
         //return user stats
-
-
-        roomChatCallback(JSON.stringify(player.stats));
+        var stats = _.clone(player._doc.stats);
+        stats =_.assign(stats,{
+            minAttack:player.stats.minAttack,
+            maxAttack:player.stats.maxAttack,
+            mAtk:player.stats.mAtk,
+            critical:player.stats.critical,
+            HP:player.stats.HP,
+            SP:player.stats.SP,
+            HDef:player.stats.HDef,
+            SDef:player.stats.SDef,
+            hit:player.stats.hit,
+            flee:player.stats.flee
+        });
+        var statsString = '';
+         _.forOwn(stats,function(value,key){
+            statsString += key+":"+value+'<br>';
+        });
+        roomChatCallback(statsString);
     }else if(_.startsWith(chat,'!GameStatus')){
         roomChatCallback(getBattleStatus(room));
     }
