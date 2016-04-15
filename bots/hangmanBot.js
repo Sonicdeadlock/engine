@@ -110,7 +110,7 @@ function guessLetter(room,letter,roomChatCallback){
         roomChatCallback('Please guess a letter that hasn\'t been guessed yet.')
     }
     else{
-        room.guessedLetters.push(letter);
+        room.guessedLetters.push(_.lowerCase(letter));
         var preparedWord = prepareWord(room.guessedLetters,room.word);
         var guessedLetters = '[ '+room.guessedLetters.join(', ')+']';
         if(room.word.indexOf(letter)!=-1){
@@ -140,6 +140,7 @@ function guessLetter(room,letter,roomChatCallback){
 
 function prepareWord(guessedLetters,word){
     return _.map(word,function(char){
+        char = _.lowerCase(char);
         if(char == ' ')
         return '&nbsp&nbsp';
        if(guessedLetters.indexOf(char)==-1){
