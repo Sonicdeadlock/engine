@@ -15,7 +15,7 @@ var commands = {
     '!joke':function(text,emitCallback,user){
         if(user.hasPermission('Joke')){
             content.count({type:'joke'}).exec().then(function(count){
-                content.findOne({type:'joke'}).skip(_.random(count)).then(function(result){
+                content.findOne({type:'joke'}).skip(_.random(count-1)).then(function(result){
                     emitCallback(result.content)
                 });
             });
@@ -37,7 +37,7 @@ var commands = {
     '!proverb':function(text,emitCallback,user){
         if(user.hasPermission('Proverb')){
             content.count({type:'proverb'}).exec().then(function(count){
-                content.findOne({type:'proverb'}).skip(_.random(count)).then(function(result){
+                content.findOne({type:'proverb'}).skip(_.random(count-1)).then(function(result){
                     emitCallback(result.content)
                 });
             });
@@ -59,7 +59,7 @@ var commands = {
     '!pickupLine':function(text,emitCallback,user){
         if(user.hasPermission('Pickup Line')){
             content.count({type:'pickupLine'}).exec().then(function(count){
-                content.findOne({type:'pickupLine'}).skip(_.random(count)).then(function(result){
+                content.findOne({type:'pickupLine'}).skip(_.random(count-1)).then(function(result){
                     emitCallback(result.content)
                 });
             });

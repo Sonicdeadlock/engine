@@ -74,7 +74,7 @@ function chatInduction(user,room,chat,roomChatCallback,userChatCallback){
     }
     else if(_.startsWith(chat,'!random')){
         content.count({type:'hangmanWord'}).exec().then(function(count){
-            content.findOne({type:'hangmanWord'}).skip(_.random(count)).then(function(result){
+            content.findOne({type:'hangmanWord'}).skip(_.random(count-1)).then(function(result){
                 setWord(room,result.content);
             });
         });
