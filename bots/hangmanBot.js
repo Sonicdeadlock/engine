@@ -55,7 +55,7 @@ function chatInduction(user,room,chat,roomChatCallback,userChatCallback){
     if(_.startsWith(chat,'!setWord')){
         if(user.hasPermission('hangman')){
             var tkn = {
-                token:uid(20),
+                token:uid(36),
                 type:'hangman',
                 tokenData:{
                     userId:user._id,
