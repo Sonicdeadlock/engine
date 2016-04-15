@@ -28,7 +28,8 @@
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
     "passport.socketio": "^3.6.1",
-    "socket.io": "^1.4.5"
+    "socket.io": "^1.4.5",
+    "uid": "0.0.2"
   },
   "devDependencies": {
     "grunt": "^0.4.5",

@@ -1,0 +1,12 @@
+<div class="container">
+    <h1>Set Hangman Word</h1>
+    <div class="alert alert-danger" ng-show="error"><p>{{error}}</p></div>
+    <div class="alert alert-success" ng-show="success"><p>Word set success!</p></div>
+    <div class="input-group">
+        <input placeholder="Word" class="form-control" ng-model="word">
+        <span class="input-group-btn">
+            <button class="btn btn-primary " ng-click="set()">Set</button>
+        </span>
+
+    </div>
+</div>

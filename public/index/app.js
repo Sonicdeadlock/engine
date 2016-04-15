@@ -103,7 +103,20 @@ app.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$urlRo
                     controller:"composeController"
                 }
             }
-        });
+        }).
+    state('hangmanSetWord',{
+        url:'/hangmanSetWord?token',
+        views:{
+            navbar:{
+                templateUrl:"components/navbar/navbarView.html",
+                controller:"navbarController"
+            },
+            content:{
+                templateUrl:"components/hangman/hangmanSetWordView.html",
+                controller:"hangmanSetWordController"
+            }
+        }
+    });
 }]);
 app.factory('socket', function (socketFactory) {
     return socketFactory({ioSocket: io.connect()});

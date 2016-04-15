@@ -13,6 +13,7 @@ var banned_word = db.model('banned_word');
 var textMod = require('./classes/textMod');
 var commands = require('./classes/commands');
 var basicBot = require('./bots/basicBot');
+var hangmanBot = require('./bots/hangmanBot');
 
 
 var users = [];
@@ -70,6 +71,15 @@ function connect(socket){
                         chatRoom.bots.forEach(function(bot){
                             if(bot.name == 'basic'){
                                 basicBot.chatInduction(user,chatRoom,text,function(text){
+                                    _.forEach(getUsersForCommunication(chatRoom),function(u){
+                                        u.socket.emit('chatServerToClient',{text:text,time: _.now()});
+                                    });
+                                },function(text){
+                                    socket.emit('chatServerToClient',{text:text,time: _.now()});
+                                });
+                            }
+                            else if(bot.name == 'hangman'){
+                                hangmanBot.chatInduction(user,chatRoom,text,function(text){
                                     _.forEach(getUsersForCommunication(chatRoom),function(u){
                                         u.socket.emit('chatServerToClient',{text:text,time: _.now()});
                                     });

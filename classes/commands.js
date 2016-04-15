@@ -90,6 +90,19 @@ var commands = {
         }else{
             emitCallback('You Don\'t have permission to ban words!');
         }
+    },
+    '!addHangmanWord':function(text,emitCallback,user){
+        if(user.hasPermission('Hangman Admin')){
+            var word = text.substr('!addHangmanWord'.length);
+            (new content({type:'hangmanWord',content:word})).save()
+                .then(function(){
+                    emitCallback('Hangman Word Added');
+                },function(err){
+                    console.log(err);
+                })
+        }else{
+            emitCallback('You Don\'t have permission to hangman words!');
+        }
     }
 };
 function isCommand(text){
