@@ -11,6 +11,9 @@
 
 
 <div style="height: 70%; z-index: 2" id="topDiv" ng-show="chatRoom!= undefined" class="am-slide-right">
+    <div class="row col-sm-12">
+        <h1 class="col-md-offset-1">{{chatRoom.name}}</h1>
+    </div>
     <div class="pull-left container-fluid">
         <a bs-aside="menuAside" data-content-template="components/chat/menuTemplate.html"  data-container="#chatArea" data-placement="left"  data-animation="am-fade-and-slide-left"><span bs-tooltip data-title="Settings" data-placement="right" class="fa fa-cog fa-3x"></span></a>
         <a bs-aside="{title:'Mods'}" data-title="Mods" data-content-template="components/chat/chatModMenuTemplate.html"  data-container="#topDiv" data-placement="left"  data-animation="am-fade-and-slide-left"><span bs-tooltip data-title="Mods" data-placement="right" class="fa fa-cog fa-3x"></span></a>
@@ -20,6 +23,7 @@
         <a ng-click="chats=[]"><span bs-tooltip data-title="Clear Chat" data-placement="right" class="fa fa-3x fa-trash"></span></a>
     </div>
     <div class="col-sm-12 col-md-10 pull-left remove-padding" style="height:550px">
+
         <div id='chatArea' style="overflow:auto;height:100%;width:100%" scroll-glue>
             <p ng-repeat="chat in chats" ng-class="{'chat-has-username':hasUsername(chat)}" class="chat">
                 <small ng-show="showRank && chat.rank">[{{chat.rank}}]</small>
