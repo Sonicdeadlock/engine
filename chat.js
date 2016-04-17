@@ -101,20 +101,20 @@ function connect(socket){
 
     socket.on('chatEnterRoom',function(message){
         var roomData = message.room;
-        room.findOne({_id:roomData._id}).then(function(roomData){
-            if(!roomData){
+        room.findOne({_id:roomData._id}).then(function(roomDoc){
+            if(!roomDoc){
                 socket.emit('chatError',{error:'Room no longer exists!'})
                 return;
             }
             var allowedInRoom = true;
-            if(roomData.bans){
-                if(_.find(roomData.bans,function(id){return id.id == user._id.id})){
+            if(roomDoc.bans){
+                if(_.find(roomDoc.bans,function(id){return id.id == user._id.id})){
                     allowedInRoom = false;
                     socket.emit('chatError',{error:'You are banned from this room!'});
                 }
             }
-            if(roomData.password){
-                if(!(message.password && message.password == roomData.password)){
+            if(roomDoc.password){
+                if(!(message.password && message.password == roomDoc.password)){
                     allowedInRoom = false;
                     socket.emit('chatError',{error:"Invalid Password"});
                 }
