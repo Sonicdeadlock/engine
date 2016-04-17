@@ -102,6 +102,10 @@ function connect(socket){
     socket.on('chatEnterRoom',function(message){
         var roomData = message.room;
         room.findOne({_id:roomData._id}).then(function(roomData){
+            if(!roomData){
+                socket.emit('chatError',{error:'Room no longer exists!'})
+                return;
+            }
             var allowedInRoom = true;
             if(roomData.bans){
                 if(_.find(roomData.bans,function(id){return id.id == user._id.id})){

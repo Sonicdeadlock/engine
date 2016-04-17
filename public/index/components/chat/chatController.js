@@ -116,11 +116,19 @@ angular.module('controllers').controller('chatController',function($scope,$http,
 
     $scope.addRoom = function(){
         socket.emit('addRoom',$scope.newRoom);
+        setTimeout(function(){
+            socket.emit('getRooms',{})
+        },200);
+
     };
 
-    $scope.deleteRoom = function(room){
+    $scope.deleteRoom = function(room,$event){
         var roomId = room._id;
       socket.emit('deleteRoom',roomId);
+        $event.stopPropagation();
+        setTimeout(function(){
+            socket.emit('getRooms',{})
+        },200);
     };
 
     $scope.enterRoom = function(room,password){
