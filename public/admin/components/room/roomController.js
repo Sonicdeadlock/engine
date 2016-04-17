@@ -42,7 +42,10 @@ angular.module('controllers').controller('roomController',function($scope,$http,
     };
     $scope.toggleBot = function(bot){//use selected room for id and reference
         if(_.find($scope.selectedRoom.bots,{name:bot})){
-            $http.post('/api/rooms/removebot',{id:$scope.selectedRoom._id,bot:bot});
+            $http.post('/api/rooms/removeBot',{id:$scope.selectedRoom._id,bot:bot});
+            $scope.selectedRoom.bots = _.reject( $scope.selectedRoom.bots,{name:bot});
+        }else{
+            $http.post('/api/rooms/addBot',{id:$scope.selectedRoom._id,bot:bot});
             $scope.selectedRoom.bots.push({name:bot})
         }
     };

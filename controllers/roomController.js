@@ -45,10 +45,10 @@ function get(req,res){
 function addBot(req,res){
     var id = req.body.id,
         bot = req.body.bot;
-    
+        bot = {name:bot};
         var user = req.user;
         if(user.hasPermission('Room Admin')){
-            room.findByIdAndUpdate(id,{bots:{$push:{name:bot}}}).then(function(){
+            room.findByIdAndUpdate(id,{$push:{bots:bot}}).then(function(){
                 res.status(200).send();
                 roomSocketHandle.updateRooms();
             },function(error){console.error(error);});
@@ -61,10 +61,10 @@ function addBot(req,res){
 function removeBot(req,res){
     var id = req.body.id,
         bot = req.body.bot;
-
+        bot = {name:bot};
     var user = req.user;
     if(user.hasPermission('Room Admin')){
-        room.findByIdAndUpdate(id,{bots:{$pop:{name:bot}}}).then(function(){
+        room.findByIdAndUpdate(id,{$pull:{bots:bot}}).then(function(){
             res.status(200).send();
             roomSocketHandle.updateRooms();
         },function(error){console.error(error);});
@@ -79,7 +79,7 @@ function removeBan(req,res){
 
     var user = req.user;
     if(user.hasPermission('Room Admin')){
-        room.findByIdAndUpdate(id,{bans:{$pop:ban}}).then(function(){
+        room.findByIdAndUpdate(id,{$pull:{bans:ban}}).then(function(){
             res.status(200).send();
             roomSocketHandle.updateRooms();
         });
