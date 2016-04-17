@@ -15,6 +15,7 @@
                 <li ng-if="hasPermission('ViewDemo')"><a href="/text">text</a></li>
                 <li><a ui-sref="chat">Chat</a></li>
                 <li ng-if="hasPermission('User Admin')"><a href="/user">Users</a></li>
+                <li ng-if="hasPermission('Admin')"><a href="/admin">Admin</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li class="" ng-if="!logged_in_user"><a title="Login" data-template-url="user/components/login/loginDirective.html"   data-placement="bottom" data-animation="am-flip-x" data-container='body' bs-popover>Login</a></li>

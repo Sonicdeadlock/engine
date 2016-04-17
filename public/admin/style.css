@@ -1,0 +1,19 @@
+.ng-invalid.ng-touched{
+    border-color:#ac2925;
+}
+
+#groups,#users,#rooms{
+    max-height:400px;
+    overflow:auto;
+    border: 1px solid #e3e3e3;
+}
+
+#groups .selected,#users .selected,#rooms .selected{
+    border: 1px solid #e3e3e3;
+    background-color: #EAEAEA;
+    padding: 9px
+}
+
+#groups *,#users *,#rooms *{
+    padding:10px;
+}

@@ -55,6 +55,13 @@ module.exports = function(grunt) {
                         file:"defaultGroups.json",
                         jsonArray:true,
                         drop:true
+                    },
+                    {
+                        name:"character_replacements",
+                        type:'json',
+                        file:"character_replcements.json",
+                        jsonArray:true,
+                        drop:true
                     }
                 ]
             }

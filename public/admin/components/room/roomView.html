@@ -1,0 +1,51 @@
+<div>
+    <h3>Select Room <a class="fa fa-plus-square" ng-click="newRoom()"></a></h3>
+    <div id="rooms" class="col-md-4">
+        <div ng-repeat="room in rooms" ng-click="selectRoom(room)" ng-class="{selected:room==selectedRoom}">
+            <b>{{room.name}}</b>
+        </div>
+    </div>
+    <div class="col-md-8 pull-right">
+        <form ng-if="selectedRoom" >
+            <!--room name-->
+            <div class="form-group">
+                <label>Name:</label>
+                <input type="text" ng-model="selectedRoom.name" placeholder="Room Name" ng-blur="updateName()">
+            </div>
+            <hr>
+            <!--room description-->
+            <div class="form-group">
+                <label>Description:</label>
+                <input type="text" ng-model="selectedRoom.description" placeholder="Room Description" ng-blur="updateDescription()">
+            </div>
+            <hr>
+            <!--room password-->
+            <div class="form-group">
+                <label>Password:</label>
+                <input type="text" ng-model="selectedRoom.password" placeholder="Room Passowrd" ng-blur="updatePassword()">
+            </div>
+            <hr>
+            <!--room options-->
+            <label>Entrance Messages:</label>
+            <button type="button" class="btn btn-default" ng-model="selectedRoom.options.entranceMessages" bs-checkbox ng-click="updateOptions()">Entrance Messages</button>
+            <hr>
+            <label>Exit Messages:</label>
+            <button type="button" class="btn btn-default" ng-model="selectedRoom.options.exitMessages" bs-checkbox ng-click="updateOptions()">Exit Messages</button>
+            <hr>
+            <!--room bots-->
+            <div class="btn-group">
+                <button class="btn btn-default" ng-class="{active:_.find(selectedRoom.bots,{name:'basic'})}" ng-click="toggleBot('basic')">Basic</button>
+                <button class="btn btn-default" ng-class="{active:_.find(selectedRoom.bots,{name:'hangman'})}" ng-click="toggleBot('hangman')">Hangman</button>
+            </div>
+            <hr>
+            <!--room bans-->
+
+            <div>
+                <h3>Bans</h3>
+                <h5 ng-repeat="ban in selectedRoom.bans"><a class="fa fa-trash-o text-danger" ng-click="removeBan(ban.id)" title="Remove Ban"></a> {{ban.username}}</h5>
+            </div>
+
+        </form>
+    </div>
+
+</div>

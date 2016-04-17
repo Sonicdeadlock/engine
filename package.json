@@ -14,7 +14,6 @@
   "author": "Alex Thomas",
   "license": "MIT",
   "dependencies": {
-    "angular-socket-io": "^0.7.0",
     "body-parser": "^1.15.0",
     "bower": "^1.7.7",
     "connect-mongo": "0.8.2",

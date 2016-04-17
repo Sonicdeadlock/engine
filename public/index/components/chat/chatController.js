@@ -42,7 +42,7 @@ angular.module('controllers').controller('chatController',function($scope,$http,
     });
     socket.on('connect',function(){
        if($scope.chatRoom){
-           socket.emit('chatEnterRoom',$scope.chatRoom);
+           socket.emit('chatEnterRoom',{room:$scope.chatRoom,password:$scope.roompassword});
        }
     });
     socket.on('chatError',function(message){
@@ -142,8 +142,12 @@ angular.module('controllers').controller('chatController',function($scope,$http,
 
     $scope.enterRoom = function(room,password){
         if(room.hasPassword){
-            if(password)
+            if(password){
                 socket.emit('chatEnterRoom',{room:room,password:password});
+                $scope.roompassword=password;
+            }
+
+
         }
         else
             socket.emit('chatEnterRoom',{room:room});

@@ -8,6 +8,7 @@ var permissionGroups = require('./api/permissionGroups');
 var messages = require('./api/messages');
 var textEngine = require('./api/textEngine');
 var hangman = require('./api/hangman');
+var rooms = require('./api/rooms');
 
 
 //route apis
@@ -16,5 +17,6 @@ router.use('/permissionGroups',permissionGroups);
 router.use('/messages',messages);
 router.use('/textEngine',textEngine);
 router.use('/hangman',hangman);
+router.use('/rooms',rooms);
 
 module.exports = router;

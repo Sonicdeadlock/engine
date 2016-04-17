@@ -33,7 +33,7 @@ function connect(socket){
     }
 
     socket.on('chatClientToServer',function(message){
-        if(chatRoom.bans && !_.find(chatRoom.bans,function(id){return id.id == user._id.id})){
+        if(!chatRoom.bans || (chatRoom.bans && !_.find(chatRoom.bans,function(id){return id.id == user._id.id}))){
             if(message.text && chatRoom){
                 var impersonate = undefined;
                 if(message.text.indexOf('!impersonate')==0 && user.hasPermission('impersonate')){
@@ -136,16 +136,19 @@ function connect(socket){
 
     });
     socket.on('chatLeaveRoom',function(){
-        _.forEach(getUsersForCommunication(chatRoom),function(u){
-            u.socket.emit('chatRoomExit',user.username);
-        });
-        chatRoom.bots.forEach(function(bot){
-            if(bot.name == 'basic'){
-                basicBot.userExitRoom(user,chatRoom);
-            }
-        });
-        chatRoom = undefined;
-        userCollectionObj.room = undefined;
+        if(chatRoom){
+            _.forEach(getUsersForCommunication(chatRoom),function(u){
+                u.socket.emit('chatRoomExit',user.username);
+            });
+            chatRoom.bots.forEach(function(bot){
+                if(bot.name == 'basic'){
+                    basicBot.userExitRoom(user,chatRoom);
+                }
+            });
+            chatRoom = undefined;
+            userCollectionObj.room = undefined;
+        }
+
     });
     socket.on('chatBanUser',function(message){
        var user_id = message.user_id;

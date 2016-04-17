@@ -7,21 +7,31 @@ var roomModel = require('./models/chat');
 var room = db.model('room');
 var io = require('socket.io');
 
-module.exports = {connect:connect,disconnect:disconnect};
-function connect(socket){
-    room.find({}).then(function(results){
+module.exports = {connect:connect,disconnect:disconnect,updateRooms:updateRooms};
+
+function emitRooms(emitter){
+    room.find({}).sort('name').then(function(results){
         results = _.map(results,function(obj){
             obj = obj.toObject();
+            obj = _.omit(obj,['bans']);
             if(obj.password){
-                obj = _.omit(obj,'password');
+                obj = _.omit(obj,['password']);
                 obj.hasPassword = true;
                 return obj;
             }
             return obj;
 
         });
-        socket.emit('chatRooms',results);
+        emitter.emit('chatRooms',results);
     });
+}
+
+function updateRooms(){
+    emitRooms(io);
+}
+
+function connect(socket){
+    emitRooms(socket);
 
     var user = socket.client.request.user;
     socket.on('addRoom',function(roomData){
@@ -32,19 +42,7 @@ function connect(socket){
         }
         if(user.hasPermission('Room Admin')){
             (new room(roomData)).save().then(function(){
-                room.find({}).then(function(results){
-                    results = _.map(results,function(obj){
-                        obj = obj.toObject();
-                        if(obj.password){
-                            obj = _.omit(obj,'password');
-                            obj.hasPassword = true;
-                            return obj;
-                        }
-                        return obj;
-
-                    });
-                    io.emit('chatRooms',results);
-                });
+                emitRooms(io);
             },function(err){console.error(err);})
         }
     });
@@ -52,30 +50,14 @@ function connect(socket){
         room.findOne({_id:roomId}).then(function(result){
             if(result){
                 if(user.hasPermission('Room Admin') && (result.deletable || user.hasPermission('god'))){
-                    room.findOneAndRemove({_id:roomId}).then(function(){
-                        room.find({}).then(function(results){
-                            io.emit('chatRooms',results);
-                        });
-                    })
+                    emitRooms(io);
                 }
             }
         })
     });
     socket.on('getRooms',function(){
-        room.find({}).then(function(results){
-            results = _.map(results,function(obj){
-                obj = obj.toObject();
-                if(obj.password){
-                    obj = _.omit(obj,'password');
-                    obj.hasPassword = true;
-                    return obj;
-                }
-                return obj;
-
-            });
-            socket.emit('chatRooms',results);
-        });
-    })
+        emitRooms(socket);
+    });
 }
 
 function disconnect(socket){
