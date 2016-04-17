@@ -9,7 +9,13 @@ var roomSchema = new schema({
     deleteable:Boolean,
     description:String,
     password:String,
-    bots:{type:[{name:String}],default:[]}
+    bots:{type:[{name:String}],default:[]},
+    bans:{type:[{
+            type:schema.Types.ObjectId,
+            ref:'user',
+            field:'_id'
+    }],
+        default:[]}
 });
 
 module.exports = mongoose.model('room',roomSchema);

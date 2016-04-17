@@ -1,3 +1,4 @@
+
 <div class="container" ng-hide="chatRoom!= undefined">
     <div ng-show="hasPermission('addRoom')">
         <a bs-modal data-title="Add Room" data-placement="center" data-template-url="components/chat/addRoomTemplate.html"> <h3><span class="fa fa-plus-square" data-title="Add Room"></span> Add Room</h3></a>
@@ -26,6 +27,7 @@
 
         <div id='chatArea' style="overflow:auto;height:100%;width:100%" scroll-glue>
             <p ng-repeat="chat in chats" ng-class="{'chat-has-username':hasUsername(chat)}" class="chat">
+                <span ng-show="hasPermission('Chat Admin')" ><a class="fa fa-ban text-danger" ng-click="banUser(chat.user)"></a></span>
                 <small ng-show="showRank && chat.rank">[{{chat.rank}}]</small>
                 <b ng-show="chat.username"><a ui-sref="userPage({userId:chat.user})" >{{chat.username}}</a>:</b>
                 <span ng-bind-html="chat.text"></span>

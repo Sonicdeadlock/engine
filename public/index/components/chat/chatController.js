@@ -1,7 +1,7 @@
 
 if ('Notification' in window && Notification.permission !== "granted")
     Notification.requestPermission();
-angular.module('controllers').controller('chatController',function($scope,$http,$state,$rootScope,$cookies,socket){
+angular.module('controllers').controller('chatController',function($scope,$http,$state,$rootScope,$cookies,socket,$alert){
 
     $scope.chats = [];
     $scope.distplayHistory = [];
@@ -44,6 +44,15 @@ angular.module('controllers').controller('chatController',function($scope,$http,
            socket.emit('chatEnterRoom',$scope.chatRoom);
        }
     });
+    socket.on('chatError',function(message){
+       var alert = $alert({content:message.error,placement:'top', show:true,type:'danger'});
+        setTimeout(function(){
+            alert.destroy();
+        },1000*6)
+    });
+    socket.on('chatEnterRoom',function(message){
+        $scope.chatRoom = message.room;
+    });
 
     $scope.exitRoom = function(){
       socket.emit('chatLeaveRoom',{});
@@ -61,6 +70,9 @@ angular.module('controllers').controller('chatController',function($scope,$http,
             .reverse()
             .value();
         $scope.chatBox = '';
+    };
+    $scope.banUser = function(user_id){
+      socket.emit('chatBanUser',{user_id:user_id})
     };
 
     $scope.keyHandle = function($event){
@@ -113,7 +125,7 @@ angular.module('controllers').controller('chatController',function($scope,$http,
 
     $scope.enterRoom = function(room){
         socket.emit('chatEnterRoom',room);
-        $scope.chatRoom = room;
+
     };
 
     $scope.hasUsername = function(chat){

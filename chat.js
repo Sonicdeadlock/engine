@@ -98,18 +98,29 @@ function connect(socket){
     });
 
     socket.on('chatEnterRoom',function(roomData){
-        if(true){ //TODO: check permissions to enter the room
-            chatRoom = roomData;
-            chatRoom.bots.forEach(function(bot){
-               if(bot.name == 'basic'){
-                   basicBot.userEnterRoom(user,chatRoom);
-               }
-            });
-            userCollectionObj.room = roomData;
-            _.forEach(getUsersForCommunication(chatRoom),function(u){
-                u.socket.emit('chatRoomEntrance',user.username);
-            })
-        }
+        room.findOne({_id:roomData._id}).then(function(roomData){
+            var allowedInRoom = true;
+            if(roomData.bans){
+                if(_.find(roomData.bans,function(id){return id.id == user._id.id})){
+                    allowedInRoom = false;
+                    socket.emit('chatError',{error:'You are banned from this room!'})
+                }
+            }
+            if(allowedInRoom){ //TODO: check permissions to enter the room
+                chatRoom = roomData;
+                socket.emit('chatEnterRoom',{room:roomData});
+                chatRoom.bots.forEach(function(bot){
+                    if(bot.name == 'basic'){
+                        basicBot.userEnterRoom(user,chatRoom);
+                    }
+                });
+                userCollectionObj.room = roomData;
+                _.forEach(getUsersForCommunication(chatRoom),function(u){
+                    u.socket.emit('chatRoomEntrance',user.username);
+                })
+            }
+        });
+
     });
     socket.on('chatLeaveRoom',function(){
         _.forEach(getUsersForCommunication(chatRoom),function(u){
@@ -122,7 +133,14 @@ function connect(socket){
         });
         chatRoom = undefined;
         userCollectionObj.room = undefined;
-    })
+    });
+    socket.on('chatBanUser',function(message){
+       var user_id = message.user_id;
+        if(user.hasPermission('Chat Admin') && chatRoom){
+            chatRoom.bans.push(user_id);
+            chatRoom.save();
+        }
+    });
 }
 
 function disconnect(socket){
