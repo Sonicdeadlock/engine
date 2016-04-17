@@ -58,7 +58,7 @@ angular.module('controllers').controller('chatController',function($scope,$http,
       socket.emit('chatLeaveRoom',{});
         $scope.chatRoom = undefined;
         $scope.chats = [];
-        $scope.emit('getRooms',{});
+        socket.emit('getRooms',{});
     };
     $scope.sendChat = function(){
         socket.emit('chatClientToServer',{text:$scope.chatBox,mods:$scope.mods});
@@ -123,8 +123,13 @@ angular.module('controllers').controller('chatController',function($scope,$http,
       socket.emit('deleteRoom',roomId);
     };
 
-    $scope.enterRoom = function(room){
-        socket.emit('chatEnterRoom',room);
+    $scope.enterRoom = function(room,password){
+        if(room.hasPassword){
+            if(password)
+                socket.emit('chatEnterRoom',{room:room,password:password});
+        }
+        else
+            socket.emit('chatEnterRoom',{room:room});
 
     };
 

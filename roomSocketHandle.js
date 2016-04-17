@@ -37,6 +37,16 @@ function connect(socket){
     });
     socket.on('getRooms',function(){
         room.find({}).then(function(results){
+            results = _.map(results,function(obj){
+                obj = obj.toObject();
+                if(obj.password){
+                    obj = _.omit(obj,'password');
+                    obj.hasPassword = true;
+                    return obj;
+                }
+                return obj;
+
+            });
             socket.emit('chatRooms',results);
         });
     })

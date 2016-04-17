@@ -99,13 +99,20 @@ function connect(socket){
 
     });
 
-    socket.on('chatEnterRoom',function(roomData){
+    socket.on('chatEnterRoom',function(message){
+        var roomData = message.room;
         room.findOne({_id:roomData._id}).then(function(roomData){
             var allowedInRoom = true;
             if(roomData.bans){
                 if(_.find(roomData.bans,function(id){return id.id == user._id.id})){
                     allowedInRoom = false;
-                    socket.emit('chatError',{error:'You are banned from this room!'})
+                    socket.emit('chatError',{error:'You are banned from this room!'});
+                }
+            }
+            if(roomData.password){
+                if(!(message.password && message.password == roomData.password)){
+                    allowedInRoom = false;
+                    socket.emit('chatError',{error:"Invalid Password"});
                 }
             }
             if(allowedInRoom){ //TODO: check permissions to enter the room
