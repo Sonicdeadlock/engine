@@ -17,7 +17,7 @@ var hangmanBot = require('./bots/hangmanBot');
 
 
 var users = [];
-var serverUser = {_id:-1,username:'Server',group:{name:undefined}};
+var serverUser = {_id:undefined,username:'Server',group:{name:undefined}};
 module.exports = {connect:connect,disconnect:disconnect};
 function connect(socket){
     var user = socket.client.request.user;
