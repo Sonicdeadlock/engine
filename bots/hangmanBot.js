@@ -75,10 +75,9 @@ function chatInduction(user,room,chat,roomChatCallback,userChatCallback){
     else if(_.startsWith(chat,'!random')){
         content.count({type:'hangmanWord'}).exec().then(function(count){
             content.findOne({type:'hangmanWord'}).skip(_.random(count-1)).then(function(result){
-                setWord(room,result.content);
+                setWord(room,result.content.trim(''));
             });
         });
-        //todo:set to an actaully random word
 
     }
     else{
@@ -140,9 +139,10 @@ function guessLetter(room,letter,roomChatCallback){
 
 function prepareWord(guessedLetters,word){
     return _.map(word,function(char){
-        char = _.lowerCase(char);
         if(char == ' ')
-        return '&nbsp&nbsp';
+            return '&nbsp&nbsp';
+        char = _.lowerCase(char);
+
        if(guessedLetters.indexOf(char)==-1){
            return ' _ ';
        } else{
