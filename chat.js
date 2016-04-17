@@ -33,13 +33,14 @@ function connect(socket){
     }
 
     socket.on('chatClientToServer',function(message){
-        if(message.text && chatRoom){
+        if(chatRoom.bans && !_.find(chatRoom.bans,function(id){return id.id == user._id.id})){
+            if(message.text && chatRoom){
                 var impersonate = undefined;
-            if(message.text.indexOf('!impersonate')==0 && user.hasPermission('impersonate')){
-                var split = message.text.split(' ');
-                impersonate = {name:split[1]};
-                message.text = _.slice(split,2).join(' ');
-            }
+                if(message.text.indexOf('!impersonate')==0 && user.hasPermission('impersonate')){
+                    var split = message.text.split(' ');
+                    impersonate = {name:split[1]};
+                    message.text = _.slice(split,2).join(' ');
+                }
                 var prom = new Promise(function(resolve,reject){resolve(message.text)});
                 for(var i=0;i<message.mods.length;i++){
                     var mod = message.mods[i];
@@ -91,8 +92,9 @@ function connect(socket){
                     });
 
                 })
-
-
+            }
+        }else{
+            socket.emit('chatError',{error:'You are not allowed in this room!'});
         }
 
     });
