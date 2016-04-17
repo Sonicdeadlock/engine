@@ -15,7 +15,8 @@ var roomSchema = new schema({
             ref:'user',
             field:'_id'
     }],
-        default:[]}
+        default:[]},
+    options:Object
 });
 
 module.exports = mongoose.model('room',roomSchema);

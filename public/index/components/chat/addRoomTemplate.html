@@ -28,6 +28,14 @@
                 <button type="button" class="btn btn-default" ng-model="newRoom.deletable" bs-checkbox>Deletable</button>
                 </br>
                 </br>
+                <label>Entrance Messages:</label>
+                <button type="button" class="btn btn-default" ng-model="newRoom.options.entranceMessages" bs-checkbox>Entrance Messages</button>
+                </br>
+                </br>
+                <label>Exit Messages:</label>
+                <button type="button" class="btn btn-default" ng-model="newRoom.options.exitMessages" bs-checkbox>Exit Messages</button>
+                </br>
+                </br>
                 <label>Bots: </label>
                 <button class="btn btn-default" ng-model="newRoom.bots" bs-select data-multiple="1" data-iconCheckmark=" fa fa-ok" data-all-none-buttons="true" bs-options="botOption for botOption in botOptions"></button>
             </div>

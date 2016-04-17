@@ -121,13 +121,13 @@ function connect(socket){
             }
             if(allowedInRoom){ //TODO: check permissions to enter the room
                 chatRoom = roomData;
+                userCollectionObj.room = roomData;
                 socket.emit('chatEnterRoom',{room:roomData});
                 chatRoom.bots.forEach(function(bot){
                     if(bot.name == 'basic'){
                         basicBot.userEnterRoom(user,chatRoom);
                     }
                 });
-                userCollectionObj.room = roomData;
                 _.forEach(getUsersForCommunication(chatRoom),function(u){
                     u.socket.emit('chatRoomEntrance',user.username);
                 })

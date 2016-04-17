@@ -19,7 +19,7 @@ angular.module('controllers').controller('chatController',function($scope,$http,
 
     var historyId = 0;
     var history = [];
-    $scope.newRoom = {deletable:true,bots:[]};
+    $scope.newRoom = {deletable:true,bots:[],options:{}};
     $scope.botOptions=['basic','hangman'];
     $scope.chatRoom = undefined;
     $scope.rooms =[];
@@ -53,6 +53,14 @@ angular.module('controllers').controller('chatController',function($scope,$http,
     });
     socket.on('chatEnterRoom',function(message){
         $scope.chatRoom = message.room;
+    });
+    socket.on('chatRoomEntrance',function(username){
+        if($scope.chatRoom && $scope.chatRoom.options && $scope.chatRoom.options.entranceMessages)
+            $scope.chats.push({text:username+' has entered the room'});
+    });
+    socket.on('chatRoomExit',function(username){
+        if($scope.chatRoom && $scope.chatRoom.options && $scope.chatRoom.options.exitMessages)
+            $scope.chats.push({text:username+' has left the room'});
     });
 
     $scope.exitRoom = function(){
