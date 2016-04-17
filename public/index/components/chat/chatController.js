@@ -19,7 +19,8 @@ angular.module('controllers').controller('chatController',function($scope,$http,
 
     var historyId = 0;
     var history = [];
-    $scope.newRoom = {deleteable:true};
+    $scope.newRoom = {deletable:true,bots:[]};
+    $scope.botOptions=['basic','hangman'];
     $scope.chatRoom = undefined;
     $scope.rooms =[];
     socket.emit('getRooms',{});

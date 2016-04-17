@@ -25,18 +25,33 @@ function connect(socket){
 
     var user = socket.client.request.user;
     socket.on('addRoom',function(roomData){
+        if(roomData.bots){
+            roomData.bots = _.map(roomData.bots,function(bot){
+                return {name:bot};
+            })
+        }
         if(user.hasPermission('Room Admin')){
             (new room(roomData)).save().then(function(){
                 room.find({}).then(function(results){
+                    results = _.map(results,function(obj){
+                        obj = obj.toObject();
+                        if(obj.password){
+                            obj = _.omit(obj,'password');
+                            obj.hasPassword = true;
+                            return obj;
+                        }
+                        return obj;
+
+                    });
                     io.emit('chatRooms',results);
                 });
-            })
+            },function(err){console.error(err);})
         }
     });
     socket.on('deleteRoom',function(roomId){
         room.findOne({_id:roomId}).then(function(result){
             if(result){
-                if(user.hasPermission('Room Admin') && (result.deleteable || user.hasPermission('god'))){
+                if(user.hasPermission('Room Admin') && (result.deletable || user.hasPermission('god'))){
                     room.findOneAndRemove({_id:roomId}).then(function(){
                         room.find({}).then(function(results){
                             io.emit('chatRooms',results);

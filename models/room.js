@@ -6,7 +6,7 @@ var schema = mongoose.Schema;
 
 var roomSchema = new schema({
     name:String,
-    deleteable:Boolean,
+    deletable:Boolean,
     description:String,
     password:String,
     bots:{type:[{name:String}],default:[]},
