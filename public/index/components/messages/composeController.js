@@ -11,18 +11,21 @@
  	$http.get('/api/messages/mine').success(function(data){
  		var sent = data.sent;
  		var recived = data.recived;
- 		var usernames = [];
- 		for (var i = 0; i < sent.length; i++) {
- 			usernames.push({username:sent[i].toUser.username,id:sent[i].toUser._id});
- 		};
- 		for (var i = 0; i < recived.length; i++) {
- 			usernames.push({username:recived[i].fromUser.username,id:recived[i].fromUser._id});
- 		};
- 		$scope.usernames = _.uniq(usernames,'id');
+ 		var usernames = _.chain(sent).map(function(sentMsg){
+			return {username:sentMsg.toUser.username,id:sentMsg.toUser._id};
+		}).concat(
+			_.map(recived,function(recivedMsg){
+				return {username:recivedMsg.fromUser.username,id:recivedMsg.fromUser._id};
+			})
+		)
+			.uniqBy('id').value();
+
+		$scope.usernames = usernames;
  	});
  	$scope.send = function(){
  		if($scope.user && $scope.user.id){
  			$http.post('/api/messages',{toUser:$scope.user.id,body:$scope.body,title:$scope.title}).success(function(){
+				$rootScope.updateInboxCount();
  				$state.go('inbox');
  			});
  		}else{

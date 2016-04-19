@@ -8,6 +8,7 @@ angular.module('controllers').controller('inboxController',function($scope,$http
             $scope.sent = data.sent;
             $scope.recived = data.recived;
             //TODO:check if a message id has been passed through the state params then show that message if it's available
+            $rootScope.updateInboxCount();
         });
     }
     updateMessages();
@@ -28,7 +29,8 @@ angular.module('controllers').controller('inboxController',function($scope,$http
         $http.get('/api/messages/'+message._id).success(function(data){
             $scope.activeMessage = data;
         });
-        $http.post('/api/messages/mark',{id:message._id}).success(updateMessages);
+        if($scope.showReceived)
+            $http.post('/api/messages/mark',{id:message._id}).success(updateMessages);
     };
 
     $scope.delete = function(message){

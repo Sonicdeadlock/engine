@@ -62,7 +62,7 @@ exports.mine = function(req,res){ 
             .populate('fromUser','username') 
             .then(function(docs){
                     response.recived = docs;
-                    res.send(response); 
+                    res.json(response); 
                 } ); 
     }) };
 

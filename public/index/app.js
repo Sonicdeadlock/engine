@@ -22,10 +22,16 @@ app.run(['$rootScope', '$state', '$stateParams','$http', function ($rootScope, $
     //Save a copy of the parameters so we can access them from all the controllers
     $rootScope.$state = $state;
     $rootScope.$stateParams = $stateParams;
+    $rootScope.updateInboxCount = function(){
+      $http.get('/api/messages/mine').success(function(data){
+          $rootScope.inboxCount = _.filter(data.recived,{read:false}).length;
+          setTimeout($rootScope.updateInboxCount,
+          1000*60*5);//update every 5 minutes
+      })
+    };
     $http.get('/auth/self').success(function(data){
         $rootScope.logged_in_user = data;
-
-
+        $rootScope.updateInboxCount();
     });
     $rootScope.hasPermission = function(perm){
         var user = $rootScope.logged_in_user;
