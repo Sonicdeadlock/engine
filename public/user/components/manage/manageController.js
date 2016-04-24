@@ -1,9 +1,9 @@
 /**
  * Created by alexthomas on 7/21/15.
  */
-angular.module('controllers').controller('manageController',function($scope,$http,$state){
+angular.module('controllers').controller('manageController',function($scope,$http,$state,$rootScope){
     function updateUsers(){
-        $http.get('/api/users').success(function(data){
+        $http.get('/auth').success(function(data){
             $scope.users = data;
         });
     }
@@ -23,12 +23,14 @@ angular.module('controllers').controller('manageController',function($scope,$htt
     updateUsers();
     $scope.newGroup();
     $scope.activePanel = 'user';
+    $scope.user = {};
     $scope.edit=false;
     $scope.changed = false;
     $scope.toggleShowInput = function(input){$scope['show_'+input+'_input'] = !$scope['show_'+input+'_input']};
     $scope.toggleEdit = function(){$scope.edit=!$scope.edit;};
     $scope.submit = function(){
-        $http.put('/api/users',$scope.user).
+        $scope.user._id = $rootScope.logged_in_user._id;
+        $http.put('/auth',$scope.user).
         success(function(){
                 $scope.edit=false;
         }).
