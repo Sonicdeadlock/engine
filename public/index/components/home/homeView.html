@@ -1,3 +1,36 @@
 <div class="col-md-10 col-md-offset-1">
     <div class="jumbotron"><h1></h1></div>
+    <div ng-repeat="update_note in update_notes">
+        <div class="col-md-2">
+            <p>{{update_note.user.username}}</p>
+            <small class="label label-default">{{update_note.user.group.name}}</small>
+        </div>
+        <div class="col-md-10">
+            <h2>{{update_note.title}}</h2>
+            <small>{{update_note.release_time | date:'medium'}}</small>
+            <br>
+            <div>
+                {{update_note.content}}
+            </div>
+        </div>
+        <hr>
+    </div>
+    <div>
+    <ul class="pagination" ng-if="pages">
+        <li ng-class="{disabled:currentPage<1}">
+            <a  ng-click="page(currentPage-1)">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+
+
+        </li>
+        <li ng-repeat="p in pages" ng-class="{active:p==currentPage}"><a ng-click="page(p)">{{p+1}}</a></li>
+        <li ng-class="{disabled:currentPage>=pages.length-1}">
+            <a  ng-click="page(currentPage+1)">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+
+    </ul>
+    </div>
 </div>

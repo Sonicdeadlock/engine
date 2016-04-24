@@ -12,6 +12,7 @@
         <ul class="nav navbar-nav">
             <li><a href="/">Home</a></li>
             <li><a ui-sref="user">User</a></li>
+            <li ng-if="hasPermission('Admin')"><a ui-sref="update_notes">Update Notes</a></li>
             <li><a ui-sref="room">Room</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">

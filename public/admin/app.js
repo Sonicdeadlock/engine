@@ -61,6 +61,19 @@ app.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$urlRo
                 }
             }
         })
+        .state('update_notes',{
+            url:'/update_notes',
+            views:{
+                navbar:{
+                    templateUrl:"components/navbar/navbarView.html",
+                    controller:"navbarController"
+                },
+                content:{
+                    templateUrl:"components/updateNotes/updateNotesAdminView.html",
+                    controller:"updateNotesController"
+                }
+            }
+        })
 }]);
 app.factory('socket', function () {
     return _.noop;
