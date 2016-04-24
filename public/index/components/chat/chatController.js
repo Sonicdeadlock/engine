@@ -1,7 +1,7 @@
 
 if ('Notification' in window && Notification.permission !== "granted")
     Notification.requestPermission();
-angular.module('controllers').controller('chatController',function($scope,$http,$state,$rootScope,$cookies,socket,$alert){
+angular.module('controllers').controller('chatController',function($scope,$http,$state,$rootScope,$cookies,socket,$alert,$modal){
 
     $scope.chats = [];
     $scope.distplayHistory = [];
@@ -16,13 +16,13 @@ angular.module('controllers').controller('chatController',function($scope,$http,
             template:{chance:10}
         }
     ];
-
     var historyId = 0;
     var history = [];
     $scope.newRoom = {deletable:true,bots:[],options:{}};
     $scope.botOptions=['basic','hangman'];
     $scope.chatRoom = undefined;
     $scope.rooms =[];
+    $scope.passwordModal = $modal({scope:$scope,templateUrl:'components/chat/passwordModalTemplate.html',show:false});
     socket.emit('getRooms',{});
     socket.on('chatServerToClient',function(message){
        $scope.chats.push(message);
@@ -144,7 +144,11 @@ angular.module('controllers').controller('chatController',function($scope,$http,
         if(room.hasPassword){
             if(password){
                 socket.emit('chatEnterRoom',{room:room,password:password});
-                $scope.roompassword=password;
+                $scope.roompassword='';
+                $scope.passwordModal.$promise.then($scope.passwordModal.hide);
+            }else{
+                $scope.passwordModal.$promise.then($scope.passwordModal.show);
+                $scope.selectedRoom = room;
             }
 
 
