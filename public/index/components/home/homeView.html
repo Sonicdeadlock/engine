@@ -9,8 +9,7 @@
             <h2>{{update_note.title}}</h2>
             <small>{{update_note.release_time | date:'medium'}}</small>
             <br>
-            <div>
-                {{update_note.content}}
+            <div ng-bind-html="update_note.content">
             </div>
         </div>
         <hr>
