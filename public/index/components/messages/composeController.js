@@ -9,7 +9,7 @@
  	}
 	 if($stateParams.messageId){
 		 $http.get('/api/messages/'+$stateParams.messageId).success(function(data){
-			 var user = data[$stateParams.from?'toUser':'fromUser'];
+			 var user = data[$stateParams.from=='true'?'toUser':'fromUser'];
 			 $scope.user = {username:user.username,id:user._id};
 			 $scope.body= '\r'+_.repeat('-',10)+'\r'+data.body;
 			 $scope.title ='RE:'+data.title;
