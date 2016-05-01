@@ -1,37 +1,40 @@
-<div class="container">
-<div class="panel panel-default col-md-2 col-sm-4" id="sidePanel">
-    <ul class="nav nav-pills nav-stacked"> <!-- Select sent recived  -->
-        <li ng-class="{active:showSent}"><a ng-click="toggleView('sent')">Sent</a></li>
-        <li ng-class="{active:showReceived}"><a ng-click="toggleView('received')" >Received</a></li>
-    </ul>
-    <br/>
-    <div class="input-group"> <!-- search -->
-        <div class="input-group-addon"><span class='fa fa-search'></span></div>
-        <input type="text" class="form-control"  placeholder="Search" ng-model='searchText'>
-    </div>
-    <br/>   
-    <ul class="list-group message-list" ng-show="showSent" > <!-- list of sent -->
-        <li class="list-group-item" ng-repeat="message in sent | orderBy:'-time' | filter:searchText" ng-class="{selected:message._id==activeMessage._id}" ng-click="setActiveMessage(message);">
-            <b>{{message.title}}</b>
-            <br/>
-            <p>{{message.toUser.username}}</p>
-            <small>{{message.time | date:"medium"}}</small>
-        </li>
-    </ul>
-    
-    <ul class="list-group message-list" ng-show="showReceived"> <!-- list of received -->
-        <li class="list-group-item" ng-repeat="message in recived | orderBy:'-time' | filter:searchText" ng-class="{selected:message._id==activeMessage._id}" ng-click="setActiveMessage(message);">
-            <b ng-if="!message.read">{{message.title}}</b>
-            <span ng-if="message.read">{{message.title}}</span>
-            <br/>
-            <p>{{message.fromUser.username}}</p>
-            <small>{{message.time | date:"medium"}}</small>
-        </li>
-    </ul>
-</div>
-<div class="pull-right container-fluid">
+<div class="col-md-offset-1 col-md-10">
+    <div class="panel panel-default col-md-2 col-sm-4" id="sidePanel">
+        <br>
+        <ul class="nav nav-pills nav-stacked"> <!-- Select sent recived  -->
+            <li ng-class="{active:showReceived}"><a ng-click="toggleView('received')" >Received</a></li>
+            <li ng-class="{active:showSent}"><a ng-click="toggleView('sent')">Sent</a></li>
+        </ul>
+        <br>
         <button type="button" class="btn btn-primary" ui-sref="compose">Compose <span class="fa fa-pencil-square-o"></span></button>
+        <br/>
+        <br/>
+        <div class="input-group"> <!-- search -->
+            <div class="input-group-addon"><span class='fa fa-search'></span></div>
+            <input type="text" class="form-control"  placeholder="Search" ng-model='searchText'>
+        </div>
+        <br/>
+    </div>
+    <div class="col-md-10 col-sm-8" ng-hide="activeMessage" style="max-height: 500px;overflow-y: auto;">
+        <ul class="list-group message-list" ng-show="showSent" > <!-- list of sent -->
+            <li class="list-group-item" ng-repeat="message in sent | orderBy:'-time' | filter:searchText" ng-class="{selected:message._id==activeMessage._id}" ng-click="setActiveMessage(message);">
+                <b>{{message.title}}</b>
+                <br/>
+                <p>{{message.toUser.username}}</p>
+                <small>{{message.time | date:"medium"}}</small>
+            </li>
+        </ul>
 
+        <ul class="list-group message-list" ng-show="showReceived"> <!-- list of received -->
+            <li class="list-group-item" ng-repeat="message in recived | orderBy:'-time' | filter:searchText" ng-class="{selected:message._id==activeMessage._id}" ng-click="setActiveMessage(message);">
+                <b ng-if="!message.read">{{message.title}}</b>
+                <span ng-if="message.read">{{message.title}}</span>
+                <br/>
+                <p>{{message.fromUser.username}}</p>
+                <small>{{message.time | date:"medium"}}</small>
+                <a ng-click="delete(message,$event)"><span class="fa fa-trash fa-2x text-danger pull-right"></span></a>
+            </li>
+        </ul>
     </div>
 <div class="panel panel-default col-md-10 col-sm-8" ng-if="activeMessage">
     <div class=" panel-body">

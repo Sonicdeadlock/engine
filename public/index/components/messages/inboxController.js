@@ -16,6 +16,7 @@ angular.module('controllers').controller('inboxController',function($scope,$http
     $scope.showSent = false;
     $scope.showReceived = true;
     $scope.toggleView = function(activeView){
+        $scope.activeMessage = undefined;
         if(activeView=='sent'){
             $scope.showSent = true;
             $scope.showReceived = false;
@@ -33,8 +34,9 @@ angular.module('controllers').controller('inboxController',function($scope,$http
             $http.post('/api/messages/mark',{id:message._id}).success(updateMessages);
     };
 
-    $scope.delete = function(message){
-
+    $scope.delete = function(message,$event){
+        if($event)
+            $event.stopPropagation();
         $http.delete('/api/messages/'+message._id).success(function(){
             $scope.activeMessage = undefined;
                 updateMessages();
