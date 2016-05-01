@@ -40,7 +40,7 @@
     <div class=" panel-body">
         <div class="container-fluid pull-right">
             <a ng-click="delete(activeMessage)"><span class="fa fa-trash fa-2x text-danger"></span></a>
-            <a ui-sref='compose({userId:activeMessage.fromUser._id})'><span class="fa fa-reply fa-2x"></span></a>
+            <a ui-sref='compose({messageId:activeMessage._id,from:showSent})'><span class="fa fa-reply fa-2x"></span></a>
         </div>
         <h2 class="pull-left">{{activeMessage.title}}</h2>
     </div>
@@ -48,6 +48,6 @@
     <br/>
     <p><b>{{showSent?"To":"From"}}:</b> {{showSent?activeMessage.toUser.username:activeMessage.fromUser.username}}</p>
     <hr>
-    <p>{{activeMessage.body}}</p>
+    <pre>{{activeMessage.body}}</pre>
 </div>
 </div>

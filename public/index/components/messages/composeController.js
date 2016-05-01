@@ -7,20 +7,28 @@
  			$scope.user = {username:data.username,id:$stateParams.userId}
  		});
  	}
+	 if($stateParams.messageId){
+		 $http.get('/api/messages/'+$stateParams.messageId).success(function(data){
+			 var user = data[$stateParams.from?'toUser':'fromUser'];
+			 $scope.user = {username:user.username,id:user._id};
+			 $scope.body= '\r'+_.repeat('-',10)+'\r'+data.body;
+			 $scope.title ='RE:'+data.title;
+		 });
+	 }
  	$scope.usernames = [];
  	$http.get('/api/messages/mine').success(function(data){
  		var sent = data.sent;
- 		var recived = data.recived;
- 		var usernames = _.chain(sent).map(function(sentMsg){
+ 		var received = data.recived;
+		$scope.usernames= _.chain(sent).map(function(sentMsg){
 			return {username:sentMsg.toUser.username,id:sentMsg.toUser._id};
 		}).concat(
-			_.map(recived,function(recivedMsg){
-				return {username:recivedMsg.fromUser.username,id:recivedMsg.fromUser._id};
+			_.map(received,function(receivedMsg){
+				return {username:receivedMsg.fromUser.username,id:receivedMsg.fromUser._id};
 			})
 		)
 			.uniqBy('id').value();
 
-		$scope.usernames = usernames;
+
  	});
  	$scope.send = function(){
  		if($scope.user && $scope.user.id){

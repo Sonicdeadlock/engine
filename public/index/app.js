@@ -98,7 +98,7 @@ app.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$urlRo
             }
         })
         .state('compose',{
-            url:'/messages/compose?userId',
+            url:'/messages/compose?userId&messageId&from',
             views:{
                 navbar:{
                     templateUrl:"components/navbar/navbarView.html",
