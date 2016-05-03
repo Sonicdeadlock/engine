@@ -12,6 +12,7 @@
 <div style="height: 70%; z-index: 2" id="topDiv" ng-show="chatRoom!= undefined" class="am-slide-right">
     <div class="row col-sm-12">
         <h1 class="col-md-offset-1">{{chatRoom.name}}</h1>
+        <small class="col-md-offset-1">{{chatRoom.description}}</small>
     </div>
     <div class="pull-left container-fluid">
         <a bs-aside="menuAside" data-content-template="components/chat/menuTemplate.html"  data-container="#chatArea" data-placement="left"  data-animation="am-fade-and-slide-left"><span bs-tooltip data-title="Settings" data-placement="right" class="fa fa-cog fa-3x"></span></a>
