@@ -23,7 +23,7 @@ var hangmanParts = [
     'Your hangman now has a left foot'
 ];
 
-function setWord(room,word){
+function setWord(room,word,cb){
     var matchedRoom = _.find(rooms,{roomId:room._id}) ;
 
     if(!matchedRoom){
@@ -31,8 +31,13 @@ function setWord(room,word){
             roomId:room._id
         };
         rooms.push(matchedRoom);
+        if(cb)
+            cb('New hangman word set!');
     }else{
-        matchedRoom.mostRecentRoomCallback('New hangman word set!');
+        if(cb)
+            cb('New hangman word set!');
+        else
+            matchedRoom.mostRecentRoomCallback('New hangman word set!');
     }
     matchedRoom.strikes = 0;
     matchedRoom.word = word;
@@ -75,7 +80,7 @@ function chatInduction(user,room,chat,roomChatCallback,userChatCallback){
     else if(_.startsWith(chat,'!random')){
         content.count({type:'hangmanWord'}).exec().then(function(count){
             content.findOne({type:'hangmanWord'}).skip(_.random(count-1)).then(function(result){
-                setWord(room,result.content.trim(''));
+                setWord(room,result.content.trim(''),roomChatCallback);
             });
         });
 
