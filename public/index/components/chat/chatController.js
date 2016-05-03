@@ -6,6 +6,7 @@ angular.module('controllers').controller('chatController',function($scope,$http,
     $scope.chats = [];
     $scope.distplayHistory = [];
     $scope.mods = [];
+    $scope.roomFilter = {bots:{}};
     $scope.modTypes = [
         {
             name:'removeCharacter',
@@ -18,7 +19,26 @@ angular.module('controllers').controller('chatController',function($scope,$http,
     ];
     var historyId = 0;
     var history = [];
-
+    function filterRooms(){
+        $scope.displayRooms = _.chain($scope.rooms)
+            .filter(function(r){
+                var keys = _.keys($scope.roomFilter.bots);
+                for(var i=0;i<keys.length;i++){
+                    if($scope.roomFilter.bots[keys[i]] && _.map(r.bots,'name').indexOf(keys[i])===-1 )
+                        return false;
+                }
+                return true;
+            })
+            .filter(function(r){
+                if(!$scope.roomFilter.searchText) return true;
+                return (r.name.indexOf($scope.roomFilter.searchText)!==-1) ||(r.description?r.description.indexOf($scope.roomFilter.searchText)!==-1:false);
+            })
+            .value();
+    }
+    $scope.filterRooms = filterRooms;
+    $scope.$watch('roomFilter',function(){
+        filterRooms();
+    }, _.isEqual);
 
     $scope.chatRoom = undefined;
     $scope.rooms =[];
@@ -39,6 +59,12 @@ angular.module('controllers').controller('chatController',function($scope,$http,
 
     socket.on('chatRooms',function(rooms){
         $scope.rooms = rooms;
+        $scope.bots = _.chain(rooms).map(function(o){
+            return _.map(o.bots,'name')
+        })
+            .flatten().uniq()
+            .value();
+        filterRooms();
     });
     socket.on('connect',function(){
        if($scope.chatRoom){
