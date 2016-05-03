@@ -10,6 +10,8 @@ var roomModel = require('./models/room');
 var room = db.model('room');
 var bannedWordModel = require('./models/banned_word');
 var banned_word = db.model('banned_word');
+var userModel = require('./models/user');
+var User = db.model('user');
 var textMod = require('./classes/textMod');
 var commands = require('./classes/commands');
 var basicBot = require('./bots/basicBot');
@@ -120,7 +122,7 @@ function connect(socket){
                 }
             }
             if(allowedInRoom){ //TODO: check permissions to enter the room
-                chatRoom = roomData;
+                chatRoom = roomDoc;
                 userCollectionObj.room = roomData;
                 socket.emit('chatEnterRoom',{room:roomData});
                 chatRoom.bots.forEach(function(bot){
@@ -153,6 +155,7 @@ function connect(socket){
     socket.on('chatBanUser',function(message){
        var user_id = message.user_id;
         if(user.hasPermission('Chat Admin') && chatRoom){
+            User.update({_id:user_id},{$inc: {'strikes.bans':1}}).then();
             chatRoom.bans.push(user_id);
             chatRoom.save();
         }
@@ -175,7 +178,13 @@ function chatObj(sendUser,chatRoom,text){
     var self = this;
     return banned_word.find({}).cache().exec().then(function(badWords){
         badWords.forEach(function(badWord){//TODO: count every time the user sends a bad word
-            formatedText = formatedText.replace(new RegExp('('+badWord.regex.trim()+')+','g'),'<span class="text-danger">[CENSORED]</span>');
+            var count = formatedText.match(new RegExp('('+badWord.regex.trim()+')+','g'));
+            count = count===null?0:count.length;
+            if(count>0){
+                formatedText = formatedText.replace(new RegExp('('+badWord.regex.trim()+')+','g'),'<span class="text-danger">[CENSORED]</span>');
+                if(sendUser)
+                    sendUser.update({$inc: {'strikes.chat':count}}).then();
+            }
         });
         var reg_exUrl = new RegExp(/(((http|https|ftp|ftps)\:\/\/|www\.)[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?)|(\d{1,3}\.){3}\d{1,3}(\/\S*)?/g);
         var matches = formatedText.match(reg_exUrl) || [];
