@@ -1,29 +1,36 @@
-<div class="col-md-2">
-   <div>
-       <h3>Room Bot filter</h3>
-       <div class="btn-group btn-group-vertical">
-           <label class="btn btn-default" ng-repeat="bot in bots"  bs-checkbox ng-model="roomFilter.bots[bot]" >{{bot}} </label>
+<div ng-hide="chatRoom!= undefined">
+    <div class="col-md-2">
+       <div>
+           <h3>Room Bot filter</h3>
+           <div class="btn-group btn-group-vertical">
+               <label class="btn btn-default" ng-repeat="bot in bots"  bs-checkbox ng-model="roomFilter.bots[bot]" >{{bot}} </label>
+           </div>
        </div>
-   </div>
-</div>
-<div class="col-md-9" ng-hide="chatRoom!= undefined">
-    <div class="input-group">
-        <span class="input-group-addon"><span class="fa fa-search"></span></span>
-        <input ng-model="roomFilter.searchText" class="form-control">
     </div>
-    <br>
-    <div>
-        <room ng-repeat="room in displayRooms">
+    <div class="col-md-9" >
+        <div class="input-group">
+            <span class="input-group-addon"><span class="fa fa-search"></span></span>
+            <input ng-model="roomFilter.searchText" class="form-control">
+        </div>
+        <br>
+        <div>
+            <room ng-repeat="room in displayRooms">
 
-        </room>
+            </room>
+        </div>
     </div>
 </div>
-
 
 <div style="height: 70%; z-index: 2" id="topDiv" ng-show="chatRoom!= undefined" class="am-slide-right">
-    <div class="row col-sm-12">
+    <div class="row col-sm-12 col-md-11">
         <h1 class="col-md-offset-1">{{chatRoom.name}}</h1>
         <small class="col-md-offset-1">{{chatRoom.description}}</small>
+    </div>
+    <div class="col-md-1 hidden-sm hidden-xs pull-right">
+        <h2>Bots</h2>
+        <ul class="list-unstyled">
+            <li ng-repeat=" bot in chatRoom.bots">{{bot.name}}</li>
+        </ul>
     </div>
     <div class="pull-left container-fluid">
         <a bs-aside="menuAside" data-content-template="components/chat/menuTemplate.html"  data-container="#chatArea" data-placement="left"  data-animation="am-fade-and-slide-left"><span bs-tooltip data-title="Settings" data-placement="right" class="fa fa-cog fa-3x"></span></a>
@@ -33,6 +40,7 @@
         <a ng-click="exitRoom()"><span class="fa fa-arrow-circle-left fa-3x"></span></a>
         <a ng-click="chats=[]"><span bs-tooltip data-title="Clear Chat" data-placement="right" class="fa fa-3x fa-trash"></span></a>
     </div>
+
     <div class="col-sm-12 col-md-10 pull-left remove-padding" style="height:550px">
 
         <div id='chatArea' style="overflow:auto;height:100%;width:100%" scroll-glue>
@@ -65,6 +73,7 @@
         </form>
 
     </div>
+
 </div>
 
 
