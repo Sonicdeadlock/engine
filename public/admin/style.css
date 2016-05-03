@@ -14,6 +14,15 @@
     padding: 9px
 }
 
-#groups *,#users *,#rooms *{
+#groups *,#users *,#rooms *:not(.fa){
     padding:10px;
+}
+
+.modal.center{
+    top:auto;
+    bottom: auto;
+}
+
+.modal.center .modal-dialog{
+    top:120px;
 }

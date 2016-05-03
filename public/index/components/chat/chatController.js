@@ -18,8 +18,8 @@ angular.module('controllers').controller('chatController',function($scope,$http,
     ];
     var historyId = 0;
     var history = [];
-    $scope.newRoom = {deletable:true,bots:[],options:{}};
-    $scope.botOptions=['basic','hangman'];
+
+
     $scope.chatRoom = undefined;
     $scope.rooms =[];
     $scope.passwordModal = $modal({scope:$scope,templateUrl:'components/chat/passwordModalTemplate.html',show:false});
@@ -123,13 +123,6 @@ angular.module('controllers').controller('chatController',function($scope,$http,
         _.pull($scope.mods,mod);
     };
 
-    $scope.addRoom = function(){
-        socket.emit('addRoom',$scope.newRoom);
-        setTimeout(function(){
-            socket.emit('getRooms',{})
-        },200);
-
-    };
 
     $scope.deleteRoom = function(room,$event){
         var roomId = room._id;

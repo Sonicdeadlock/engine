@@ -34,23 +34,15 @@ function connect(socket){
     emitRooms(socket);
 
     var user = socket.client.request.user;
-    socket.on('addRoom',function(roomData){
-        if(roomData.bots){
-            roomData.bots = _.map(roomData.bots,function(bot){
-                return {name:bot};
-            })
-        }
-        if(user.hasPermission('Room Admin')){
-            (new room(roomData)).save().then(function(){
-                emitRooms(io);
-            },function(err){console.error(err);})
-        }
-    });
     socket.on('deleteRoom',function(roomId){
         room.findOne({_id:roomId}).then(function(result){
             if(result){
                 if(user.hasPermission('Room Admin') && (result.deletable || user.hasPermission('god'))){
-                    emitRooms(io);
+                    room.findOneAndRemove({_id:roomId}).then(function(){
+                            emitRooms(io);
+
+                    })
+
                 }
             }
         })

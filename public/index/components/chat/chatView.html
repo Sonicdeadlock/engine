@@ -1,8 +1,6 @@
 
 <div class="container" ng-hide="chatRoom!= undefined">
-    <div ng-show="hasPermission('addRoom')">
-        <a bs-modal data-title="Add Room" data-placement="center" data-template-url="components/chat/addRoomTemplate.html"> <h3><span class="fa fa-plus-square" data-title="Add Room"></span> Add Room</h3></a>
-    </div>
+
     <div>
         <room ng-repeat="room in rooms">
 

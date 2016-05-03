@@ -7,7 +7,9 @@ var roomController = require('../../controllers/roomController');
 
 router.route('/')
     .get(roomController.get)
-    .post(roomController.create)
+    .post(roomController.create);
+
+router.route('/delete/:id')
     .delete(roomController.remove);
 
 router.route('/addBot')

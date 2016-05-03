@@ -4,12 +4,18 @@
 angular.module('controllers').controller('roomController',function($scope,$http,$rootScope){
     $http.get('/api/rooms').success(function(data){
        $scope.rooms = data;
-
     });
     $scope._ = _;
     $scope.selectedRoom = undefined;
+    $scope.newRoom = {deletable:true,bots:[],options:{}};
+    $scope.botOptions=['basic','hangman'];
     $scope.addRoom = function(){
-        //call on the normal creator modal
+       $http.post('/api/rooms/',$scope.newRoom)
+           .success(function(){
+               $http.get('/api/rooms').success(function(data){
+                   $scope.rooms = data;
+               });
+           });
     };
     $scope.selectRoom = function(room){
         $scope.selectedRoom = room;
@@ -38,7 +44,10 @@ angular.module('controllers').controller('roomController',function($scope,$http,
         $http.post('/api/rooms/changeOptions',{id:$scope.selectedRoom._id,options:$scope.selectedRoom.options});
     };
     $scope.removeBan = function(id){//use selected room for room-id
-        $http.post('/api/rooms/removeBan',{id:$scope.selectedRoom._id,ban:id});
+        $http.post('/api/rooms/removeBan',{id:$scope.selectedRoom._id,ban:id})
+            .success(function(){
+                _.remove($scope.selectedRoom.bans,{id:id})
+            });
     };
     $scope.toggleBot = function(bot){//use selected room for id and reference
         if(_.find($scope.selectedRoom.bots,{name:bot})){
@@ -49,5 +58,17 @@ angular.module('controllers').controller('roomController',function($scope,$http,
             $scope.selectedRoom.bots.push({name:bot})
         }
     };
-
+    $scope.deleteRoom = function(id){
+        $http.delete('/api/rooms/delete/'+id)
+            .success(function(){
+                $http.get('/api/rooms').success(function(data){
+                    $scope.rooms = data;
+                    $scope.selectedRoom = undefined;
+                });
+            })
+    }
+}).filter('startCase',function(){
+    return function(input){
+        return _.startCase(input);
+    }
 });

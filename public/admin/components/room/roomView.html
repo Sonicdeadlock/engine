@@ -1,28 +1,35 @@
-<div>
-    <h3>Select Room <a class="fa fa-plus-square" ng-click="newRoom()"></a></h3>
+<div class="col-md-10 col-md-offset-1">
+    <h3>Select Room <a bs-modal data-title="Add Room" data-container="body" data-placement="center" data-template-url="components/room/addRoomTemplate.html"><span class="fa fa-plus-square" data-title="Add Room"></span></a></h3>
+
     <div id="rooms" class="col-md-4">
-        <div ng-repeat="room in rooms" ng-click="selectRoom(room)" ng-class="{selected:room==selectedRoom}">
+        <div class="input-group"> <!-- search -->
+            <div class="input-group-addon"><span class='fa fa-search fa-1x'></span></div>
+            <input type="text" class="form-control"  placeholder="Search" ng-model='searchText'>
+        </div>
+        <div ng-repeat="room in rooms | orderBy:'name' | filter:{name:searchText}" ng-click="selectRoom(room)" ng-class="{selected:room==selectedRoom}">
             <b>{{room.name}}</b>
         </div>
     </div>
-    <div class="col-md-8 pull-right">
-        <form ng-if="selectedRoom" >
+    <div class="col-md-8 pull-right" ng-if="selectedRoom" >
+        <button class="btn btn-danger pull-right" ng-click="deleteRoom(selectedRoom._id)">Delete <span class="fa fa-trash"></span></button>
+        <br>
+        <form >
             <!--room name-->
             <div class="form-group">
                 <label>Name:</label>
-                <input type="text" ng-model="selectedRoom.name" placeholder="Room Name" ng-blur="updateName()">
+                <input class="form-control" type="text" ng-model="selectedRoom.name" placeholder="Room Name" ng-blur="updateName()">
             </div>
             <hr>
             <!--room description-->
             <div class="form-group">
                 <label>Description:</label>
-                <input type="text" ng-model="selectedRoom.description" placeholder="Room Description" ng-blur="updateDescription()">
+                <input  class="form-control" type="text" ng-model="selectedRoom.description" placeholder="Room Description" ng-blur="updateDescription()">
             </div>
             <hr>
             <!--room password-->
             <div class="form-group">
                 <label>Password:</label>
-                <input type="text" ng-model="selectedRoom.password" placeholder="Room Passowrd" ng-blur="updatePassword()">
+                <input  class="form-control" type="text" ng-model="selectedRoom.password" placeholder="Room Passowrd" ng-blur="updatePassword()">
             </div>
             <hr>
             <!--room options-->
@@ -34,8 +41,7 @@
             <hr>
             <!--room bots-->
             <div class="btn-group">
-                <button class="btn btn-default" ng-class="{active:_.find(selectedRoom.bots,{name:'basic'})}" ng-click="toggleBot('basic')">Basic</button>
-                <button class="btn btn-default" ng-class="{active:_.find(selectedRoom.bots,{name:'hangman'})}" ng-click="toggleBot('hangman')">Hangman</button>
+                <button ng-repeat="option in botOptions" class="btn btn-default" ng-class="{active:_.find(selectedRoom.bots,{name:option})}" ng-click="toggleBot(option)">{{option | startCase}}</button>
             </div>
             <hr>
             <!--room bans-->
