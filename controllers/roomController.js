@@ -12,6 +12,7 @@ function create(req,res){
     if(user.hasPermission('Room Admin')){
         (new room(req.body).save()).then(function(){//resolve
             roomSocketHandle.updateRooms();
+            res.status(200).send();
         },
         function(error){//reject
             console.error(error);
@@ -26,7 +27,7 @@ function create(req,res){
 function remove(req,res){
     var user = req.user;
     if(user.hasPermission('Room Admin')){
-        room.findOneAndRemove({_id:req.body._id}).then(function(){
+        room.findOneAndRemove({_id:req.params.id}).then(function(){
             roomSocketHandle.updateRooms();
             res.status(200).send();
         })

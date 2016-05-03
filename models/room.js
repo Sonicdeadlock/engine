@@ -10,11 +10,9 @@ var roomSchema = new schema({
     description:String,
     password:String,
     bots:{type:[{name:String}],default:[]},
-    bans:{type:[{
-            type:schema.Types.ObjectId,
+    bans:{type:[{type:schema.Types.ObjectId,
             ref:'user',
-            field:'_id'
-    }],
+            field:'_id'}],
         default:[]},
     options:Object
 });

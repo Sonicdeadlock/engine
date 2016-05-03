@@ -26,7 +26,8 @@ var userSchema = new schema({
         textFont:String
     },
     strikes:{
-        chat:{default:0,type:Number}
+        chat:{default:0,type:Number},
+        bans:{default:0,type:Number}
     }
 });
 
