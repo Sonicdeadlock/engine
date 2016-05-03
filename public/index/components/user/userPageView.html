@@ -21,6 +21,19 @@
             <td>{{userData.email}}</td>
         </tr>
     </table>
+    <div ng-if="userData.strikes">
+        <hr>
+        <table class="table table-striped">
+            <tr>
+                <td>Banned Words Strikes</td>
+                <td>{{userData.strikes.chat}}</td>
+            </tr>
+            <tr>
+                <td>Bans</td>
+                <td>{{userData.strikes.bans}}</td>
+            </tr>
+        </table>
+    </div>
     <div ng-if="userData.group">
         <hr>
         <h3>Group</h3>
