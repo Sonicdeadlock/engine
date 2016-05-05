@@ -12,6 +12,9 @@ var commands = {
     '!test':function(text,emitCallback){
         emitCallback('This is a test');
     },
+    '!commands':function(text,emitCallback){
+      emitCallback('General commands are:<br>'+_.chain(commands).keys().sort().join('<br>').value());
+    },
     '!joke':function(text,emitCallback,user){
         if(user.hasPermission('Joke')){
             content.count({type:'joke'}).exec().then(function(count){

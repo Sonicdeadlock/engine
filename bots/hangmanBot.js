@@ -45,6 +45,13 @@ function setWord(room,word,cb){
 }
 
 function userEnterRoom(user,room){
+    var matchedRoom = _.find(rooms,{roomId:room._id}) ;
+    if(!matchedRoom)
+    content.count({type:'hangmanWord'}).exec().then(function(count){
+        content.findOne({type:'hangmanWord'}).skip(_.random(count-1)).then(function(result){
+            setWord(room,result.content.trim(''));
+        });
+    });
 
 }
 
@@ -84,6 +91,13 @@ function chatInduction(user,room,chat,roomChatCallback,userChatCallback){
             });
         });
 
+    }
+    else if(_.startsWith(chat,'!commands')){
+        roomChatCallback("Hangman Commands are:" +
+            "<br>!setWord" +
+            "<br>!random" +
+            "<br>!guess {character}" +
+            "<br>!commands")
     }
     else{
         if(_.startsWith(chat,'!guess ')){

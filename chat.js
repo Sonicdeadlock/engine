@@ -105,7 +105,7 @@ function connect(socket){
         var roomData = message.room;
         room.findOne({_id:roomData._id}).then(function(roomDoc){
             if(!roomDoc){
-                socket.emit('chatError',{error:'Room no longer exists!'})
+                socket.emit('chatError',{error:'Room no longer exists!'});
                 return;
             }
             var allowedInRoom = true;
@@ -128,6 +128,9 @@ function connect(socket){
                 chatRoom.bots.forEach(function(bot){
                     if(bot.name == 'basic'){
                         basicBot.userEnterRoom(user,chatRoom);
+                    }
+                    else if(bot.name == 'hangman'){
+                        hangmanBot.userEnterRoom(user,chatRoom);
                     }
                 });
                 _.forEach(getUsersForCommunication(chatRoom),function(u){
