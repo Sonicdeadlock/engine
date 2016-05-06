@@ -12,6 +12,7 @@ angular.module('controllers').controller('threadController',function($scope,$htt
                     page=0;
                     $scope.atBottomOfThread=false;
                     $scope.thread = data;
+
                 });
         }
         update();
@@ -77,5 +78,18 @@ angular.module('controllers').controller('threadController',function($scope,$htt
 
     $scope.edit = function(post){
         $scope.postEditing = _.cloneDeep(post);
+    };
+
+    $scope.pin = function(){
+        $http.patch('/api/forum/threads/'+$stateParams.threadId+'/pin').success(update);
+    };
+    $scope.unpin = function(){
+        $http.patch('/api/forum/threads/'+$stateParams.threadId+'/unpin').success(update);
+    };
+    $scope.lock = function(){
+        $http.patch('/api/forum/threads/'+$stateParams.threadId+'/lock').success(update);
+    };
+    $scope.unlock = function(){
+        $http.patch('/api/forum/threads/'+$stateParams.threadId+'/unlock').success(update);
     }
 });

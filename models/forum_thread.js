@@ -37,7 +37,17 @@ var forum_threadSchema = new schema({
     views:{
         type:Number,
         default:0
-    }
+    },
+    history:[{
+        date:{type:Date,default:Date.now},
+        actor:{
+            type:schema.Types.ObjectId,
+            ref:'user',
+            field:'_id',
+            required:true
+        },
+        action:String
+    }]
 });
 
 //TODO: make the last update time from the child posts last update time

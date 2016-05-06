@@ -46,12 +46,20 @@ function getRootTopics(){
     return forum_topic_model.find({parent:{$exists:false}}).sort('name');
 }
 
-function lockThread(threadID){
-    return forum_thread_model.findByIdAndUpdate(threadID,{locked:true});
+function lockThread(threadID,user){
+    return forum_thread_model.findByIdAndUpdate(threadID,{locked:true,$push:{history:{action:'lock',actor:user._id}}});
 }
 
-function unlockThread(threadID){
-    return forum_thread_model.findByIdAndUpdate(threadID,{locked:false});
+function unlockThread(threadID,user){
+    return forum_thread_model.findByIdAndUpdate(threadID,{locked:false,$push:{history:{action:'unlock',actor:user._id}}});
+}
+
+function pinThread(threadID,user){
+    return forum_thread_model.findByIdAndUpdate(threadID,{pinned:true,$push:{history:{action:'pin',actor:user._id}}});
+}
+
+function unpinThread(threadID,user){
+    return forum_thread_model.findByIdAndUpdate(threadID,{pinned:false,$push:{history:{action:'unpin',actor:user._id}}});
 }
 
 function getTopicChildren(topicId,limit,skip){
@@ -128,7 +136,7 @@ module.exports = {
         })
     },
     lockThread:function(req,res){
-        lockThread(req.params.threadId).then(function(){
+        lockThread(req.params.threadId,req.user).then(function(){
             res.status(201).send();
         },function(err){
             console.error(err);
@@ -136,7 +144,23 @@ module.exports = {
         })
     },
     unlockThread:function(req,res){
-        unlockThread(req.params.threadId).then(function(){
+        unlockThread(req.params.threadId,req.user).then(function(){
+            res.status(201).send();
+        },function(err){
+            console.error(err);
+            res.status(500).send('Server encountered an error while processing your request.');
+        })
+    },
+    unpinThread:function(req,res){
+        unpinThread(req.params.threadId,req.user).then(function(){
+            res.status(201).send();
+        },function(err){
+            console.error(err);
+            res.status(500).send('Server encountered an error while processing your request.');
+        })
+    },
+    pinThread:function(req,res){
+        pinThread(req.params.threadId,req.user).then(function(){
             res.status(201).send();
         },function(err){
             console.error(err);

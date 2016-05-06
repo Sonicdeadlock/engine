@@ -91,4 +91,13 @@ router.route('/:threadId/view')
                 function(err){res.send(400).send()});
     });
 
+router.route('/:threadId/lock')
+    .patch(userController.hasAuthorization(['Forum Admin']),forumController.lockThread);
+router.route('/:threadId/unlock')
+    .patch(userController.hasAuthorization(['Forum Admin']),forumController.unlockThread);
+router.route('/:threadId/pin')
+    .patch(userController.hasAuthorization(['Forum Admin']),forumController.pinThread);
+router.route('/:threadId/unpin')
+    .patch(userController.hasAuthorization(['Forum Admin']),forumController.unpinThread);
+
 module.exports = router;
