@@ -12,7 +12,9 @@ var app = angular.module('userApp', [
     'ngSanitize',
     'btford.socket-io',
     'luegg.directives',
-    'uiSwitch'
+    'uiSwitch',
+    'yaru22.angular-timeago',
+    'infinite-scroll'
 
 ]);
 
@@ -122,7 +124,72 @@ app.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$urlRo
                 controller:"hangmanSetWordController"
             }
         }
-    });
+    })
+        .state('forum',{
+            url:'/forum',
+            views:{
+                navbar:{
+                    templateUrl:"components/navbar/navbarView.html",
+                    controller:"navbarController"
+                },
+                content:{
+                    templateUrl:"components/forum/forumView.html",
+                    controller:"forumController"
+                }
+            }
+        })
+        .state('topic',{
+            url:'/forum/topic/:topicId?skip&limit',
+            views:{
+                navbar:{
+                    templateUrl:"components/navbar/navbarView.html",
+                    controller:"navbarController"
+                },
+                content:{
+                    templateUrl:"components/forum/forumView.html",
+                    controller:"forumController"
+                }
+            }
+        })
+        .state('createTopic',{
+            url:'/forum/topic?parent',
+            views:{
+                navbar:{
+                    templateUrl:"components/navbar/navbarView.html",
+                    controller:"navbarController"
+                },
+                content:{
+                    templateUrl:"components/forum/createTopicView.html",
+                    controller:"forumController"
+                }
+            }
+        })
+        .state('createThread',{
+            url:'/forum/thread?topicId',
+            views:{
+                navbar:{
+                    templateUrl:"components/navbar/navbarView.html",
+                    controller:"navbarController"
+                },
+                content:{
+                    templateUrl:"components/forum/createThreadView.html",
+                    controller:"threadController"
+                }
+            }
+        })
+        .state('thread',{
+            url:'/forum/thread/:threadId?limit&skip',
+            views:{
+                navbar:{
+                    templateUrl:"components/navbar/navbarView.html",
+                    controller:"navbarController"
+                },
+                content:{
+                    templateUrl:"components/forum/threadView.html",
+                    controller:"threadController"
+                }
+            }
+        });
 }]);
 app.factory('socket', function (socketFactory) {
     return socketFactory({ioSocket: io.connect()});

@@ -37,3 +37,33 @@
     right:0;
     z-index: 10;
 }
+
+.forum.table > tbody > tr > td {
+    vertical-align: middle;
+}
+
+.forum .fa {
+    width: 1em;
+    text-align: center;
+}
+
+.forum.table th.cell-stat {
+    width: 6em;
+}
+
+.forum.table th.cell-stat-2x {
+    width: 14em;
+}
+
+textarea.forumTextArea{
+    width:100%;
+    height:100px;
+}
+
+.creator.post-user{
+    background-color: #D9EDF7;
+}
+
+.post-role{
+    color: rgb(43, 140, 70);
+}

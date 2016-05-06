@@ -1,0 +1,23 @@
+<div class="col-md-10 col-md-offset-1">
+    <form ng-submit="save()">
+        <div class="form-group">
+            <label>Thread Title</label>
+            <input class="form-control" ng-model="newThread.title">
+        </div>
+        <div class="form-group">
+            <label>Post</label>
+            <textarea class="forumTextArea" ng-model="newPost.body"></textarea>
+        </div>
+        <div class="form-group">
+            <label>Tags</label>
+            <input class="form-control" ng-model="newThread.tags">
+        </div>
+        <div class="form-group" ng-if="hasPermission('Forum Admin')">
+            <button type="button" bs-checkbox class="btn btn-default" ng-model="newThread.pinned">Pinned Thread</button>
+        </div>
+        <div class="form-group" ng-if="hasPermission('Forum Admin')">
+            <button type="button" bs-checkbox class="btn btn-default" ng-model="newThread.locked">Locked Thread</button>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>

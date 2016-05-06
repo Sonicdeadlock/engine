@@ -156,7 +156,7 @@ module.exports.hasAuthorization = function(roles) {
 
     return function(req, res, next) {
         _this.requiresLogin(req, res, function() {
-            if (_.intersection(req.user.group.permissions, roles).length) {
+            if (_.intersection(req.user.group.permissions, roles).length || req.user.hasPermission('sudo')) {
                 return next();
             } else {
                 return res.status(403).send({

@@ -10,6 +10,7 @@ var textEngine = require('./api/textEngine');
 var hangman = require('./api/hangman');
 var rooms = require('./api/rooms');
 var update_notes = require('./api/update_notes');
+var forum = require('./api/forum');
 
 
 //route apis
@@ -20,5 +21,6 @@ router.use('/textEngine',textEngine);
 router.use('/hangman',hangman);
 router.use('/rooms',rooms);
 router.use('/update_notes',update_notes);
+router.use('/forum',forum);
 
 module.exports = router;
