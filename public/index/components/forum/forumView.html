@@ -1,7 +1,7 @@
 
 <div class="col-md-10 col-md-offset-1">
 
-    <table class="table forum table-striped" ng-repeat="topic in topics" ng-hide="topic.children.topics.length==0&&!hasPermission('Forum Admin')">
+    <table class="table forum table-striped" ng-repeat="topic in topics | orderBy:'name'" ng-hide="topic.children.topics.length==0&&!hasPermission('Forum Admin')">
 
         <thead>
             <tr>
@@ -12,7 +12,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="childTopic in topic.children.topics">
+            <tr ng-repeat="childTopic in topic.children.topics|orderBy:'name'">
                 <td class="text-center"><i ng-if="childTopic.icon" ng-class="'fa-'+childTopic.icon+' text-'+childTopic.iconStyle" class="fa"></i></td>
                 <td><h4><a ui-sref="topic({topicId:childTopic._id})">{{childTopic.name}}</a></h4><small>{{childTopic.description}}</small></td>
                 <td>{{childTopic.topicCount}}</td>
