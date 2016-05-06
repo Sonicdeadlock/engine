@@ -16,7 +16,7 @@
                 <small class="pull-right">&nbsp&nbsp{{post.lastUpdateTime|timeAgo}}</small>
 
             </p>
-            <p class="container" ng-hide="postEditing._id==post._id">{{post.body}}</p>
+            <p class="container" ng-hide="postEditing._id==post._id" ng-bind-html="post.htmlBody"></p>
 
             <div ng-show="postEditing._id==post._id" class="clearfix">
                 <span class="fa fa-times text-danger pull-right fa-2x" ng-click="$parent.postEditing =undefined"></span>
