@@ -24,6 +24,7 @@ router.route('/:threadId')
     .get(function(req,res){
         var getThreadQuery = forum_thread_model.findById(req.params.threadId);
         getThreadQuery.populate('creator','username group');
+        getThreadQuery.populate('history.actor','username');
         var limit = req.query.limit || 15;
         if(limit>100)
         limit = 15;
@@ -43,6 +44,7 @@ router.route('/:threadId')
                 getThreadPostsQuery.limit(limit);
 
                 getThreadPostsQuery.populate('creator','username group');
+
                 getThreadPostsQuery = getThreadPostsQuery.then(function(results){
                     if(results==[])
                     return results;

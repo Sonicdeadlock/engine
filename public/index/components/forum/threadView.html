@@ -9,7 +9,7 @@
     <small ng-repeat="tag in thread.tags"><a ui-sref="search({tag:tag})">#{{tag}}&nbsp</a></small>
     <hr>
     <div infinite-scroll="getNextPage()" infinite-scroll-distance="1" infinite-scroll-disabled="pageLoading||atBottomOfThread">
-        <div ng-repeat="post in thread.posts" class="clearfix">
+        <div ng-repeat="post in thread.posts |orderBy:'creationTime'" class="clearfix">
             <p>
                 <a ng-class="{'creator':post.creator._id==thread.creator._id}" ui-sref="userPage({userId:post.creator._id})" class="post-user">{{post.creator.username}}</a>
                 <span class="post-role">{{post.creator.group.name}}</span>

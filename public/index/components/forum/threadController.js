@@ -11,6 +11,9 @@ angular.module('controllers').controller('threadController',function($scope,$htt
                 .success(function(data){
                     page=0;
                     $scope.atBottomOfThread=false;
+                    data.history.forEach(function(event){
+                       data.posts.push({body:event.actor.username+" "+event.action+'ed this post at '+event.date,creationTime:event.date,lastUpdateTime:event.date,_id:'notanID'})
+                    });
                     $scope.thread = data;
 
                 });
