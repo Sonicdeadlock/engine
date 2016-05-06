@@ -24,14 +24,15 @@ function createThread(thread){
         thread.tags = thread.tags.split(' ');
     return (new forum_thread_model(thread)).save();
 }
-function createPost(post){
+function createPost(post,user){
     return forum_thread_model.findById(post.thread)
         .then(function(thread){
-            if(thread.locked)
+            if(thread.locked && !user.hasPermission('Forum Admin'))
             throw 'Thread is locked';
             else{
                 var threadCreator = thread.creator;
                 var postCreator = post.creator;
+                if(!postCreator.id === threadCreator.id)
                 user.findById(postCreator,'username').then(function(postCreator){
                     (new message({title:postCreator.username+' repied to your thread: '+thread.title,body:post.body,toUser:threadCreator,fromDelete:true})).save();
                 });
@@ -120,7 +121,7 @@ module.exports = {
     },
     createPost:function(req,res){
         req.body.creator = req.user._id;
-        createPost(req.body).then(function(){
+        createPost(req.body,req.user).then(function(){
             res.status(201).send();
         },function(err){
             res.status(400).send(err);//assumes that the information that was submitted violates the schema and caused an error when submitting

@@ -27,7 +27,7 @@
         </div>
     </div>
 
-    <div class="well clearfix" ng-show="logged_in_user && !thread.locked" >
+    <div class="well clearfix" ng-show="logged_in_user && thread&&!(thread.locked&&!hasPermission('Forum Admin'))" >
         <textarea class="forumTextArea" ng-model="replyText"></textarea>
         <button class="btn btn-primary pull-right" ng-click="reply()"><span class="fa fa-reply"></span>&nbspReply</button>
     </div>
