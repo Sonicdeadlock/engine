@@ -67,3 +67,7 @@ textarea.forumTextArea{
 .post-role{
     color: rgb(43, 140, 70);
 }
+
+pre{
+    white-space: pre-wrap;
+}

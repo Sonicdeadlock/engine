@@ -34,7 +34,7 @@ function createPost(post,user){
                 var postCreator = post.creator;
                 if(!postCreator.id === threadCreator.id)
                 user.findById(postCreator,'username').then(function(postCreator){
-                    (new message({title:postCreator.username+' repied to your thread: '+thread.title,body:post.body,toUser:threadCreator,fromDelete:true})).save();
+                    (new message({title:postCreator.username+' replied to your thread: '+thread.title,body:post.body,toUser:threadCreator,fromDelete:true})).save();
                 });
 
                 return (new forum_post_model(post)).save();
