@@ -7,12 +7,12 @@ angular.module('controllers').controller('inboxController',function($scope,$http
         $http.get('/api/messages/mine').success(function(data){
             $scope.sent = data.sent;
             $scope.recived = data.recived;
-            //TODO:check if a message id has been passed through the state params then show that message if it's available
+
             $rootScope.updateInboxCount();
         });
     }
     updateMessages();
-    setInterval(updateMessages,10000);
+    setInterval(updateMessages,60*1000);
     $scope.showSent = false;
     $scope.showReceived = true;
     $scope.toggleView = function(activeView){
@@ -27,6 +27,7 @@ angular.module('controllers').controller('inboxController',function($scope,$http
         }
     };
     $scope.setActiveMessage = function(message){
+        $state.transitionTo('inbox', {id: message._id}, { notify: false });
         $http.get('/api/messages/'+message._id).success(function(data){
             data.body =  markdown.toHTML(data.body);
             if(data.replyBody)
@@ -36,7 +37,9 @@ angular.module('controllers').controller('inboxController',function($scope,$http
         if($scope.showReceived)
             $http.post('/api/messages/mark',{id:message._id}).success(updateMessages);
     };
-
+    if($stateParams.id){
+        $scope.setActiveMessage({_id:$stateParams.id});
+    }
     $scope.delete = function(message,$event){
         if($event)
             $event.stopPropagation();
