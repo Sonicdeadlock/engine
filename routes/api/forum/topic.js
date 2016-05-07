@@ -22,7 +22,8 @@ router.route('/:topicId')
        forum_topic_model.findById(req.params.topicId).then(function(result){
            if(result)
            res.json(result);
-           else
+           else  res.status(404).send('Topic not found');
+       },function(){
            res.status(404).send('Topic not found');
        })
     });

@@ -1,4 +1,7 @@
 <div class="col-md-10 col-md-offset-1">
+    <div ng-repeat="err in errs">
+        <p class="alert alert-danger">{{err}}</p>
+    </div>
     <h2><i ng-if="thread.pinned " class="fa fa-thumb-tack text-danger"></i>&nbsp<i ng-if="thread.locked " class="fa fa-lock text-primary"></i>&nbsp{{thread.title}}&nbsp
         <button ng-click="deleteThread()" class="btn btn-danger" ng-if="logged_in_user._id==thread.creator._id||hasPermission('Forum Admin')">Delete Thread</button>
         <button ng-click="pin()" class="btn btn-primary" ng-show="!thread.pinned && hasPermission('Forum Admin')">Pin Thread</button>
@@ -12,23 +15,24 @@
         <div ng-repeat="post in thread.posts |orderBy:'creationTime'" class="clearfix">
             <p>
                 <a ng-class="{'creator':post.creator._id==thread.creator._id}" ui-sref="userPage({userId:post.creator._id})" class="post-user">{{post.creator.username}}</a>
-                <span class="post-role">{{post.creator.group.name}}</span>
+                <span class="post-role"><span ng-if="post.creator.group.name.indexOf('Admin')>-1" class="fa fa-shield"></span>&nbsp{{post.creator.group.name}}</span>
                 <small class="pull-right">&nbsp&nbsp{{post.lastUpdateTime|timeAgo}}</small>
 
             </p>
-            <p class="container" ng-hide="postEditing._id==post._id" ng-bind-html="post.htmlBody"></p>
+            <p class="container" ng-hide="post._id&&postEditing._id==post._id" ng-bind-html="post.htmlBody"></p>
 
-            <div ng-show="postEditing._id==post._id" class="clearfix">
+            <div ng-show="post._id&&postEditing._id==post._id" class="clearfix">
                 <span class="fa fa-times text-danger pull-right fa-2x" ng-click="$parent.postEditing =undefined"></span>
                 <div>
-                    <textarea class="forumTextArea" ng-model="postEditing.body" rows="3"></textarea>
+                    <textarea class="forumTextArea" ng-model="postEditing.body" rows="5"></textarea>
                 </div>
 
                 <button class="btn btn-primary pull-right" ng-click="save()"><span class="fa fa-floppy-o"></span>&nbspSave</button>
             </div>
             <div class="pull-right clearfix">
-                <a ng-click="edit(post)" ><span ng-if="post.creator._id==logged_in_user._id"><span class="fa fa-pencil"></span></span></a>
-                <a ng-click="delete(post)" ><span  ng-if="post.creator._id==logged_in_user._id">&nbsp<span class="fa fa-trash "></span></span></a>
+                <a ui-sref="forumPost({postId:post._id})" ng-if="post._id"><span><span class="fa fa-link fa-lg" bs-tooltip data-title="Permanent link to post" data-type="info" data-placement="bottom"></span></span></a>
+                <a ng-click="edit(post)" ><span ng-if="post.creator._id==logged_in_user._id"><span class="fa fa-pencil fa-lg" bs-tooltip data-title="Edit Post" data-type="info" data-placement="bottom"></span></span></a>
+                <a ng-click="delete(post)" ><span  ng-if="post.creator._id==logged_in_user._id">&nbsp<span class="fa fa-trash fa-lg" bs-tooltip data-title="Delete Post" data-type="danger" data-placement="bottom"></span></span></a>
 
             </div>
             <br>
@@ -50,7 +54,7 @@
                 <a><span class="fa fa-list-ul fa-lg" ng-click="addTextToReply(' \r* item\r* item\r* item ')"></span></a>
                 <a><span class="fa fa-code fa-lg" ng-click="addTextToReply(' `code`')"></span></a>
             </div>
-            <textarea class="forumTextArea form-control" ng-model="replyText" rows="3"></textarea>
+            <textarea class="forumTextArea form-control" ng-model="replyText" rows="5"></textarea>
         </div>
         <br>
         <button class="btn btn-primary pull-right" ng-click="reply()"><span class="fa fa-reply"></span>&nbspReply</button>

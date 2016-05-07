@@ -60,10 +60,9 @@ router.route('/:threadId')
                     thread.posts = results[1];
                     res.json(thread);
                 });
-            }
-
-            else
-                res.status(404).send('Thread not found');
+            }else res.status(404).send('Thread not found');
+        },function(){
+            res.status(404).send('Thread not found');
         })
     })
     .delete(userController.requiresLogin,function(req,res){
@@ -90,7 +89,7 @@ router.route('/:threadId/view')
     .patch(function(req,res){
         forum_thread_model.findByIdAndUpdate(req.params.threadId,{$inc:{views:1}})
             .then(function(){res.status(200).send()},
-                function(err){res.send(400).send()});
+                function(err){res.status(400).send()});
     });
 
 router.route('/:threadId/lock')

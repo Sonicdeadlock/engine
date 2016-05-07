@@ -4,6 +4,7 @@
 angular.module('controllers').controller('threadController',function($scope,$http,$rootScope,$stateParams,$state){
     var pageSize = $stateParams.limit||15;
     var page=0;
+    $scope.errs = [];
     $scope.replyText='';
     if($stateParams.threadId){
         $scope.pageLoading=true;
@@ -18,11 +19,11 @@ angular.module('controllers').controller('threadController',function($scope,$htt
                         post.htmlBody = markdown.toHTML(post.body);
                     });
                     data.history.forEach(function(event){
-                       data.posts.push({htmlBody:event.actor.username+" "+event.action+'ed this post at '+event.date,creationTime:event.date,lastUpdateTime:event.date,_id:'notanID'})
+                       data.posts.push({htmlBody:event.actor.username+" "+event.action+'ed this post at '+event.date,creationTime:event.date,lastUpdateTime:event.date})
                     });
                     $scope.thread = data;
 
-                });
+                }).error(function(err){$scope.errs.push(err);$scope.pageLoading=false;$scope.atBottomOfThread=true;});
         }
         update();
         $scope.save =function(){
@@ -30,7 +31,7 @@ angular.module('controllers').controller('threadController',function($scope,$htt
                 .success(function(){
                     update();
                     $scope.postEditing=undefined;
-                })
+                }).error(function(err){$scope.errs.push(err)});
         };
         $scope.deleteThread = function(){
             $http.delete('/api/forum/threads/'+$stateParams.threadId)
@@ -50,8 +51,8 @@ angular.module('controllers').controller('threadController',function($scope,$htt
                         .success(function(){
                             //$state.go('thread({threadId:"'+data._id+'"})');
                             window.location.href='/#/forum/thread/'+data._id;
-                        })
-                })
+                        }).error(function(err){$scope.errs.push(err)});
+                }).error(function(err){$scope.errs.push(err)});
         }
     }
     $scope.reply = function(){
@@ -62,11 +63,11 @@ angular.module('controllers').controller('threadController',function($scope,$htt
             .success(function(){
                 $scope.replyText='';
                 update();
-            })
+            }).error(function(err){$scope.errs.push(err)});
     };
     $scope.delete = function(post){
         $http.delete('/api/forum/posts/'+post._id)
-            .success(update);
+            .success(update).error(function(err){$scope.errs.push(err)});
     };
     $scope.getNextPage= function(){
       $scope.pageLoading = true;
@@ -81,7 +82,7 @@ angular.module('controllers').controller('threadController',function($scope,$htt
                    $scope.thread.posts.push(post);
                });
 
-            });
+            }).error(function(err){$scope.errs.push(err);$scope.pageLoading=false;$scope.atBottomOfThread=true;});
     };
 
 
@@ -90,16 +91,16 @@ angular.module('controllers').controller('threadController',function($scope,$htt
     };
 
     $scope.pin = function(){
-        $http.patch('/api/forum/threads/'+$stateParams.threadId+'/pin').success(update);
+        $http.patch('/api/forum/threads/'+$stateParams.threadId+'/pin').success(update).error(function(err){$scope.errs.push(err)});
     };
     $scope.unpin = function(){
-        $http.patch('/api/forum/threads/'+$stateParams.threadId+'/unpin').success(update);
+        $http.patch('/api/forum/threads/'+$stateParams.threadId+'/unpin').success(update).error(function(err){$scope.errs.push(err)});
     };
     $scope.lock = function(){
-        $http.patch('/api/forum/threads/'+$stateParams.threadId+'/lock').success(update);
+        $http.patch('/api/forum/threads/'+$stateParams.threadId+'/lock').success(update).error(function(err){$scope.errs.push(err)});
     };
     $scope.unlock = function(){
-        $http.patch('/api/forum/threads/'+$stateParams.threadId+'/unlock').success(update);
+        $http.patch('/api/forum/threads/'+$stateParams.threadId+'/unlock').success(update).error(function(err){$scope.errs.push(err)});
     };
 
     $scope.addTextToReply = function (text) {

@@ -136,7 +136,10 @@ module.exports = {
         })
     },
     lockThread:function(req,res){
-        lockThread(req.params.threadId,req.user).then(function(){
+        lockThread(req.params.threadId,req.user).then(function(result){
+            if(!result)
+                res.status(404).send();
+            else
             res.status(201).send();
         },function(err){
             console.error(err);
@@ -144,7 +147,10 @@ module.exports = {
         })
     },
     unlockThread:function(req,res){
-        unlockThread(req.params.threadId,req.user).then(function(){
+        unlockThread(req.params.threadId,req.user).then(function(result){
+            if(!result)
+                res.status(404).send();
+            else
             res.status(201).send();
         },function(err){
             console.error(err);
@@ -152,7 +158,10 @@ module.exports = {
         })
     },
     unpinThread:function(req,res){
-        unpinThread(req.params.threadId,req.user).then(function(){
+        unpinThread(req.params.threadId,req.user).then(function(result){
+            if(!result)
+                res.status(404).send();
+            else
             res.status(201).send();
         },function(err){
             console.error(err);
@@ -160,7 +169,10 @@ module.exports = {
         })
     },
     pinThread:function(req,res){
-        pinThread(req.params.threadId,req.user).then(function(){
+        pinThread(req.params.threadId,req.user).then(function(result){
+            if(!result)
+            res.status(404).send();
+            else
             res.status(201).send();
         },function(err){
             console.error(err);

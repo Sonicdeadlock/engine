@@ -189,6 +189,19 @@ app.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$urlRo
                     controller:"threadController"
                 }
             }
+        })
+        .state('forumPost',{
+            url:'/forum/post/:postId',
+            views:{
+                navbar:{
+                    templateUrl:"components/navbar/navbarView.html",
+                    controller:"navbarController"
+                },
+                content:{
+                    templateUrl:"components/forum/postView.html",
+                    controller:"postController"
+                }
+            }
         });
 }]);
 app.factory('socket', function (socketFactory) {
