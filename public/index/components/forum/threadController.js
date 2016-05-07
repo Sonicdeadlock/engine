@@ -13,10 +13,9 @@ angular.module('controllers').controller('threadController',function($scope,$htt
                     $scope.atBottomOfThread=false;
                     data.posts.forEach(function(post){
                         post.htmlBody = markdown.toHTML(post.body);
-                        console.log(markdown.toHTML(post.body))
                     });
                     data.history.forEach(function(event){
-                       data.posts.push({body:event.actor.username+" "+event.action+'ed this post at '+event.date,creationTime:event.date,lastUpdateTime:event.date,_id:'notanID'})
+                       data.posts.push({htmlBody:event.actor.username+" "+event.action+'ed this post at '+event.date,creationTime:event.date,lastUpdateTime:event.date,_id:'notanID'})
                     });
                     $scope.thread = data;
 
