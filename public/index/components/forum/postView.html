@@ -1,0 +1,30 @@
+<div class="col-md-offset-1 col-md-10">
+    <div ng-show="err" class="alert alert-danger">
+        <p>{{err}}</p>
+    </div>
+    <div ng-show="post">
+        <p>
+            <a ng-class="{'creator':post.creator._id==thread.creator._id}" ui-sref="userPage({userId:post.creator._id})" class="post-user">{{post.creator.username}}</a>
+            <span class="post-role"><span ng-if="post.creator.group.name.indexOf('Admin')!=-1" class="fa fa-shield"></span>&nbsp{{post.creator.group.name}}</span>
+            <small class="pull-right">&nbsp&nbsp{{post.lastUpdateTime|timeAgo}}</small>
+
+        </p>
+        <div ng-hide="post._id&&postEditing._id==post._id" ng-bind-html="post.htmlBody">
+
+        </div>
+        <div ng-show="post._id&&postEditing._id==post._id" class="clearfix">
+            <span class="fa fa-times text-danger pull-right fa-2x" ng-click="$parent.postEditing =undefined"></span>
+            <div>
+                <textarea class="forumTextArea" ng-model="postEditing.body" rows="5"></textarea>
+            </div>
+
+            <button class="btn btn-primary pull-right" ng-click="save()"><span class="fa fa-floppy-o"></span>&nbspSave</button>
+        </div>
+        <div class="pull-right clearfix">
+            <a ng-click="edit(post)" ><span ng-if="post.creator._id==logged_in_user._id"><span class="fa fa-pencil fa-lg" bs-tooltip data-title="Edit Post" data-type="info" data-placement="bottom"></span></span></a>
+            <a ng-click="delete(post)" ><span  ng-if="post.creator._id==logged_in_user._id">&nbsp<span class="fa fa-trash fa-lg" bs-tooltip data-title="Delete Post" data-type="danger" data-placement="bottom"></span></span></a>
+
+        </div>
+    </div>
+
+</div>
