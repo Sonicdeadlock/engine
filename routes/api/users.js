@@ -17,9 +17,8 @@ var userController = require('../../controllers/userController');
 
 router.route('/getUser')
     .post(function(req,res){
-        var userAccess = 'username _id';
-        //TODO:splice and insert username into userAccess to make it the minimum not the default
-        if(req.user) userAccess =req.user.group.userAccess||' ';
+        var userAccess = 'username _id'.split(' ');
+        if(req.user) userAccess =_.union(userAccess,(req.user.group.userAccess||' ').split(' ')).join(' ');
             user.findOne(req.body,userAccess)
     .then(function(obj) {
 
