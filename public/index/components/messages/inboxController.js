@@ -28,6 +28,9 @@ angular.module('controllers').controller('inboxController',function($scope,$http
     };
     $scope.setActiveMessage = function(message){
         $http.get('/api/messages/'+message._id).success(function(data){
+            data.body =  markdown.toHTML(data.body);
+            if(data.replyBody)
+            data.replyBody =  markdown.toHTML(data.replyBody);
             $scope.activeMessage = data;
         });
         if($scope.showReceived)

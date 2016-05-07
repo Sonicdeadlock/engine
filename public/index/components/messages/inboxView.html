@@ -47,7 +47,8 @@
 
     <br/>
     <p><b>{{showSent?"To":"From"}}:</b> <a ui-sref="userPage({userId:showSent?activeMessage.toUser._id:activeMessage.fromUser._id})">{{showSent?activeMessage.toUser.username:activeMessage.fromUser.username}}</a></p>
-    <hr>
-    <pre>{{activeMessage.body}}</pre>
+    <p ng-bind-html="activeMessage.body"></p>
+    <hr ng-show="activeMessage.replyBody">
+    <p ng-bind-html="activeMessage.replyBody"></p>
 </div>
 </div>

@@ -19,6 +19,7 @@ exports.create = function(req,res){
         newMessage.fromUser = req.user._id;
         newMessage.body = body.body;
         newMessage.title = body.title;
+        newMessage.replyBody = body.replyBody;
         var m = new message(newMessage);
         m.save(function (err,data) {
             if(err) res.send(err);

@@ -13,10 +13,11 @@ var messageSchema = new schema({
     toUser:{
         type: schema.Types.ObjectId,
         ref:"user",
-        field:'_id',
+        field:'_id'
     },
     title:String,
     body:String,
+    replyBody:String,
     read:{type:Boolean,default:false},
     fromDelete:{type:Boolean,default:false},
     toDelete:{type:Boolean,default:false},
