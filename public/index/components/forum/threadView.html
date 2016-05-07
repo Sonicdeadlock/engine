@@ -34,6 +34,8 @@
             <br>
             <hr>
         </div>
+        <div style="text-align: center"><p ng-show="pageLoading" class="fa fa-spin fa-circle-o-notch fa-3x"  ></p></div>
+
     </div>
 
     <div class="reply-panel clearfix" ng-show="logged_in_user && thread&&!(thread.locked&&!hasPermission('Forum Admin'))" >

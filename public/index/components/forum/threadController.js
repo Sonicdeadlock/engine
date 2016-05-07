@@ -6,12 +6,14 @@ angular.module('controllers').controller('threadController',function($scope,$htt
     var page=0;
     $scope.replyText='';
     if($stateParams.threadId){
+        $scope.pageLoading=true;
         $http.patch('/api/forum/threads/'+$stateParams.threadId+'/view');
         function update(){
             $http.get('/api/forum/threads/'+$stateParams.threadId+'?limit='+pageSize)
                 .success(function(data){
                     page=0;
                     $scope.atBottomOfThread=false;
+                    $scope.pageLoading=false;
                     data.posts.forEach(function(post){
                         post.htmlBody = markdown.toHTML(post.body);
                     });
