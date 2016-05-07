@@ -57,7 +57,8 @@
 
 textarea.forumTextArea{
     width:100%;
-    height:100px;
+    border-top-left-radius:0px !important;
+    border-top-right-radius:0px !important;
 }
 
 .creator.post-user{
@@ -70,4 +71,22 @@ textarea.forumTextArea{
 
 pre{
     white-space: pre-wrap;
+}
+
+.textarea-addon{
+    border-radius: 4px 4px 0 0 !important;
+    border:1px solid #ccc !important;
+    border-bottom: none;
+    padding:5px;
+    margin-bottom: 0px;
+}
+
+.textarea-addon a{
+    padding: 5px;
+}
+
+.reply-panel{
+    border:1px solid #ccc;
+    padding:10px;
+    padding-top: 15px;
 }

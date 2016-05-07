@@ -20,7 +20,10 @@
 
             <div ng-show="postEditing._id==post._id" class="clearfix">
                 <span class="fa fa-times text-danger pull-right fa-2x" ng-click="$parent.postEditing =undefined"></span>
-                <textarea class="forumTextArea" ng-model="postEditing.body"></textarea>
+                <div>
+                    <textarea class="forumTextArea" ng-model="postEditing.body" rows="3"></textarea>
+                </div>
+
                 <button class="btn btn-primary pull-right" ng-click="save()"><span class="fa fa-floppy-o"></span>&nbspSave</button>
             </div>
             <div class="pull-right clearfix">
@@ -33,8 +36,21 @@
         </div>
     </div>
 
-    <div class="well clearfix" ng-show="logged_in_user && thread&&!(thread.locked&&!hasPermission('Forum Admin'))" >
-        <textarea class="forumTextArea" ng-model="replyText"></textarea>
+    <div class="reply-panel clearfix" ng-show="logged_in_user && thread&&!(thread.locked&&!hasPermission('Forum Admin'))" >
+        <div>
+            <div class="textarea-addon well-sm well">
+                <a><span class="fa fa-link fa-lg" ng-click="addTextToReply(' [Link text](link url) ')"></span></a>
+                <a><span class="fa fa-picture-o fa-lg" ng-click="addTextToReply(' ![alt text](image url) ')"></span></a>
+                <a><span class="fa fa-header fa-lg" ng-click="addTextToReply(' \r###heading ')"></span></a>
+                <a><span class="fa fa-bold fa-lg" ng-click="addTextToReply(' __Bold text__ ')"></span></a>
+                <a><span class="fa fa-italic fa-lg" ng-click="addTextToReply(' _italic text_ ')"></span></a>
+                <a><span class="fa fa-list-ol fa-lg" ng-click="addTextToReply(' \r1. item\r2. item\r3. item ')"></span></a>
+                <a><span class="fa fa-list-ul fa-lg" ng-click="addTextToReply(' \r* item\r* item\r* item ')"></span></a>
+                <a><span class="fa fa-code fa-lg" ng-click="addTextToReply(' `code`')"></span></a>
+            </div>
+            <textarea class="forumTextArea form-control" ng-model="replyText" rows="3"></textarea>
+        </div>
+        <br>
         <button class="btn btn-primary pull-right" ng-click="reply()"><span class="fa fa-reply"></span>&nbspReply</button>
     </div>
 </div>

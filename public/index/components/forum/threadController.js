@@ -4,6 +4,7 @@
 angular.module('controllers').controller('threadController',function($scope,$http,$rootScope,$stateParams,$state){
     var pageSize = $stateParams.limit||15;
     var page=0;
+    $scope.replyText='';
     if($stateParams.threadId){
         $http.patch('/api/forum/threads/'+$stateParams.threadId+'/view');
         function update(){
@@ -74,7 +75,7 @@ angular.module('controllers').controller('threadController',function($scope,$htt
                 if(_.isEmpty(data.posts))
                 $scope.atBottomOfThread=true;
                data.posts.forEach(function(post){
-
+                   post.htmlBody = markdown.toHTML(post.body);
                    $scope.thread.posts.push(post);
                });
 
@@ -97,5 +98,28 @@ angular.module('controllers').controller('threadController',function($scope,$htt
     };
     $scope.unlock = function(){
         $http.patch('/api/forum/threads/'+$stateParams.threadId+'/unlock').success(update);
+    };
+
+    $scope.addTextToReply = function (text) {
+        $scope.replyText+=text;
+    }
+});
+
+$(document).delegate('textarea', 'keydown', function(e) {
+    var keyCode = e.keyCode || e.which;
+
+    if (keyCode == 9) {
+        e.preventDefault();
+        var start = $(this).get(0).selectionStart;
+        var end = $(this).get(0).selectionEnd;
+
+        // set textarea value to: text before caret + tab + text after caret
+        $(this).val($(this).val().substring(0, start)
+            + "\t"
+            + $(this).val().substring(end));
+
+        // put caret at right position again
+        $(this).get(0).selectionStart =
+            $(this).get(0).selectionEnd = start + 1;
     }
 });
