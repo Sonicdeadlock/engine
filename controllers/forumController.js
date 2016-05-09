@@ -78,7 +78,7 @@ function getTopicChildren(topicId,limit,skip){
      });
      return Promise.all(promises);
  });
-    var getThreadsQuery = forum_thread_model.find({topic:topicId});//TODO:order by pinned then by creation date
+    var getThreadsQuery = forum_thread_model.find({topic:topicId});
     getThreadsQuery.sort('-pinned -creationTime');
     if(limit)
         getThreadsQuery.limit(limit);
@@ -217,6 +217,18 @@ module.exports = {
             .sort('-creationTime')
             .limit(limit)
             .skip(skip)
+            .populate('creator','username group')
+            .then(function(threads){
+                var promises = _.map(threads,function(thread){
+                    return forum_post_model.find({thread:thread._id}).count()
+                        .then(function(count){
+                            thread = JSON.parse(JSON.stringify(thread));
+                            thread.postCount = count;
+                            return thread;
+                        })
+                });
+                return Promise.all(promises);
+            })
             .then(function(results){
                res.json(results);
             });
