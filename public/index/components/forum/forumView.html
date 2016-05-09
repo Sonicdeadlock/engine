@@ -1,8 +1,7 @@
 
 <div class="col-md-10 col-md-offset-1">
-
+    <h1>{{header}}</h1>
     <table class="table forum table-striped" ng-repeat="topic in topics | orderBy:'name'" ng-hide="topic.children.topics.length==0&&!hasPermission('Forum Admin')">
-
         <thead>
             <tr>
                 <th class="cell-stat"></th>

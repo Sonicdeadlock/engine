@@ -202,6 +202,19 @@ app.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$urlRo
                     controller:"postController"
                 }
             }
+        })
+        .state('forumTagSearch',{
+            url:'/forum/search/tag/:tag',
+            views:{
+                navbar:{
+                    templateUrl:"components/navbar/navbarView.html",
+                    controller:"navbarController"
+                },
+                content:{
+                    templateUrl:"components/forum/forumView.html",
+                    controller:"forumSearchController"
+                }
+            }
         });
 }]);
 app.factory('socket', function (socketFactory) {

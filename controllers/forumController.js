@@ -198,5 +198,28 @@ module.exports = {
             console.error(err);
             res.status(500).send('Server encountered an error while processing your request.');
         })
+    },
+    getByTag:function(req,res){
+        var tags = [];
+        if(req.params.tag){
+            tags.push(req.params.tag)
+        }else if(req.body.tags){
+            tags = req.body.tags;
+        }
+        else{
+            throw 'No Tags';
+        }
+        var limit = req.query.limit || 15;
+        if(limit>100)
+        limit=15;
+        var skip = req.query.skip || 0;
+        forum_thread_model.find({tags:{$in:tags}})
+            .sort('-creationTime')
+            .limit(limit)
+            .skip(skip)
+            .then(function(results){
+               res.json(results);
+            });
+
     }
 };
