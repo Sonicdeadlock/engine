@@ -16,27 +16,30 @@ var userController = require('../../controllers/userController');
 
 
 router.route('/getUser')
-    .post(function(req,res){
-        var userAccess = 'username _id'.split(' ');
-        if(req.user) userAccess =_.union(userAccess,(req.user.group.userAccess||' ').split(' ')).join(' ');
-            user.findOne(req.body,userAccess)
-    .then(function(obj) {
+.post(function(req,res){
+  var userAccess = 'username _id';
+  if(req.user) {
+    userAccess =_.union(userAccess.split(' '),(req.user.group.userAccess||' ').split(' ')).join(' ');
+  }
 
-                   res.json(obj);
+  user.findOne(req.body,userAccess)
+  .then(function(obj) {
 
-           });
-    });
+   res.json(obj);
+
+ });
+});
 
 router.route('/')
-    .get(function(req,res){
-       if(req.user && req.user.hasPermission('User Admin')){
-           user.find({},req.user.group.userAccess).then(function(results){
-               res.json(results);
-           })
-       } else{
-           res.status(403).send('Unauthorized')
-       }
-    });
+.get(function(req,res){
+ if(req.user && req.user.hasPermission('User Admin')){
+   user.find({},req.user.group.userAccess).then(function(results){
+     res.json(results);
+   })
+ } else{
+   res.status(403).send('Unauthorized')
+ }
+});
 
 
 

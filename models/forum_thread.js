@@ -51,5 +51,4 @@ var forum_threadSchema = new schema({
 });
 
 //TODO: make the last update time from the child posts last update time
-//TODO: make the number of posts the count of the children
 module.exports = mongoose.model('forum_thread',forum_threadSchema);

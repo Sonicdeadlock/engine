@@ -4,10 +4,26 @@ module.exports = {
         publicPath: '/public',
         port: process.env.port || 8080
     },
-    db : {
-        host: 'mongodb://localhost/',
-        name: 'engine'
-    },
+    db:(function(){
+        if(process.env.db==='local'){
+            return {
+                host: 'localhost',
+                name: 'sonicengine'
+            }
+        }
+        else if(process.env.db==='test'){
+            return {
+                host: 'localhost',
+                name: 'sonicengineTest'
+            }
+        }
+        else{
+            return {
+                host: 'awsEngine:73RD5GtWD)H93bPQw}~SE$!n@ds015700.mlab.com:15700',
+                name: 'sonicengine'
+            }
+        }
+    }()),
     "hash":{
         "length":256,
         "salt":128,
