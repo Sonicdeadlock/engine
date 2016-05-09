@@ -1,22 +1,22 @@
 /**
  * Created by alexthomas on 5/5/16.
  */
-var db = require('../db');
-var _ = require('lodash');
-require('../models/forum_post');
-var forum_post_model = db.model('forum_post');
-require('../models/forum_thread');
-var forum_thread_model = db.model('forum_thread');
-require('../models/forum_topic');
-var forum_topic_model = db.model('forum_topic');
-var userModel = require('../models/user');
-var user = db.model('user');
-var permissionGroupModel = require('../models/permissionGroup');
-var permissionGroup = db.model('permissionGroup');
-var messageModel = require('../models/message');
-var message = db.model('message')
+ var db = require('../db');
+ var _ = require('lodash');
+ require('../models/forum_post');
+ var forum_post_model = db.model('forum_post');
+ require('../models/forum_thread');
+ var forum_thread_model = db.model('forum_thread');
+ require('../models/forum_topic');
+ var forum_topic_model = db.model('forum_topic');
+ var userModel = require('../models/user');
+ var user = db.model('user');
+ var permissionGroupModel = require('../models/permissionGroup');
+ var permissionGroup = db.model('permissionGroup');
+ var messageModel = require('../models/message');
+ var message = db.model('message')
 
-function createTopic(topic){
+ function createTopic(topic){
     return (new forum_topic_model(topic)).save();
 }
 function createThread(thread){
@@ -26,20 +26,20 @@ function createThread(thread){
 }
 function createPost(post,user){
     return forum_thread_model.findById(post.thread)
-        .then(function(thread){
-            if(thread.locked && !user.hasPermission('Forum Admin'))
+    .then(function(thread){
+        if(thread.locked && !user.hasPermission('Forum Admin'))
             throw 'Thread is locked';
-            else{
-                var threadCreator = thread.creator;
-                var postCreator = post.creator;
-                if(!postCreator.id === threadCreator.id)
+        else{
+            var threadCreator = thread.creator;
+            var postCreator = post.creator;
+            if(!postCreator.id === threadCreator.id)
                 user.findById(postCreator,'username').then(function(postCreator){
                     (new message({title:postCreator.username+' replied to your thread: '+thread.title,body:post.body,toUser:threadCreator,fromDelete:true})).save();
                 });
 
-                return (new forum_post_model(post)).save();
-            }
-        });
+            return (new forum_post_model(post)).save();
+        }
+    });
 }
 
 function getRootTopics(){
@@ -65,25 +65,25 @@ function unpinThread(threadID,user){
 function getTopicChildren(topicId,limit,skip){
     var getTopicsQuery = forum_topic_model.find({parent:topicId});
     getTopicsQuery = getTopicsQuery.then(function(results){
-       var promises = _.map(results,function(topic){
-           var findThreadCountPromise = forum_thread_model.find({topic:topic._id}).count();
-           var findTopicCountPromise = forum_topic_model.find({parent:topic._id}).count();
-           return Promise.all([findThreadCountPromise,findTopicCountPromise])
-               .then(function(results){
-                   topic = JSON.parse(JSON.stringify(topic));
-                   topic.threadCount = results[0];
-                   topic.topicCount = results[1];
-                   return topic;
-               })
-       });
-        return Promise.all(promises);
-    });
+     var promises = _.map(results,function(topic){
+         var findThreadCountPromise = forum_thread_model.find({topic:topic._id}).count();
+         var findTopicCountPromise = forum_topic_model.find({parent:topic._id}).count();
+         return Promise.all([findThreadCountPromise,findTopicCountPromise])
+         .then(function(results){
+             topic = JSON.parse(JSON.stringify(topic));
+             topic.threadCount = results[0];
+             topic.topicCount = results[1];
+             return topic;
+         })
+     });
+     return Promise.all(promises);
+ });
     var getThreadsQuery = forum_thread_model.find({topic:topicId});//TODO:order by pinned then by creation date
     getThreadsQuery.sort('-pinned -creationTime');
     if(limit)
-    getThreadsQuery.limit(limit);
+        getThreadsQuery.limit(limit);
     if(skip)
-    getThreadsQuery.skip(skip);
+        getThreadsQuery.skip(skip);
     getThreadsQuery.populate('creator','username group');
     getThreadsQuery = getThreadsQuery.then(function(results){
         return user.populate(results,{
@@ -94,11 +94,11 @@ function getTopicChildren(topicId,limit,skip){
     }).then(function(threads){
         var promises = _.map(threads,function(thread){
             return forum_post_model.find({thread:thread._id}).count()
-                .then(function(count){
-                    thread = JSON.parse(JSON.stringify(thread));
-                    thread.postCount = count;
-                    return thread;
-                })
+            .then(function(count){
+                thread = JSON.parse(JSON.stringify(thread));
+                thread.postCount = count;
+                return thread;
+            })
         });
         return Promise.all(promises);
     });
@@ -140,7 +140,7 @@ module.exports = {
             if(!result)
                 res.status(404).send();
             else
-            res.status(201).send();
+                res.status(201).send();
         },function(err){
             console.error(err);
             res.status(500).send('Server encountered an error while processing your request.');
@@ -151,7 +151,7 @@ module.exports = {
             if(!result)
                 res.status(404).send();
             else
-            res.status(201).send();
+                res.status(201).send();
         },function(err){
             console.error(err);
             res.status(500).send('Server encountered an error while processing your request.');
@@ -162,7 +162,7 @@ module.exports = {
             if(!result)
                 res.status(404).send();
             else
-            res.status(201).send();
+                res.status(201).send();
         },function(err){
             console.error(err);
             res.status(500).send('Server encountered an error while processing your request.');
@@ -171,9 +171,9 @@ module.exports = {
     pinThread:function(req,res){
         pinThread(req.params.threadId,req.user).then(function(result){
             if(!result)
-            res.status(404).send();
+                res.status(404).send();
             else
-            res.status(201).send();
+                res.status(201).send();
         },function(err){
             console.error(err);
             res.status(500).send('Server encountered an error while processing your request.');
@@ -190,13 +190,13 @@ module.exports = {
     getTopicChildren:function(req,res){
         var limit = req.query.limit||15;
         if(limit>100)
-        limit=15;
+            limit=15;
         getTopicChildren(req.params.topicId,limit,req.query.skip)
-            .then(function(results){
-                res.json(results);
-            },function(err){
-                console.error(err);
-                res.status(500).send('Server encountered an error while processing your request.');
-            })
+        .then(function(results){
+            res.json(results);
+        },function(err){
+            console.error(err);
+            res.status(500).send('Server encountered an error while processing your request.');
+        })
     }
 };

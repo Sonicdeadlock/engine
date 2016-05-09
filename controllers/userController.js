@@ -27,6 +27,8 @@ module.exports.create = function(req,res){
         errors.push('no password');
     if(!(userData.password == userData.passwordAgain))
         errors.push("passwords don't match");
+    if(!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(userData.email))
+    errors.push("invalid email");
 
     user.findOne({'username':userData.username}).then(function(obj){
         if(obj)//there is already a user with this username
@@ -40,17 +42,17 @@ module.exports.create = function(req,res){
             userData.salt = crypto.randomBytes(128).toString('base64');
             userData.password = hash(userData.salt, userData.password);
             permissionGroup.findOne({default:true},'_id')
-                .then(function(group){
-                    var u = new user(userData);
-                    u.group = group._id;
-                    u.save(function(err,data){
-                        if(err) res.send(err);
+            .then(function(group){
+                var u = new user(userData);
+                u.group = group._id;
+                u.save(function(err,data){
+                    if(err) res.send(err);
 
-                        req.login(u,function(err){
-                            res.json({_id:data.id});
-                        });
+                    req.login(u,function(err){
+                        res.json({_id:data.id});
                     });
                 });
+            });
         }else{
             res.status(400).json(errors);
         }
@@ -59,7 +61,7 @@ module.exports.create = function(req,res){
 
 module.exports.update = function(req,res){
     var body = req.body;
-    if(!(req.user && (body._id == req.user._id || user.hasPermission(req.user,'User Admin')))){
+    if(!user.hasPermission(req.user,'User Admin')){
         res.status(403).send();
     }else{
         if(body.password){
@@ -86,15 +88,44 @@ module.exports.update = function(req,res){
     }
 };
 
+module.exports.updateSelf = function(req,res){
+    var body = req.body;
+    if(!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(body.email)){
+        res.status(400).send('invalid email');
+    }
+    else{
+        if(body.password){
+        body.salt = crypto.randomBytes(128).toString('base64');
+        body.password = hash(body.salt, body.password);
+    }
+    if(body.group){
+        delete body.group;
+    }
+    user.findOne({'username':body.username}).then(function(obj){
+            if(obj && obj.id !== body._id)//there is already a user with this username
+            {
+                res.status(400).send('Username taken');
+
+            }else{
+                user.update({_id:req.user._id},body,function(err,numModified){
+                    if(err) console.error(err);
+                    res.status(200).send();
+                });
+
+            }
+        });
+    }
+};
+
 module.exports.get = function(req,res){
     if(!(req.user && user.hasPermission(req.user,'User Admin'))){
         res.status(403).send("Unauthorized");
     }else{
         user.find({},req.user.group.userAccess)
-            .populate('group')
-            .exec(function(err,users){
-                res.json(users);
-            })
+        .populate('group')
+        .exec(function(err,users){
+            res.json(users);
+        })
     }
 };
 
@@ -138,7 +169,7 @@ module.exports.self = function(req,res){
 /**
  * Require login routing middleware
  */
-module.exports.requiresLogin = function(req, res, next) {
+ module.exports.requiresLogin = function(req, res, next) {
     if (!req.isAuthenticated()) { //Use passports is Authenticated function
         return res.status(401).send({
             message: 'User is not logged in'
@@ -151,7 +182,7 @@ module.exports.requiresLogin = function(req, res, next) {
 /**
  * User authorizations routing middleware
  */
-module.exports.hasAuthorization = function(roles) {
+ module.exports.hasAuthorization = function(roles) {
     var _this = this;
 
     return function(req, res, next) {
@@ -172,11 +203,11 @@ module.exports.hasAuthorization = function(roles) {
 /**
  * user serialization
  */
-passport.serializeUser(function(user, done) {
+ passport.serializeUser(function(user, done) {
     done(null, user._id);
 });
 
-passport.deserializeUser(function(id, done) {
+ passport.deserializeUser(function(id, done) {
     user.findById(id).populate('group').exec( function(err, user) {
         done(err, user);
     });
@@ -186,7 +217,7 @@ passport.deserializeUser(function(id, done) {
 /**
  * passport local strategy
  */
-passport.use(new LocalStrategy(
+ passport.use(new LocalStrategy(
     function(username, password, done) {//passport expects the fields username and password to be passed in the request. this can be changed
         user.findOne({ username: username }, function (err, user) {
             if (err) { return done(err); }
@@ -199,4 +230,4 @@ passport.use(new LocalStrategy(
             return done(null, user);
         });
     }
-));
+    ));

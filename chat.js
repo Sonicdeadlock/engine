@@ -2,26 +2,26 @@
  * Created by alexthomas on 12/11/15.
  */
 
-var _ = require('lodash');
-var db = require('./db');
-var chatModel = require('./models/chat');
-var chat = db.model('chat');
-var roomModel = require('./models/room');
-var room = db.model('room');
-var bannedWordModel = require('./models/banned_word');
-var banned_word = db.model('banned_word');
-var userModel = require('./models/user');
-var User = db.model('user');
-var textMod = require('./classes/textMod');
-var commands = require('./classes/commands');
-var basicBot = require('./bots/basicBot');
-var hangmanBot = require('./bots/hangmanBot');
+ var _ = require('lodash');
+ var db = require('./db');
+ var chatModel = require('./models/chat');
+ var chat = db.model('chat');
+ var roomModel = require('./models/room');
+ var room = db.model('room');
+ var bannedWordModel = require('./models/banned_word');
+ var banned_word = db.model('banned_word');
+ var userModel = require('./models/user');
+ var User = db.model('user');
+ var textMod = require('./classes/textMod');
+ var commands = require('./classes/commands');
+ var basicBot = require('./bots/basicBot');
+ var hangmanBot = require('./bots/hangmanBot');
 
 
-var users = [];
-var serverUser = {_id:undefined,username:'Server',group:{name:undefined}};
-module.exports = {connect:connect,disconnect:disconnect};
-function connect(socket){
+ var users = [];
+ var serverUser = {_id:undefined,username:'Server',group:{name:undefined}};
+ module.exports = {connect:connect,disconnect:disconnect};
+ function connect(socket){
     var user = socket.client.request.user;
     var chatRoom = undefined;
     var userCollectionObj = {user:user,socket:socket};
@@ -48,11 +48,11 @@ function connect(socket){
                     var mod = message.mods[i];
                     switch (mod.name){
                         case 'l337':
-                            prom = prom.then(textMod.leet.bind(null,mod.attributes.chance));
-                            break;
+                        prom = prom.then(textMod.leet.bind(null,mod.attributes.chance));
+                        break;
                         case 'removeCharacter':
-                            prom = prom.then(textMod.remove.bind(null,mod.attributes.remove));
-                            break;
+                        prom = prom.then(textMod.remove.bind(null,mod.attributes.remove));
+                        break;
                     }
                 }
                 prom.then(function(text){
@@ -156,13 +156,13 @@ function connect(socket){
 
     });
     socket.on('chatBanUser',function(message){
-       var user_id = message.user_id;
-        if(user.hasPermission('Chat Admin') && chatRoom){
-            User.update({_id:user_id},{$inc: {'strikes.bans':1}}).then();
-            chatRoom.bans.push(user_id);
-            chatRoom.save();
-        }
-    });
+     var user_id = message.user_id;
+     if(user.hasPermission('Chat Admin') && chatRoom){
+        User.update({_id:user_id},{$inc: {'strikes.bans':1}}).then();
+        chatRoom.bans.push(user_id);
+        chatRoom.save();
+    }
+});
 }
 
 function disconnect(socket){

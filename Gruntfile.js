@@ -3,8 +3,8 @@
  */
 var config = require('./config.js');
 /*global module:false*/
-module.exports = function(grunt) {
 
+module.exports = function(grunt) {
     // Project configuration.
     grunt.initConfig({
         // Task configuration.
@@ -19,6 +19,7 @@ module.exports = function(grunt) {
                 sub: true,
                 boss: true,
                 eqnull: true,
+                esnext:true,
                 globals: {
                     jQuery: true,
                     it:true,
@@ -57,9 +58,23 @@ module.exports = function(grunt) {
                         drop:true
                     },
                     {
+                        name:"users",
+                        type:"json",
+                        file:"defaultUsers.json",
+                        jsonArray:true,
+                        drop:true
+                    },
+                    {
                         name:"character_replacements",
                         type:'json',
                         file:"character_replcements.json",
+                        jsonArray:true,
+                        drop:true
+                    },
+                    {
+                        name:"forum_topics",
+                        type:'json',
+                        file:"defaultTopics.json",
                         jsonArray:true,
                         drop:true
                     }
@@ -72,7 +87,8 @@ module.exports = function(grunt) {
                 timeout: 3000,
                 ignoreLeaks: true,
                 ui: 'bdd',
-                reporter: 'spec'
+                reporter: 'spec',
+                harmony:true
             },
             all: { src: ['test/*.js'] }
         }
@@ -89,6 +105,7 @@ module.exports = function(grunt) {
 
     grunt.registerTask('setupDB',['mongoimport']);
 
-    grunt.registerTask('mocha-test', ['jshint', 'simplemocha']);
+    grunt.registerTask('mocha-test', ['jshint','mongoimport', 'simplemocha']);
+
 
 };

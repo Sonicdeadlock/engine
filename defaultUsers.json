@@ -1,0 +1,18 @@
+[
+  {
+    "_id" : ObjectId("572d7b7fba3fac7f6bd7cd5b"),
+    "group" : ObjectId("572d7a3d6f775fb187f549fe"),
+    "firstName" : "root",
+    "lastName" : "root",
+    "username" : "root",
+    "email" : "root@root.com",
+    "password" : "fXUJtITTOq5+NaCngPQaRat5z1/5vFt7kXwO5blDC75H5G0FuLS5PzHaD8UMJJLVISXRfLUlHWZfeci7Bql1KEagXjVOEZEqPmyC0mtvkkoCEm+m4YomlCYuCAFARfumh/q65GJTlgWHfxY576m/VHNAODljtuZZoZSsZH5xOVdBreKcN3nYKofK6O3IxKnIFpcAoWodtQToxcU68BB8ssIQ+YSzSEhlB19jz/y3RYw5UQBeEaUlg156yx0CXwZeZWv1mmmRDUHPb48PhgPqsZA7YWPgWBBr70JipFfGCTChV/yymBnq6pTzLfgQSoA+jM8W6MZedTAfior+vFYJQg==",
+    "joinDate" : ISODate("2016-05-07T05:22:07.723Z"),
+    "salt" : "1T994nYaUJ+q7ZPolCH6xRhUBQbIUJgyM3As/afBBsBDnGzoJaEfcLEMHKN8Km0aahnuQFyHYZrVizVC475hn3LDnBe22ES5C0a0ag1MTZDZOvkPPy3RvP1I0LwAwlzvH+TweAzYTphJGvVW+cIJyzKl0aWAYNwgxIo8UnMphZ8=",
+    "strikes" : {
+      "bans" : 0,
+      "chat" : 0
+    },
+    "__v" : 0
+  }
+]

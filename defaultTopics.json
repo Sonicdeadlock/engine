@@ -1,0 +1,50 @@
+[
+  {
+    "_id": {
+      "$oid": "572cba3e7c4abfb72a9986b5"
+    },
+    "name": "General",
+    "description": "General Discussion",
+    "creator": {
+      "$oid": "56f862265bc59dd84978ec3e"
+    },
+    "postRequirements": [],
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "572cba587c4abfb72a9986b6"
+    },
+    "name": "Chat",
+    "description": "Chat Discussion",
+    "creator": {
+      "$oid": "56f862265bc59dd84978ec3e"
+    },
+    "postRequirements": [],
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "572cba637c4abfb72a9986b7"
+    },
+    "name": "Game",
+    "description": "Game Discussion",
+    "creator": {
+      "$oid": "56f862265bc59dd84978ec3e"
+    },
+    "postRequirements": [],
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "572cba887c4abfb72a9986b8"
+    },
+    "name": "Bugs/Requests",
+    "description": "The place to discuss bugs and feature requests",
+    "creator": {
+      "$oid": "56f862265bc59dd84978ec3e"
+    },
+    "postRequirements": [],
+    "__v": 0
+  }
+]

@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "install": "bower install",
-    "test": "mocha"
+    "test":"db=test node --harmony ./node_modules/.bin/grunt mocha-test"
   },
   "repository": {
     "type": "git",

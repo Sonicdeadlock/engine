@@ -8,7 +8,7 @@ var userSchema = new schema({
     firstName:String,
     lastName:String,
     joinDate:Date,
-    username:String,
+    username:{type:String,index:true},
     password:String,
     salt:String,
     email:String,
