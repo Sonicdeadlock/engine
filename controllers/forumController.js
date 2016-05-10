@@ -233,5 +233,8 @@ module.exports = {
                res.json(results);
             });
 
+    },
+    search:function(req,es){
+
     }
 };

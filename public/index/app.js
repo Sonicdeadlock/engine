@@ -204,7 +204,7 @@ app.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$urlRo
             }
         })
         .state('forumTagSearch',{
-            url:'/forum/search/tag/:tag',
+            url:'/forum/search/tag/:tag?tags',
             views:{
                 navbar:{
                     templateUrl:"components/navbar/navbarView.html",

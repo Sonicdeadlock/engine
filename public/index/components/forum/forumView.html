@@ -1,4 +1,11 @@
+<div class="col-md-10 col-md-offset-1 input-group">
+    <input class="form-control" ng-model="forumSearch">
+    <span class="input-group-btn">
+         <button class="btn btn-primary " ui-sref="forumTagSearch({tags:forumSearch})">Search</button>
+    </span>
 
+
+</div>
 <div class="col-md-10 col-md-offset-1">
     <h1>{{header}}</h1>
     <table class="table forum table-striped" ng-repeat="topic in topics | orderBy:'name'" ng-hide="topic.children.topics.length==0&&!hasPermission('Forum Admin')">
