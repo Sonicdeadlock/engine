@@ -10,6 +10,7 @@ angular.module('controllers').controller('roomController',function($scope,$http,
     $scope.newRoom = {deletable:true,bots:[],options:{}};
     $scope.botOptions=['basic','hangman','gamble'];
     $scope.addRoom = function(){
+        $scope.newRoom.bots = _.map($scope.newRoom.bots,function(bot){return {name:bot};});
        $http.post('/api/rooms/',$scope.newRoom)
            .success(function(){
                $http.get('/api/rooms').success(function(data){
