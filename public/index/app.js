@@ -26,7 +26,7 @@ app.run(['$rootScope', '$state', '$stateParams','$http', function ($rootScope, $
     $rootScope.$stateParams = $stateParams;
     $rootScope.updateInboxCount = function(){
       $http.get('/api/messages/mine').success(function(data){
-          $rootScope.inboxCount = _.filter(data.recived,{read:false}).length;
+          $rootScope.inboxCount = _.filter(data.received,{read:false}).length;
           setTimeout($rootScope.updateInboxCount,
           1000*60*10);//update every 10 minutes
       })

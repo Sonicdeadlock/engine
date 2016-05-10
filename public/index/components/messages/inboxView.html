@@ -1,9 +1,9 @@
 <div class="col-md-11">
     <div class="panel panel-default col-md-2 col-sm-4" id="sidePanel">
         <br>
-        <ul class="nav nav-pills nav-stacked"> <!-- Select sent recived  -->
-            <li ng-class="{active:showReceived}"><a ng-click="toggleView('received')" >Received</a></li>
-            <li ng-class="{active:showSent}"><a ng-click="toggleView('sent')">Sent</a></li>
+        <ul class="nav nav-pills nav-stacked"> <!-- Select sent received  -->
+            <li ng-class="{active:showReceived}"><a ng-click="toggleView('received')" >Received <span class="badge">{{received.length}}</span></a></li>
+            <li ng-class="{active:showSent}"><a ng-click="toggleView('sent')">Sent <span class="badge">{{sent.length}}</span></a></li>
         </ul>
         <br>
         <button type="button" class="btn btn-primary" ui-sref="compose">Compose <span class="fa fa-pencil-square-o"></span></button>
@@ -27,7 +27,7 @@
         </ul>
 
         <ul class="list-group message-list" ng-show="showReceived"> <!-- list of received -->
-            <li class="list-group-item" ng-repeat="message in recived | orderBy:'-time' | filter:searchText" ng-class="{selected:message._id==activeMessage._id}" ng-click="setActiveMessage(message);">
+            <li class="list-group-item" ng-repeat="message in received | orderBy:'-time' | filter:searchText" ng-class="{selected:message._id==activeMessage._id}" ng-click="setActiveMessage(message);">
                 <b ng-if="!message.read">{{message.title}}</b>
                 <span ng-if="message.read">{{message.title}}</span>
                 <br/>

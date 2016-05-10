@@ -22,7 +22,7 @@
  	$scope.usernames = [];
  	$http.get('/api/messages/mine').success(function(data){
  		var sent = data.sent;
- 		var received = data.recived;
+ 		var received = data.received;
 		$scope.usernames= _.chain(sent).map(function(sentMsg){
 			return {username:sentMsg.toUser.username,id:sentMsg.toUser._id};
 		}).concat(

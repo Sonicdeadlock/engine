@@ -62,7 +62,7 @@ exports.mine = function(req,res){ 
         message.find({toUser:req.user._id,toDelete:false},"_id title time fromUser read")
             .populate('fromUser','username') 
             .then(function(docs){
-                    response.recived = docs;
+                    response.received = docs;
                     res.json(response); 
                 } ); 
     }) };

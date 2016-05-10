@@ -6,7 +6,7 @@ angular.module('controllers').controller('inboxController',function($scope,$http
     function updateMessages(){
         $http.get('/api/messages/mine').success(function(data){
             $scope.sent = data.sent;
-            $scope.recived = data.recived;
+            $scope.received = data.received;
 
             $rootScope.updateInboxCount();
         });
