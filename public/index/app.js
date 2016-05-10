@@ -28,7 +28,7 @@ app.run(['$rootScope', '$state', '$stateParams','$http', function ($rootScope, $
       $http.get('/api/messages/mine').success(function(data){
           $rootScope.inboxCount = _.filter(data.recived,{read:false}).length;
           setTimeout($rootScope.updateInboxCount,
-          1000*60*5);//update every 5 minutes
+          1000*60*10);//update every 10 minutes
       })
     };
     $http.get('/auth/self').success(function(data){

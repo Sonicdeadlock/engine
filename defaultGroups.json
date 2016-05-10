@@ -1,12 +1,12 @@
 [
   {
-    "name":"user",
+    "name":"User",
     "permissions":[],
     "default":true,
     "userAccess":"username"
   },
   {
-    "name":"super admin",
+    "name":"Super Admin",
     "permissions":[
       "super",
       "sudo",

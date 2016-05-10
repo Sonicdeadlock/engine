@@ -3,11 +3,7 @@ angular.module('controllers').controller('loginController',function($scope,$http
     $scope.login = function(){
         $http.post('/auth/login',{username:$scope.username,password:$scope.password}).success(function(data){
             $rootScope.logged_in_user = data;
-            errors.forEach(function(error){
-                error.$scope.$hide();
-            });
-            errors=[];
-            console.log(socket);
+            $scope.error=undefined;
             if(socket && socket.connect && socket.disconnect){
                 socket.disconnect();
                 setTimeout(socket.connect,300);
@@ -16,17 +12,13 @@ angular.module('controllers').controller('loginController',function($scope,$http
 
         })
             .error(function(data,status){
-                errors.forEach(function(error){
-                    error.$scope.$hide();
-                });
-                errors=[];
-                console.log(data);
+
+
                 if(data) {
-                        errors.push($alert({title:data.message,type:'danger',show:true,container:'#alert-container'}));
+                       $scope.error = data.message;
                 }
-                else if(status == 500)  errors.push($alert({title:"Internal server error",type:'danger',show:true,container:'#alert-container'}));
-                else   errors.push($alert({title:"Unknown error",type:'danger',show:true,container:'#alert-container'}));
-                console.log(errors);
+                else if(status == 500)  $scope.error='Internal Server Error';
+                else   $scope.error='Unknown Error';
             })
     }
 });
@@ -37,4 +29,4 @@ angular.module('directives').directive('login',function(){
         controller:'loginController',
         restrict:'E'
     }
-})
+});

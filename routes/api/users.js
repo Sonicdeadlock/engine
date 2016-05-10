@@ -3,6 +3,7 @@ var router = express.Router();
 var db = require('../../db');
 var config = require('../../config');
 var crypto = require('crypto');
+var _ = require('lodash');
 
 var userModel = require('../../models/user');
 var user = db.model('user');
@@ -19,7 +20,10 @@ router.route('/getUser')
 .post(function(req,res){
   var userAccess = 'username _id';
   if(req.user) {
-    userAccess =_.union(userAccess.split(' '),(req.user.group.userAccess||' ').split(' ')).join(' ');
+      if(_.isEmpty(req.user.group.userAccess.trim()))
+        userAccess = req.user.group.userAccess;
+      else
+        userAccess =_.union(userAccess.split(' '),(req.user.group.userAccess||' ').split(' ')).join(' ');
   }
 
   user.findOne(req.body,userAccess)

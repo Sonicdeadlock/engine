@@ -22,7 +22,7 @@
                 <li class="" ng-if="!logged_in_user"><a title="Login" data-template-url="user/components/login/loginDirective.html"   data-placement="bottom" data-animation="am-flip-x" data-container='body' bs-popover>Login</a></li>
                 <li ng-if="!logged_in_user"><a href="/user#/register?next={{$state.$current.url.source}}">Register</a></li>
                 <li class="" ng-if="logged_in_user"><a ng-click="logout()">Logout</a></li>
-                <li class="" ng-if="logged_in_user"><a>Welcome {{logged_in_user.firstName}}</a></li>
+                <li class="" ng-if="logged_in_user" ui-sref="userPage({userId:logged_in_user._id})"><a>Welcome {{logged_in_user.firstName}}</a></li>
                 <li ng-if="logged_in_user"><a ui-sref="inbox"><span class="fa fa-inbox"></span>&nbsp<span class="badge">{{inboxCount}}</span></a></li>
                 <li ng-if="logged_in_user"><a ui-sref="compose"><span class="fa fa-pencil-square-o"></span></a></li>
             </ul>
