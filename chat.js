@@ -73,7 +73,7 @@
                                 })
                             },user);
                         chatRoom.bots.forEach(function(bot){
-                            if(bot.name == 'basic'){
+                            if(bot.name == 'basic'){//instead of passing through the chatroom in the part about the roomchatcallback maybe pass a clone because the user's room can change but we should still want to send it to that room
                                 basicBot.chatInduction(user,chatRoom,text,function(text){
                                     _.forEach(getUsersForCommunication(chatRoom),function(u){
                                         u.socket.emit('chatServerToClient',{text:text,time: _.now()});

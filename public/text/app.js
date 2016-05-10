@@ -13,12 +13,21 @@ var app = angular.module('userApp', [
 
 ]);
 
-app.run(['$rootScope', '$state', '$stateParams','$http', function ($rootScope, $state, $stateParams,$http) {
+app.run(['$rootScope', '$state', '$stateParams','$http','$window','$location', function ($rootScope, $state, $stateParams,$http,$window,$location) {
     $rootScope.$on("$stateChangeError", console.log.bind(console));
 
     //Save a copy of the parameters so we can access them from all the controllers
     $rootScope.$state = $state;
     $rootScope.$stateParams = $stateParams;
+    $rootScope
+        .$on('$stateChangeSuccess',
+            function(event){
+
+                if (!$window.ga)
+                    return;
+
+                $window.ga('send', 'pageview', { page: $location.path() });
+            });
 
 }]);
 app.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$urlRouterProvider){
