@@ -16,6 +16,7 @@
  var commands = require('./classes/commands');
  var basicBot = require('./bots/basicBot');
  var hangmanBot = require('./bots/hangmanBot');
+ var gambleBot = require('./bots/gambleBot');
 
 
  var users = [];
@@ -90,6 +91,15 @@
                                     socket.emit('chatServerToClient',{text:text,time: _.now()});
                                 });
                             }
+                            else if(bot.name == 'gamble'){
+                                gambleBot.chatInduction(user,chatRoom,text,function(text){
+                                    _.forEach(getUsersForCommunication(chatRoom),function(u){
+                                        u.socket.emit('chatServerToClient',{text:text,time: _.now()});
+                                    });
+                                },function(text){
+                                    socket.emit('chatServerToClient',{text:text,time: _.now()});
+                                });
+                            }
                         });
                     });
 
@@ -132,6 +142,9 @@
                     else if(bot.name == 'hangman'){
                         hangmanBot.userEnterRoom(user,chatRoom);
                     }
+                    else if(bot.name == 'gamble'){
+                        gambleBot.userEnterRoom(user,chatRoom);
+                    }
                 });
                 _.forEach(getUsersForCommunication(chatRoom),function(u){
                     u.socket.emit('chatRoomEntrance',user.username);
@@ -148,6 +161,9 @@
             chatRoom.bots.forEach(function(bot){
                 if(bot.name == 'basic'){
                     basicBot.userExitRoom(user,chatRoom);
+                }
+                else if(bot.name =='gamble'){
+                    gambleBot.userExitRoom(user,chatRoom);
                 }
             });
             chatRoom = undefined;

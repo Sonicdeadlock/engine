@@ -8,7 +8,7 @@ angular.module('controllers').controller('roomController',function($scope,$http,
     $scope._ = _;
     $scope.selectedRoom = undefined;
     $scope.newRoom = {deletable:true,bots:[],options:{}};
-    $scope.botOptions=['basic','hangman'];
+    $scope.botOptions=['basic','hangman','gamble'];
     $scope.addRoom = function(){
        $http.post('/api/rooms/',$scope.newRoom)
            .success(function(){

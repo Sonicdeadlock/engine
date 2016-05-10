@@ -20,7 +20,8 @@ var playerSchema = new schema({
         dexterity:{default:0,type:Number},
         agility:{default:0,type:Number},
         BEN:{default:0,type:Number}
-    }
+    },
+    money:{default:10,type:Number}
 });
 
 playerSchema.virtual('stats.minAttack').get(function(){return 0;});
