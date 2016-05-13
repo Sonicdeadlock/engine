@@ -31,8 +31,8 @@
             </div>
             <div class="pull-right clearfix">
                 <a ui-sref="forumPost({postId:post._id})" ng-if="post._id"><span><span class="fa fa-link fa-lg" bs-tooltip data-title="Permanent link to post" data-type="info" data-placement="bottom"></span></span></a>
-                <a ng-click="edit(post)" ><span ng-if="post.creator._id==logged_in_user._id"><span class="fa fa-pencil fa-lg" bs-tooltip data-title="Edit Post" data-type="info" data-placement="bottom"></span></span></a>
-                <a ng-click="delete(post)" ><span  ng-if="post.creator._id==logged_in_user._id">&nbsp<span class="fa fa-trash fa-lg" bs-tooltip data-title="Delete Post" data-type="danger" data-placement="bottom"></span></span></a>
+                <a ng-click="edit(post)" ><span ng-if="logged_in_user && post.creator._id==logged_in_user._id"><span class="fa fa-pencil fa-lg" bs-tooltip data-title="Edit Post" data-type="info" data-placement="bottom"></span></span></a>
+                <a ng-click="delete(post)" ><span  ng-if="logged_in_user && post.creator._id==logged_in_user._id">&nbsp<span class="fa fa-trash fa-lg" bs-tooltip data-title="Delete Post" data-type="danger" data-placement="bottom"></span></span></a>
 
             </div>
             <br>
