@@ -16,7 +16,9 @@ angular.module('controllers').controller('threadController',function($scope,$htt
                     $scope.atBottomOfThread=false;
                     $scope.pageLoading=false;
                     data.posts.forEach(function(post){
-                        post.htmlBody = markdown.toHTML(post.body);
+                        if(post.body){
+                            post.htmlBody = markdown.toHTML(post.body);
+                        }
                     });
                     data.history.forEach(function(event){
                        data.posts.push({htmlBody:event.actor.username+" "+event.action+'ed this post at '+event.date,creationTime:event.date,lastUpdateTime:event.date})
@@ -78,8 +80,11 @@ angular.module('controllers').controller('threadController',function($scope,$htt
                 if(_.isEmpty(data.posts))
                 $scope.atBottomOfThread=true;
                data.posts.forEach(function(post){
-                   post.htmlBody = markdown.toHTML(post.body);
-                   $scope.thread.posts.push(post);
+                   if(post.body){
+                       post.htmlBody = markdown.toHTML(post.body);
+                       $scope.thread.posts.push(post);
+                   }
+
                });
 
             }).error(function(err){$scope.errs.push(err);$scope.pageLoading=false;$scope.atBottomOfThread=true;});

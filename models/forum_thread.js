@@ -26,6 +26,10 @@ var forum_threadSchema = new schema({
         type:Date,
         default: Date.now
     },
+    lastUpdateTime:{
+        type:Date,
+        default: Date.now
+    },
     locked:{
         type:Boolean,
         default:false

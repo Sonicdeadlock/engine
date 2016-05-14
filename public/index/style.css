@@ -90,3 +90,7 @@ pre{
     padding:10px;
     padding-top: 15px;
 }
+
+.fa-spin.ng-hide-add-active{
+    display: none !important;
+}

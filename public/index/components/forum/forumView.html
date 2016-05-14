@@ -35,6 +35,7 @@
         <th class="cell-stat"> Posts</th>
         <th class="cell-stat-2x">Created by</th>
         <th class="cell-stat-2x"> Created</th>
+        <th class="cell-stat-2x"> Modified</th>
         </thead>
         <tbody>
         <tr ng-repeat="childThread in topic.children.threads" ui-sref="thread({threadId:childThread._id})">
@@ -44,6 +45,7 @@
             <td class="cell-stat">{{childThread.postCount}}</td>
             <td>{{childThread.creator.username}}</td>
             <td class=""><small><i class="fa fa-clock-o"></i>&nbsp{{childThread.creationTime|timeAgo}}</small></td>
+            <td class="" ><small ng-if="childThread.lastUpdateTime!==childThread.creationTime"><i class="fa fa-clock-o"></i>&nbsp{{childThread.lastUpdateTime|timeAgo}}</small></td>
         </tr>
         </tbody>
     </table>
