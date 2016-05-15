@@ -115,7 +115,10 @@ angular.module('controllers').controller('threadController',function($scope,$htt
     };
 
     $scope.getHTMLMarkdown=function(post){
+        if(post.body)
         return markdown.toHTML(post.body);
+        else
+        return post.htmlBody;
     }
 });
 

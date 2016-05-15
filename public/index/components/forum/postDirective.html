@@ -25,7 +25,7 @@
 
         </blockquote>
     </div>
-    <div class="pull-right clearfix" >
+    <div class="pull-right clearfix" ng-if="post._id">
         <div class="pull-right clearfix forum-post-button-group">
             <a ui-sref="forumPost({postId:post._id})" ng-if="post._id"><span><span class="fa fa-link fa-lg" bs-tooltip data-title="Permanent link to post" data-type="info" data-placement="bottom"></span></span></a>
             <a ng-if="post._id && logged_in_user"  ng-click="startReply(post)"><span class="fa fa-reply" bs-tooltip data-title="Reply to post" data-type="success" data-placement="bottom"></span></a>
