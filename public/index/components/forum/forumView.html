@@ -44,8 +44,8 @@
             <td class="cell-stat">{{childThread.views}}</td>
             <td class="cell-stat">{{childThread.postCount}}</td>
             <td>{{childThread.creator.username}}</td>
-            <td class=""><small><i class="fa fa-clock-o"></i>&nbsp{{childThread.creationTime|timeAgo}}</small></td>
-            <td class="" ><small ng-if="childThread.lastUpdateTime!==childThread.creationTime"><i class="fa fa-clock-o"></i>&nbsp{{childThread.lastUpdateTime|timeAgo}}</small></td>
+            <td class="" bs-tooltip data-title="{{childThread.creationTime| date:'medium'}}" data-container="body"><small><i class="fa fa-clock-o"></i>&nbsp{{childThread.creationTime|timeAgo}}</small></td>
+            <td class="" bs-tooltip data-title="{{childThread.lastUpdateTime| date:'medium'}}" data-container="body"><small ng-if="childThread.lastUpdateTime!==childThread.creationTime"><i class="fa fa-clock-o"></i>&nbsp{{childThread.lastUpdateTime|timeAgo}}</small></td>
         </tr>
         </tbody>
     </table>
