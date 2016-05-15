@@ -21,22 +21,7 @@ router.route('/')
     .post(userController.requiresLogin,forumController.createPost);
 
 router.route('/:postId')
-    .get(function(req,res){
-        forum_post_model.findById(req.params.postId).populate('creator','username group').then(function(result){
-            if(result)
-                user.populate(result,{
-                    path:'creator.group',
-                    select:'name',
-                    model:permissionGroup
-                }).then(function(result){
-                    res.json(result);
-                });
-            else
-                res.status(404).send('Post not found');
-        },function(){
-            res.status(404).send('Post not found');
-        })
-    })
+    .get(forumController.getPost)
     .delete(function(req,res){
         forum_post_model.findById(req.params.postId).then(function(result){
             if(!result)
@@ -60,5 +45,8 @@ router.route('/:postId')
             .then(function(){res.status(200).send()},
                 function(err){res.send(400).send()})
     });
+
+router.route('/:postId/reply')
+    .post(userController.requiresLogin,forumController.replyToPost);
 
 module.exports = router;

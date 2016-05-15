@@ -15,11 +15,6 @@ angular.module('controllers').controller('threadController',function($scope,$htt
                     page=0;
                     $scope.atBottomOfThread=false;
                     $scope.pageLoading=false;
-                    data.posts.forEach(function(post){
-                        if(post.body){
-                            post.htmlBody = markdown.toHTML(post.body);
-                        }
-                    });
                     data.history.forEach(function(event){
                        data.posts.push({htmlBody:event.actor.username+" "+event.action+'ed this post at '+event.date,creationTime:event.date,lastUpdateTime:event.date})
                     });
@@ -51,19 +46,19 @@ angular.module('controllers').controller('threadController',function($scope,$htt
                     $scope.newPost.thread = data._id;
                     $http.post('/api/forum/posts',$scope.newPost)
                         .success(function(){
-                            //$state.go('thread({threadId:"'+data._id+'"})');
                             window.location.href='/#/forum/thread/'+data._id;
                         }).error(function(err){$scope.errs.push(err)});
                 }).error(function(err){$scope.errs.push(err)});
         }
     }
     $scope.reply = function(){
-        $http.post('/api/forum/posts',{
+        $http.post('/api/forum/posts'+(($scope.replyPost)?('/'+$scope.replyPost._id+'/reply'):''),{
             body:$scope.replyText,
             thread:$scope.thread._id
         })
             .success(function(){
                 $scope.replyText='';
+                $scope.replyPost = undefined;
                 update();
             }).error(function(err){$scope.errs.push(err)});
     };
@@ -81,7 +76,6 @@ angular.module('controllers').controller('threadController',function($scope,$htt
                 $scope.atBottomOfThread=true;
                data.posts.forEach(function(post){
                    if(post.body){
-                       post.htmlBody = markdown.toHTML(post.body);
                        $scope.thread.posts.push(post);
                    }
 
@@ -110,6 +104,18 @@ angular.module('controllers').controller('threadController',function($scope,$htt
 
     $scope.addTextToReply = function (text) {
         $scope.replyText+=text;
+    };
+
+    $scope.startReply = function(post){
+        $('html, body').animate({
+            scrollTop: $("#main-reply-panel").offset().top
+        }, 2000);
+        $("#main-reply-panel textarea").focus();
+        $scope.replyPost = post;
+    };
+
+    $scope.getHTMLMarkdown=function(post){
+        return markdown.toHTML(post.body);
     }
 });
 

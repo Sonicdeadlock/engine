@@ -94,3 +94,18 @@ pre{
 .fa-spin.ng-hide-add-active{
     display: none !important;
 }
+
+blockquote forum-post{
+    font-size: 14px;
+}
+
+blockquote hr{
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+.forum-post-button-group{
+    margin:3px;
+    padding:3px;
+    border: 1px solid  #ccc;
+}

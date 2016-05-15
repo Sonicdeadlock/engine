@@ -21,6 +21,16 @@ var forum_postSchema = new schema({
         field:'_id',
         required:true
     },
+    replyTo:{
+        type:schema.Types.ObjectId,
+        ref:'forum_post',
+        field:'_id'
+    },
+    replies:[{
+        type:schema.Types.ObjectId,
+        ref:'forum_post',
+        field:'_id'
+    }],
     creationTime:{
         type:Date,
         default:Date.now
@@ -32,8 +42,8 @@ var forum_postSchema = new schema({
 });
 
 forum_postSchema.pre('findOneAndUpdate',function(){
-    this.update({},{ $set: { lastUpdateTime: new Date() } });
-    module.exports.findOne(this._conditions,'thread');
+    if(!(this._update.$push && this._update.$push.replies))
+        this.update({},{ $set: { lastUpdateTime: new Date() } });
 
 });
 
@@ -45,4 +55,12 @@ forum_postSchema.post('save',function(){
     forum_thread_model.findByIdAndUpdate(this.thread,{$set:{lastUpdateTime:new Date()}}).then();
 });
 
+forum_postSchema
+    .pre('findOne', populateCreator)
+    .pre('find', populateCreator);
+
+function populateCreator(next){
+    this.populate('creator');
+    next();
+}
 module.exports = mongoose.model('forum_post',forum_postSchema);

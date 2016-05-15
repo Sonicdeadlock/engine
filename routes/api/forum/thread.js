@@ -53,7 +53,7 @@ router.route('/:threadId')
                         select:'name',
                         model:permissionGroup
                     });
-                });
+                }).then(forumController.populatePostReplies);
 
                 Promise.all([threadUserPopulateQuery,getThreadPostsQuery]).then(function(results){
                    var thread = JSON.parse(JSON.stringify(results[0]));

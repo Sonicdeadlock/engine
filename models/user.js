@@ -31,6 +31,15 @@ var userSchema = new schema({
     }
 });
 
+userSchema
+    .pre('findOne', populateGroup)
+    .pre('find', populateGroup);
+
+function populateGroup(next){
+    this.populate('group');
+    next();
+}
+
 
 
 userSchema.methods.hasPermission = function(perm){

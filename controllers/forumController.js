@@ -108,9 +108,66 @@ function getTopicChildren(topicId,limit,skip){
     });
 }
 
-//TODO: add something to increment the views on the thread
+function replyToPost(reply,user){
+    return createPost(reply,user)
+        .then(function(post){
+           return forum_post_model.findByIdAndUpdate(reply.replyTo,{$push:{replies:post._id}});
+        });
+}
+
+function populatePostReplies(posts){
+    var promises = [];
+    posts.forEach(function(post){
+        var promise = forum_post_model.populate(post,{path:'replies'})
+            .then(function(post){
+                return post.replies?populatePostReplies(post.replies):post;
+            });
+        promises.push(promise);
+    });
+    return Promise.all(promises).then(function(){
+        return posts;
+    });
+
+}
+
+function getPost(id){
+    return forum_post_model.findById(id).populate('creator','username group').then(function(result){
+        if(result)
+            return user.populate(result,{
+                path:'creator.group',
+                select:'name',
+                model:permissionGroup
+            }).then(function(result){
+                return populatePostReplies([result])
+                    .then(function(posts){
+                        return posts[0];
+                    });
+            });
+       else
+        return result;
+
+    })
+}
+
+function getThread(id){
+
+}
+
 
 module.exports = {
+    getPost:function(req,res){
+        getPost(req.params.postId)
+            .then(function(post){
+                if(!post)
+                    res.status(404).send('Post not found');
+                else
+                    res.json(post);
+            },function(err){
+                console.error(err);
+                res.status(404).send('Post not found');
+            })
+    },
+    populatePostReplies:populatePostReplies,
     createTopic:function(req,res){
         req.body.creator = req.user._id;
         createTopic(req.body).then(function(topic){
@@ -235,6 +292,19 @@ module.exports = {
 
     },
     search:function(req,es){
+//TODO:
+    },
+    replyToPost:function(req,res){
+        var reply = req.body;
+        reply.replyTo = req.params.postId;
+        reply.creator = req.user._id;
+        replyToPost(reply,req.user)
+            .then(function(){
+                res.status(201).send();
+            },function(err){
+                console.log(err);
+                res.status(400).send(err);//assumes that the information that was submitted violates the schema and caused an error when submitting
+            });
+    },
 
-    }
 };

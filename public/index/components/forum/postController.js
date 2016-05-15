@@ -5,7 +5,6 @@ angular.module('controllers').controller('postController',function($scope,$http,
 
     function update(){
         $http.get('/api/forum/posts/'+$stateParams.postId).success(function(data){
-            data.htmlBody = markdown.toHTML(data.body);
             $scope.post = data;
         }).error(function(err){
             $scope.err =err;
@@ -32,4 +31,12 @@ angular.module('controllers').controller('postController',function($scope,$http,
     $scope.edit = function(post){
         $scope.postEditing = _.cloneDeep(post);
     };
+    $scope.getHTMLMarkdown=function(post){
+        return markdown.toHTML(post.body);
+    }
+}) .directive('forumPost',function(){
+    return{
+        templateUrl:'components/forum/postDirective.html'
+    }
+
 });
