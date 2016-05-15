@@ -111,7 +111,11 @@ function getTopicChildren(topicId,limit,skip){
 function replyToPost(reply,user){
     return createPost(reply,user)
         .then(function(post){
-           return forum_post_model.findByIdAndUpdate(reply.replyTo,{$push:{replies:post._id}});
+            forum_post_model.findById(post.replyTo,'creator')
+                .then(function(result){
+                    (new message({title:user.username+' replied to your post',body:'[link to thread](#/forum/thread/'+post.thread+')\r\r'+post.body,toUser:result.creator,fromDelete:true})).save();
+                });
+            return forum_post_model.findByIdAndUpdate(reply.replyTo,{$push:{replies:post._id}});
         });
 }
 
