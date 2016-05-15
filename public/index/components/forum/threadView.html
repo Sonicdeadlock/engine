@@ -12,8 +12,8 @@
     <small ng-repeat="tag in thread.tags"><a ui-sref="forumTagSearch({tag:tag})">#{{tag}}&nbsp</a></small>
     <hr>
     <div infinite-scroll="getNextPage()" infinite-scroll-distance="1" infinite-scroll-disabled="pageLoading||atBottomOfThread">
-        <div ng-repeat="post in thread.posts |orderBy:'creationTime'" class="clearfix">
-            <forum-post></forum-post>
+        <div ng-repeat="post in thread.posts |orderBy:'creationTime'" class="clearfix" ng-if="!post.replyTo">
+            <forum-post ></forum-post>
             <br>
             <hr>
         </div>
