@@ -109,7 +109,7 @@ angular.module('controllers').controller('threadController',function($scope,$htt
     $scope.startReply = function(post){
         $('html, body').animate({
             scrollTop: $("#main-reply-panel").offset().top
-        }, 2000);
+        }, 700);
         $("#main-reply-panel textarea").focus();
         $scope.replyPost = post;
     };
