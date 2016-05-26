@@ -1,30 +1,52 @@
 /**
  * Created by Sonicdeadlock on 5/25/2016.
  */
-angular.module('userApp').controller("displayController",["$rootScope","$scope",'socket',
-    function($rootScope,$scope,socket){
+angular.module('userApp').controller("displayController",["$rootScope","$scope",'socket','$interval',
+    function($rootScope,$scope,socket,$interval){
         $scope.items = [];
+        var buffer = [];
         socket.on('chatRoomEntrance',function(username){
-            $scope.items.push({text:username+" has entered the room"});
+            addItem({text:username+" has entered the room"});
         });
         socket.on('chatRoomExit',function(username){
-            $scope.items.push({text:username+" has left the room"});
+            addItem({text:username+" has left the room"});
         });
         socket.on('chatServerToClient',function(message){
-            $scope.items.push(message);
+            addItem(message);
         });
         socket.on('chatRooms',function(chatRooms){
-            $scope.items.push({text:"rooms:"});
+            addItem({text:"rooms:"});
             chatRooms.forEach(function(room){
-               $scope.items.push({text:room.name});
+               addItem({text:room.name});
             });
         });
 
         $rootScope.clearDisplay = function(){
             $scope.items = [];
-        }
+        };
 
         socket.on('chatError',function(message){
-            $scope.items.push({text:message.error,class:"error"});
+            addItem({text:message.error,class:"error"})
         });
+
+        function addItem(item){
+            buffer.push(item);
+        }
+
+        $interval(function(){
+            var lastItem = _.last($scope.items);
+            if( lastItem && !lastItem.finished){
+                if(!lastItem.displayText){
+                    lastItem.displayText="";
+                }
+                lastItem.displayText += lastItem.text[lastItem.displayText.length];
+                if(lastItem.text.length==lastItem.displayText.length){
+                    lastItem.finished= true;
+                }
+            }else if(_.head(buffer)){
+                $scope.items.push(buffer.pop());
+            }
+
+        },40)
+
 }]);

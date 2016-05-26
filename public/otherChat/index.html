@@ -26,7 +26,7 @@
 <script src="otherChat/inputController.js"></script>
 <script src="otherChat/displayController.js"></script>
 <div id="display" ng-controller="displayController" scroll-glue>
-    <p ng-repeat="item in items" ng-class="item.class">{{item.username}}<span ng-if="item.username">$</span> {{item.text}}</p>
+    <p ng-repeat="item in items" ng-class="item.class">{{item.username}}<span ng-if="item.username">$</span> {{item.displayText}}</p>
 </div>
 <div id="input" ng-controller="inputController" ng-keydown="handleKeyPress($event)" tabindex="0">
     <span>[{{logged_in_user.username}}&nbsp{{room.name?room.name:"~"}}]$&nbsp</span>
