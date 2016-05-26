@@ -15,7 +15,6 @@ angular.module('userApp').controller("displayController",["$rootScope","$scope",
             addItem(message);
         });
         socket.on('chatRooms',function(chatRooms){
-            addItem({text:"rooms:"});
             chatRooms.forEach(function(room){
                addItem({text:room.name});
             });
@@ -33,6 +32,10 @@ angular.module('userApp').controller("displayController",["$rootScope","$scope",
             buffer.push(item);
         }
 
+        $rootScope.displayText = function(text){
+            addItem({text:text});
+        };
+
         $interval(function(){
             var lastItem = _.last($scope.items);
             if( lastItem && !lastItem.finished){
@@ -44,7 +47,7 @@ angular.module('userApp').controller("displayController",["$rootScope","$scope",
                     lastItem.finished= true;
                 }
             }else if(_.head(buffer)){
-                $scope.items.push(buffer.pop());
+                $scope.items.push(buffer.shift());
             }
 
         },40)
