@@ -45,6 +45,7 @@
                     message.text = _.slice(split,2).join(' ');
                 }
                 var prom = new Promise(function(resolve,reject){resolve(message.text)});
+                if(message.mods)
                 for(var i=0;i<message.mods.length;i++){
                     var mod = message.mods[i];
                     switch (mod.name){
@@ -113,6 +114,10 @@
 
     socket.on('chatEnterRoom',function(message){
         var roomData = message.room;
+        if(!roomData){
+            socket.emit('chatError',{error:'Room no longer exists!'});
+            return;
+        }
         room.findOne({_id:roomData._id}).then(function(roomDoc){
             if(!roomDoc){
                 socket.emit('chatError',{error:'Room no longer exists!'});
@@ -196,7 +201,7 @@ function chatObj(sendUser,chatRoom,text){
     var formatedText = text;//TODO: format,sterilize text
     var self = this;
     return banned_word.find({}).cache().exec().then(function(badWords){
-        badWords.forEach(function(badWord){//TODO: count every time the user sends a bad word
+        badWords.forEach(function(badWord){
             var count = formatedText.match(new RegExp('('+badWord.regex.trim()+')+','g'));
             count = count===null?0:count.length;
             if(count>0){

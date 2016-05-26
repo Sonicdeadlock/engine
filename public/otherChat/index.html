@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" style="height:100%">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <base href="/">
+    <title></title>
+
+    <link rel="stylesheet" href="otherChat/style.css">
+
+</head>
+<body ng-app="userApp" style="height: 100%">
+<!--resources-->
+
+<script src="/bower_components/jquery/dist/jquery.min.js"></script>
+<script src="/bower_components/angular/angular.js"></script>
+<script src="/bower_components/angular-sanitize/angular-sanitize.min.js"></script>
+<script src="/bower_components/angular-resource/angular-resource.js"></script>
+<script src="/bower_components/angular-animate/angular-animate.min.js"></script>
+<script src="/bower_components/angular-scroll-glue/src/scrollglue.js"></script>
+<script src="/bower_components/lodash/lodash.js"></script>
+<script src="/bower_components/socket.io-client/socket.io.js"></script>
+<script src="/bower_components/angular-socket-io/socket.min.js"></script>
+<!--application-->
+<script src="otherChat/app.js"></script>
+<script src="otherChat/inputController.js"></script>
+<script src="otherChat/displayController.js"></script>
+<div id="display" ng-controller="displayController" scroll-glue>
+    <p ng-repeat="item in items" ng-class="item.class">{{item.username}}<span ng-if="item.username">$</span> {{item.text}}</p>
+</div>
+<div id="input" ng-controller="inputController" ng-keydown="handleKeyPress($event)" tabindex="0">
+    <span>[{{logged_in_user.username}}&nbsp{{room.name?room.name:"~"}}]$&nbsp</span>
+    <input ng-model="inputText">
+</div>
+</body>
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-77555207-1', 'auto');
+
+</script>
+</html>

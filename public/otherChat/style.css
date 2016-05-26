@@ -1,0 +1,48 @@
+#input{
+    bottom: 0px;
+    position:fixed;
+    display: table;
+    width:100%
+}
+
+#input > *{
+    display: table-cell;
+}
+
+#input > input{
+     width: 100%;
+    border:0;
+    color:#f1f1f1;
+    background-color: black;
+    font-size: small;
+ }
+
+#input > span{
+    width: 1px;
+    white-space: nowrap;
+}
+
+
+
+p{
+    margin:0;
+}
+
+p.danger{
+    color:darkred;
+}
+
+#display{
+    max-height: 95%;
+    overflow: auto;
+}
+
+::-webkit-scrollbar ,::-webkit-scrollbar-thumb{
+    display: none;
+}
+
+body{
+    color:#f1f1f1;
+    background-color: black;
+    font-size: small;
+}
