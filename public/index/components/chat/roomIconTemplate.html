@@ -1,7 +1,7 @@
 <div class="col-md-3 col-lg-2 well clearfix" ng-click="enterRoom(room);showPassword = true">
     <b>{{room.name | limitTo:15}}<span ng-if="room.name.length>15">...</span></b>
     <br>
-    <small>{{room.description | limitTo:20}}<span ng-if="room.description.length>20">...</span></small>
+    <small>{{room.description }}</small>
     <p ng-show="room.requirements && room.requirements.rank" class="text-danger" style="position:absolute">{{room.requirements.rank}} only*</p><br>
     <button ng-click='deleteRoom(room,$event)' class="btn btn-danger" ng-show="hasPermission('Room Admin') && (room.deletable||hasPermission('god'))"><span class='fa fa-remove'></span> Delete</button>
 

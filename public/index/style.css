@@ -109,3 +109,9 @@ blockquote hr{
     padding:3px;
     border: 1px solid  #ccc;
 }
+
+room *{
+    text-overflow:ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
