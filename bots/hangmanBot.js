@@ -156,7 +156,7 @@ function prepareWord(guessedLetters,word){
 }
 
 function init(){
-    Room.find({bots:{"$elemMatch":{name:"test"}}}).then(function(roomResults){
+    Room.find({bots:{"$elemMatch":{name:"hangman"}}}).then(function(roomResults){
         roomResults.forEach(function(room){
             chat.on('enterRoom',room._id,function(user,chatToRoom,chatToUser){
                 var matchedRoom = _.find(rooms,{roomId:room._id}) ;
