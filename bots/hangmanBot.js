@@ -4,10 +4,10 @@
 var _ = require('lodash');
 var uid = require('uid');
 var db = require('../db');
-var tokenModel = require('../models/token');
-var token = db.model('token');
-var contentModel = require('../models/content');
-var content = db.model('content');
+var token = require('../models/token');
+var content = require('../models/content');
+var Room = require('../models/room');
+var chat = require('../chat');
 
 var rooms = [];
 var hangmanParts = [
@@ -42,21 +42,6 @@ function setWord(room,word,cb){
     matchedRoom.strikes = 0;
     matchedRoom.word = word;
     matchedRoom.guessedLetters = [];
-}
-
-function userEnterRoom(user,room){
-    var matchedRoom = _.find(rooms,{roomId:room._id}) ;
-    if(!matchedRoom)
-    content.count({type:'hangmanWord'}).exec().then(function(count){
-        content.findOne({type:'hangmanWord'}).skip(_.random(count-1)).then(function(result){
-            setWord(room,result.content.trim(''));
-        });
-    });
-
-}
-
-function userExitRoom(user,room){
-
 }
 
 function chatInduction(user,room,chat,roomChatCallback,userChatCallback){
@@ -170,9 +155,25 @@ function prepareWord(guessedLetters,word){
     }).join('');
 }
 
+function init(){
+    Room.find({bots:{"$elemMatch":{name:"test"}}}).then(function(roomResults){
+        roomResults.forEach(function(room){
+            chat.on('enterRoom',room._id,function(user,chatToRoom,chatToUser){
+                var matchedRoom = _.find(rooms,{roomId:room._id}) ;
+                if(!matchedRoom)
+                    content.count({type:'hangmanWord'}).exec().then(function(count){
+                        content.findOne({type:'hangmanWord'}).skip(_.random(count-1)).then(function(result){
+                            setWord(room,result.content.trim(''));
+                        });
+                    });
+            });
+            chat.on("chat",room._id,function(user,chatToRoom,chatToUser,text){
+               chatInduction(user,room,text,chatToRoom,chatToUser);
+            });
+        });
+    });
+}
 
 
+module.exports.init = init;
 module.exports.setWord = setWord;
-module.exports.userEnterRoom = userEnterRoom;
-module.exports.userExitRoom = userExitRoom;
-module.exports.chatInduction = chatInduction;

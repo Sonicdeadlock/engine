@@ -2,7 +2,7 @@
  * Created by Sonicdeadlock on 5/28/2016.
  */
 var chat = require('../chat');
-var bots = ['test'];
+var bots = ['test','hangmanBot'];
 
 
 function initBots(){
