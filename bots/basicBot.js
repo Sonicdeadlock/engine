@@ -5,7 +5,8 @@ var _ = require('lodash');
 var db = require('../db');
 var playerSchema = require('../models/player');
 var playerModel = db.model('player');
-
+var Room = require('../models/room');
+var chat = require('../chat');
 
 
 var rooms = [];
@@ -154,6 +155,21 @@ function getBattleStatus(room){
 }
 
 
-module.exports.userEnterRoom = userEnterRoom;
-module.exports.userExitRoom = userExitRoom;
-module.exports.chatInduction = chatInduction;
+function init(){
+    Room.find({bots:{"$elemMatch":{name:"basic"}}}).then(function(roomResults){
+        roomResults.forEach(function(room){
+            chat.on('enterRoom',room._id,function(user,chatToRoom,chatToUser){
+               userEnterRoom(user,room);
+            });
+            chat.on('exitRoom',room._id,function(user,chatToRoom){
+               userExitRoom(user,room);
+            });
+            chat.on("chat",room._id,function(user,chatToRoom,chatToUser,text){
+                chatInduction(user,room,text,chatToRoom,chatToUser);
+            });
+        });
+    });
+}
+
+
+module.exports.init = init;
