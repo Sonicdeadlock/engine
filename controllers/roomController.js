@@ -6,6 +6,7 @@ var _ = require('lodash');
 var roomModel = require('../models/room');
 var room = db.model('room');
 var roomSocketHandle = require('../roomSocketHandle');
+var botReset = require('../bots/bots');
 
 function create(req,res){
     var user = req.user;
@@ -51,6 +52,7 @@ function addBot(req,res){
         if(user.hasPermission('Room Admin')){
             room.findByIdAndUpdate(id,{$push:{bots:bot}}).then(function(){
                 res.status(200).send();
+                botReset();
                 roomSocketHandle.updateRooms();
             },function(error){console.error(error);});
         }else{
@@ -67,6 +69,7 @@ function removeBot(req,res){
     if(user.hasPermission('Room Admin')){
         room.findByIdAndUpdate(id,{$pull:{bots:bot}}).then(function(){
             res.status(200).send();
+            botReset();
             roomSocketHandle.updateRooms();
         },function(error){console.error(error);});
     }else{

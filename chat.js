@@ -14,26 +14,18 @@
  var User = db.model('user');
  var textMod = require('./classes/textMod');
  var commands = require('./classes/commands');
- var basicBot = require('./bots/basicBot');
- var hangmanBot = require('./bots/hangmanBot');
- var gambleBot = require('./bots/gambleBot');
+var config = require('./config');
 
 
  var users = [];
  var serverUser = {_id:undefined,username:'Server',group:{name:undefined}};
- module.exports = {connect:connect,disconnect:disconnect};
+ var hooks = {};
+ module.exports = {connect:connect,disconnect:disconnect,on:addHookListener,removeHooks:removeHooks};
  function connect(socket){
     var user = socket.client.request.user;
     var chatRoom = undefined;
     var userCollectionObj = {user:user,socket:socket};
     users.push(userCollectionObj);
-
-    function getUsersForCommunication(room){
-        //TODO: determine only users who need to see the chat
-        return _.filter(users,function(o){
-            return o.room && o.room._id == room._id;
-        });
-    }
 
     socket.on('chatClientToServer',function(message){
         if(!chatRoom.bans || (chatRoom.bans && !_.find(chatRoom.bans,function(id){return id.id == user._id.id}))){
@@ -45,6 +37,7 @@
                     message.text = _.slice(split,2).join(' ');
                 }
                 var prom = new Promise(function(resolve,reject){resolve(message.text)});
+                prom = prom.then(preChatHook.bind(this,user,chatRoom));
                 if(message.mods)
                 for(var i=0;i<message.mods.length;i++){
                     var mod = message.mods[i];
@@ -61,49 +54,18 @@
                     (new chatObj(user,chatRoom,text)).then(function(chat){
                         if(impersonate)
                             chat.username = impersonate.name;
-                        _.forEach(getUsersForCommunication(chatRoom),function(u){
-                            u.socket.emit('chatServerToClient',chat);
-                        });
+
+                       chatToRoom(chatRoom,chat);
                         if(commands.isCommand(text))
                             commands.execute(text,function(serverText){
                                 _.forEach(getUsersForCommunication(chatRoom),function(u){
                                     (new chatObj(serverUser,chatRoom,serverText)).then(function(serverChat){
                                         u.socket.emit('chatServerToClient',serverChat);
                                     })
-
                                 })
                             },user);
-                        chatRoom.bots.forEach(function(bot){
-                            if(bot.name == 'basic'){//instead of passing through the chatroom in the part about the roomchatcallback maybe pass a clone because the user's room can change but we should still want to send it to that room
-                                basicBot.chatInduction(user,chatRoom,text,function(text){
-                                    _.forEach(getUsersForCommunication(chatRoom),function(u){
-                                        u.socket.emit('chatServerToClient',{text:text,time: _.now()});
-                                    });
-                                },function(text){
-                                    socket.emit('chatServerToClient',{text:text,time: _.now()});
-                                });
-                            }
-                            else if(bot.name == 'hangman'){
-                                hangmanBot.chatInduction(user,chatRoom,text,function(text){
-                                    _.forEach(getUsersForCommunication(chatRoom),function(u){
-                                        u.socket.emit('chatServerToClient',{text:text,time: _.now()});
-                                    });
-                                },function(text){
-                                    socket.emit('chatServerToClient',{text:text,time: _.now()});
-                                });
-                            }
-                            else if(bot.name == 'gamble'){
-                                gambleBot.chatInduction(user,chatRoom,text,function(text){
-                                    _.forEach(getUsersForCommunication(chatRoom),function(u){
-                                        u.socket.emit('chatServerToClient',{text:text,time: _.now()});
-                                    });
-                                },function(text){
-                                    socket.emit('chatServerToClient',{text:text,time: _.now()});
-                                });
-                            }
-                        });
+                        chatHook(user,chatRoom,chat.text);
                     });
-
                 })
             }
         }else{
@@ -140,17 +102,7 @@
                 chatRoom = roomDoc;
                 userCollectionObj.room = roomData;
                 socket.emit('chatEnterRoom',{room:roomData});
-                chatRoom.bots.forEach(function(bot){
-                    if(bot.name == 'basic'){
-                        basicBot.userEnterRoom(user,chatRoom);
-                    }
-                    else if(bot.name == 'hangman'){
-                        hangmanBot.userEnterRoom(user,chatRoom);
-                    }
-                    else if(bot.name == 'gamble'){
-                        gambleBot.userEnterRoom(user,chatRoom);
-                    }
-                });
+                roomEnterHook(user,chatRoom);
                 _.forEach(getUsersForCommunication(chatRoom),function(u){
                     u.socket.emit('chatRoomEntrance',user.username);
                 })
@@ -163,16 +115,10 @@
             _.forEach(getUsersForCommunication(chatRoom),function(u){
                 u.socket.emit('chatRoomExit',user.username);
             });
-            chatRoom.bots.forEach(function(bot){
-                if(bot.name == 'basic'){
-                    basicBot.userExitRoom(user,chatRoom);
-                }
-                else if(bot.name =='gamble'){
-                    gambleBot.userExitRoom(user,chatRoom);
-                }
-            });
+            var hookWait = roomExitHook.bind(this,user,chatRoom);
             chatRoom = undefined;
             userCollectionObj.room = undefined;
+            hookWait();
         }
 
     });
@@ -189,7 +135,6 @@
 function disconnect(socket){
     users = _.reject(users,{socket:socket});
 }
-
 
 function chatObj(sendUser,chatRoom,text){
     this.text = text;
@@ -224,4 +169,110 @@ function chatObj(sendUser,chatRoom,text){
     });
 
 
+}
+
+function preChatHook(user,room,text){
+    var promise;
+    var listeners = hooks["preChat"] && hooks["preChat"][room._id] || [];
+    if(_.isEmpty(listeners)) return new Promise(function(resolve,reject){resolve(text)});
+    function chatToRoomCallback(text){
+        var chat = _.isObject(text)?text:{text:text,time: _.now()};
+        chatToRoom(room,chat);
+    }
+    function chatToUserCallback(text){
+        var chat = _.isObject(text)?text:{text:text,time: _.now()};
+        chatToUser( _.find(users,{user:user}),chat);
+    }
+    promise = Promise.all(_.map(listeners,function(listener){
+        try{
+            var result = listener(user,chatToRoomCallback,chatToUserCallback,text);
+            if(result===undefined)
+                return true;
+            if(_.isFunction(result.then))
+                return result.then(function(shouldContinue){return shouldContinue},function(){return true});
+            else if(_.isBoolean(result))
+                return result;
+            else
+                return true
+        }
+        catch(ex){
+            return true;
+        }
+    }));
+    promise = setHookPromiseTimeout(promise);
+    return new Promise(function(resolve,reject){
+        promise.then(function(results){
+            if(!results || !_.isArray(results) ||_.isEmpty(results) || results.indexOf(false)===-1){
+                resolve(text);
+            }
+            else{
+                reject()
+            }
+        });
+    });
+}
+
+function setHookPromiseTimeout(promises){
+    return Promise.race([promises,new Promise(function(resolve){ setTimeout(resolve,config.chat.hookTimeout)})])
+}
+
+function genericHookHandle(listeners,user,room,text){
+
+    function chatToRoomCallback(text){
+        var chat = _.isObject(text)?text:{text:text,time: _.now()};
+        chatToRoom(room,chat);
+    }
+    function chatToUserCallback(text){
+        var chat = _.isObject(text)?text:{text:text,time: _.now()};
+        chatToUser( _.find(users,{user:user}),chat);
+    }
+    return Promise.all(_.map(listeners,function(listener){
+        return listener(user,chatToRoomCallback,chatToUserCallback,text);
+    }));
+}
+
+function chatHook(user,room,text){
+    var listeners = hooks["chat"] && hooks["chat"][room._id] || [];
+    genericHookHandle(listeners,user,room,text);
+}
+
+function roomEnterHook(user,room){
+    var listeners = hooks["enterRoom"] && hooks["enterRoom"][room._id] || [];
+    genericHookHandle(listeners,user,room);
+}
+
+function roomExitHook(user,room){
+    var listeners = hooks["exitRoom"] && hooks["exitRoom"][room._id] || [];
+    genericHookHandle(listeners,user,room);
+}
+
+function chatToRoom(room,chat){
+    _.forEach(getUsersForCommunication(room),function(u){
+        chatToUser(u,chat);
+    });
+}
+
+function chatToUser(user,chat){
+    user.socket.emit('chatServerToClient',chat);
+}
+
+function getUsersForCommunication(room){
+    //TODO: determine only users who need to see the chat
+    return _.filter(users,function(o){
+        return o.room && o.room._id == room._id;
+    });
+}
+
+function addHookListener(type,roomId,listener){
+    if(!hooks[type]){
+        hooks[type] = {};
+    }
+    if(!hooks[type][roomId]){
+        hooks[type][roomId] = [];
+    }
+    hooks[type][roomId].push(listener);
+}
+
+function removeHooks(){
+    hooks = {};
 }

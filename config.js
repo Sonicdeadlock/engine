@@ -35,5 +35,8 @@ module.exports = {
             maxAge:60000,
             expires:false
         }
+    },
+    chat:{
+        hookTimeout:1000
     }
 };

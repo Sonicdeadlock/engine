@@ -14,6 +14,7 @@ var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 var db = require('./db');
 var chat = require('./chat');
+require('./bots/bots')();//load bots
 var roomSocketHandle = require('./roomSocketHandle');
 var passportSocketIo = require("passport.socketio");
 //Web Routes
