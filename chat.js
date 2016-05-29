@@ -196,6 +196,9 @@ function preChatHook(user,room,text){
                 return true
         }
         catch(ex){
+            if(ex){
+                console.error(ex);
+            }
             return true;
         }
     }));

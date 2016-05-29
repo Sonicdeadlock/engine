@@ -21,7 +21,8 @@ var playerSchema = new schema({
         agility:{default:0,type:Number},
         BEN:{default:0,type:Number}
     },
-    money:{default:10,type:Number}
+    money:{default:10,type:Number},
+    tokens:{default:0,type:Number}
 });
 
 playerSchema.virtual('stats.minAttack').get(function(){return 0;});

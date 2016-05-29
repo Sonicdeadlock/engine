@@ -3,58 +3,14 @@
  */
 var _ = require('lodash');
 var db = require('../db');
-var playerSchema = require('../models/player');
-var playerModel = db.model('player');
+var playerModel = require('../models/player');
 var Room = require('../models/room');
 var chat = require('../chat');
 
 var rooms = [];
 var modes = {
-    dice:function(user,player,room,chat,roomChatCallback,userChatCallback){
-        if(_.startsWith(chat,'!bet')){
-            var pieces = chat.split(' ');
-            var bet = Number(pieces[1]);
-            if(!bet || bet<1 || bet>player.money){
-                userChatCallback('invalid bet')
-            }
-            else if( _.toLower(pieces[2]) === 'even' || _.toLower(pieces[2]) === 'odd'){
-                var value = _.random(1,20);
-                var winnings = _.floor(bet/2);
-                if(_.toLower(pieces[2]) === 'even' && value%2===0){
-                    roomChatCallback("Rolled: "+value+" "+user.username+" won $"+winnings);
-                    player.money+=winnings;
-                    player.save();
-                }else if(_.toLower(pieces[2]) === 'odd' && value%2===1){
-                    roomChatCallback("Rolled: "+value+" "+user.username+" won $"+winnings);
-                    player.money+=winnings;
-                    player.save();
-                }else{
-                    roomChatCallback("Rolled: "+value+" "+user.username+" lost $"+bet);
-                    player.money-=bet;
-                    player.save();
-                }
-            }
-            else{
-                var numberBetOn = Number(pieces[2]);
-                if(!numberBetOn || numberBetOn<=0 || numberBetOn>20){
-                    userChatCallback('invalid number to bet on')
-                }else{
-                    var value = _.random(1,20);
-                    var winnings = bet*5;
-                    if(value===numberBetOn){
-                        roomChatCallback("Rolled: "+value+" "+user.username+" won $"+winnings);
-                        player.money+=winnings;
-                        player.save();
-                    }else{
-                        roomChatCallback("Rolled: "+value+" "+user.username+" lost $"+bet);
-                        player.money-=bet;
-                        player.save();
-                    }
-                }
-            }
-
-        }
-    }
+    dice:require('./gamblingModes/dice'),
+    slots:require('./gamblingModes/slots')
 };
 function userEnterRoom(user,room){//required to be exposed
     var matchedRoom = _.find(rooms,{roomId:room._id});
@@ -106,9 +62,11 @@ function chatInduction(user,room,chat,roomChatCallback,userChatCallback) {
     }
     else {
         if (!room.mode) {
-            //userChatCallback('Mode not set, please speak to a room admin');
+            userChatCallback('Mode not set, please speak to a room admin');
         } else {
-            modes[room.mode](user, player, room, chat, roomChatCallback, userChatCallback);
+            var mode = modes[room.mode];
+            if(mode.chat)
+                mode.chat(user, player, room, chat, roomChatCallback, userChatCallback);
         }
     }
 }
@@ -135,6 +93,12 @@ function preChat(user,room,chatToRoom,chatToUser,text){
         }
         return false;
     }
+    if(room && room.mode){
+        var mode = modes[room.mode];
+        if(mode.preChat)
+           return mode.preChat(user, player, room, chat, chatToRoom, chatToUser);
+    }
+
 }
 
 
@@ -156,6 +120,53 @@ function init() {
                 return preChat(user,room,chatToRoom,chatToUser,text);
             });
         });
+    });
+    Room.find({}).then(function(roomResults){
+        var players = [];
+        roomResults.forEach(function (room) {
+            chat.on('enterRoom', room._id, function (user, chatToRoom, chatToUser) {
+                playerModel.findOne({user:user._id},'tokens user').then(function(result){
+                    if(!result){
+                        var player = new playerModel({
+                            user:user._id,
+                            stats:{
+                                level:1,
+                                strength:_.random(1, 10),
+                                intelligence:_.random(1, 10),
+                                constitution:_.random(1, 10),
+                                wisdom:_.random(1, 10),
+                                dexterity:_.random(1, 10),
+                                agility:_.random(1, 10),
+                                BEN:_.random(1, 3)
+                            }
+                        });
+                        player.save();
+                        result = player;
+                    }
+                    if(!_.find(players,{_id:result._id})){
+                        players.push(result);
+                    }
+                });
+            });
+            chat.on('exitRoom', room._id, function (user, chatToRoom) {
+                players = _.reject({user:user._id});
+            });
+            chat.on("preChat", room._id, function (user, chatToRoom, chatToUser, text) {
+                if(text==="!tokens"){
+                    playerModel.findOne({user:user._id},'tokens user').then(function(result){
+                        if(result)
+                        chatToUser(result.tokens);
+                    });
+                    return false;
+                }
+            });
+
+
+        });
+        setInterval(function(){
+            var ids = _.map(players,'_id');
+            playerModel.update({_id:{$in:ids}},{$inc:{tokens:1}},{multi:true}).then();
+        },1000*60 *10);//every 10 minutes
     });
 }
 
