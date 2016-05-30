@@ -12,7 +12,15 @@ angular.module('userApp').controller("displayController",["$rootScope","$scope",
             addItem({text:username+" has left the room"});
         });
         socket.on('chatServerToClient',function(message){
-            addItem(message);
+            _(message.text.split("<br>"))
+                .map(function(line){
+                    var clone = _.clone(message);
+                    clone.text = line;
+                    return clone;
+                })
+                .forEach(function(line){
+                   addItem(line);
+                });
         });
         socket.on('chatRooms',function(chatRooms){
             chatRooms.forEach(function(room){
