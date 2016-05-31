@@ -22,9 +22,9 @@
 <script src="/bower_components/socket.io-client/socket.io.js"></script>
 <script src="/bower_components/angular-socket-io/socket.min.js"></script>
 <!--application-->
-<script src="otherChat/app.js"></script>
-<script src="otherChat/inputController.js"></script>
-<script src="otherChat/displayController.js"></script>
+<script src="otherChat2/app.js"></script>
+<script src="otherChat2/inputController.js"></script>
+<script src="otherChat2/displayController.js"></script>
 <div id="display" ng-controller="displayController" scroll-glue>
     <p ng-repeat="item in items" ng-class="item.class">{{item.username}}<span ng-if="item.username">$</span> {{item.displayText}}</p>
 </div>

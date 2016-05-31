@@ -20,7 +20,9 @@
     white-space: nowrap;
 }
 
-
+*{
+    font-family: 'Source Code Pro' ;
+}
 
 p{
     margin:0;
@@ -43,8 +45,4 @@ body{
     color:#f1f1f1;
     background-color: black;
     font-size: small;
-}
-
-*{
-    font-family: 'Source Code Pro' ;
 }
