@@ -1,4 +1,4 @@
-<div>
+<div class="clearfix">
     <p>
         <a ng-class="{'creator':post.creator._id==thread.creator._id}" ui-sref="userPage({userId:post.creator._id})" class="post-user">{{post.creator.username}}</a>
         <span class="post-role"><span ng-if="post.creator.group.name.indexOf('Admin')>-1" class="fa fa-shield"></span>&nbsp{{post.creator.group.name}}</span>
@@ -17,7 +17,7 @@
         <button class="btn btn-primary pull-right" ng-click="save()"><span class="fa fa-floppy-o"></span>&nbspSave</button>
     </div>
     <div ng-hide="post._id&&postEditing._id==post._id" ng-if="post.replies&&post.replies.length>=1">
-        <blockquote>
+        <blockquote class="subposts">
             <div ng-repeat="post in post.replies">
                 <forum-post class="clearfix subpost"></forum-post>
                 <hr>
@@ -25,12 +25,19 @@
 
         </blockquote>
     </div>
-    <div class="pull-right clearfix" ng-if="post._id">
-        <div class="pull-right clearfix forum-post-button-group">
+    <div class="pull-right clearfix forum-post-options pull-right" ng-if="post._id">
+        <div class=" clearfix forum-post-button-group">
             <a ui-sref="forumPost({postId:post._id})" ng-if="post._id"><span><span class="fa fa-link fa-lg" bs-tooltip data-title="Permanent link to post" data-type="info" data-placement="bottom"></span></span></a>
             <a ng-if="post._id && logged_in_user"  ng-click="startReply(post)"><span class="fa fa-reply" bs-tooltip data-title="Reply to post" data-type="success" data-placement="bottom"></span></a>
             <a ng-click="edit(post)" ><span ng-if="logged_in_user && post.creator._id==logged_in_user._id"><span class="fa fa-pencil fa-lg" bs-tooltip data-title="Edit Post" data-type="info" data-placement="bottom"></span></span></a>
             <a ng-click="delete(post)" ><span  ng-if="logged_in_user && post.creator._id==logged_in_user._id">&nbsp<span class="fa fa-trash fa-lg" bs-tooltip data-title="Delete Post" data-type="danger" data-placement="bottom"></span></span></a>
+        </div>
+        <hr>
+        <div class=" clearfix forum-post-button-group">
+            <a ng-class="hasMarkedType('agree',post)?'selected':'unselected'" ng-click="mark('agree',post)"><i class="fa fa-lg fa-check-circle-o" bs-tooltip data-title="Agree" data-placement="bottom"></i></a>
+            <a ng-class="hasMarkedType('informative',post)?'selected':'unselected'" ng-click="mark('informative',post)"><i class="fa fa-lg fa-info-circle" bs-tooltip data-title="Mark as informative" data-placement="bottom"></i></a>
+            <a ng-class="hasMarkedType('funny',post)?'selected':'unselected'" ng-click="mark('funny',post)"><i class="fa fa-lg fa-smile-o" bs-tooltip data-title="Mark as funny" data-placement="bottom"></i></a>
+            <a ng-class="hasMarkedType('thumbsUp',post)?'selected':'unselected'" ng-click="mark('thumbsUp',post)"><i class="fa fa-lg fa-thumbs-up"bs-tooltip data-title="Thumb Up" data-placement="bottom"></i></a>
         </div>
     </div>
 </div>

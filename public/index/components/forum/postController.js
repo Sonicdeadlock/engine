@@ -33,6 +33,28 @@ angular.module('controllers').controller('postController',function($scope,$http,
     };
     $scope.getHTMLMarkdown=function(post){
         return markdown.toHTML(post.body);
+    };
+
+    $scope.mark = function(type,post){
+        $http.patch('/api/forum/posts/'+post._id+'/mark/'+type,{}).success(function(result){
+            _.assign(post,result);
+        })
+    };
+
+    $scope.hasMarkedType = function(type,post){
+        if(type==="agree" && post.agreedBy.indexOf($rootScope.logged_in_user._id)!=-1){
+            return true;
+        }
+        else if(type==="informative" && post.markedInformativeBy.indexOf($rootScope.logged_in_user._id)!=-1){
+           return true;
+        }
+        else if(type==="funny" && post.markedFunnyBy.indexOf($rootScope.logged_in_user._id)!=-1){
+             return true;
+        }
+        else if(type==="thumbsUp" && post.thumbedUpBy.indexOf($rootScope.logged_in_user._id)!=-1){
+            return true;
+        }
+        return false;
     }
 }) .directive('forumPost',function(){
     return{

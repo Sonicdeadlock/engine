@@ -38,11 +38,49 @@ var forum_postSchema = new schema({
     lastUpdateTime:{
         type:Date,
         default:Date.now
-    }
+    },
+    agreedBy:[{
+        type:schema.Types.ObjectId,
+        ref:'user',
+        field:'_id',
+        required:true
+    }],
+    markedInformativeBy:[{
+        type:schema.Types.ObjectId,
+        ref:'user',
+        field:'_id',
+        required:true
+    }],
+    markedFunnyBy:[{
+        type:schema.Types.ObjectId,
+        ref:'user',
+        field:'_id',
+        required:true
+    }],
+    thumbedUpBy:[{
+        type:schema.Types.ObjectId,
+        ref:'user',
+        field:'_id',
+        required:true
+    }]
 });
 
 forum_postSchema.pre('findOneAndUpdate',function(){
-    if(!(this._update.$push && this._update.$push.replies))
+    if(!(this._update.$push && (
+                this._update.$push.replies ||
+                this._update.$push.agreedBy ||
+                this._update.$push.markedInformativeBy ||
+                this._update.$push.markedFunnyBy ||
+                this._update.$push.thumbedUpBy
+
+
+        )) &&
+        !(this._update.$pull && (
+            this._update.$pull.agreedBy ||
+            this._update.$pull.markedInformativeBy ||
+            this._update.$pull.markedFunnyBy ||
+            this._update.$pull.thumbedUpBy
+        )))
         this.update({},{ $set: { lastUpdateTime: new Date() } });
 
 });

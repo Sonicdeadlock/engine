@@ -49,4 +49,7 @@ router.route('/:postId')
 router.route('/:postId/reply')
     .post(userController.requiresLogin,forumController.replyToPost);
 
+router.route("/:postId/mark/:type")
+    .patch(userController.requiresLogin,forumController.markPost);
+
 module.exports = router;

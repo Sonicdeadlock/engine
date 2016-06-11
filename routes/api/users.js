@@ -18,7 +18,7 @@ var userController = require('../../controllers/userController');
 
 router.route('/getUser')
 .post(function(req,res){
-  var userAccess = 'username _id';
+  var userAccess = 'username _id forum';
   if(req.user) {
       if(_.isEmpty(req.user.group.userAccess.trim()))
         userAccess = req.user.group.userAccess;

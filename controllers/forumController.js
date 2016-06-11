@@ -9,12 +9,9 @@
  var forum_thread_model = db.model('forum_thread');
  require('../models/forum_topic');
  var forum_topic_model = db.model('forum_topic');
- var userModel = require('../models/user');
- var user = db.model('user');
- var permissionGroupModel = require('../models/permissionGroup');
- var permissionGroup = db.model('permissionGroup');
- var messageModel = require('../models/message');
- var message = db.model('message')
+ var user = require('../models/user');
+ var permissionGroup = require('../models/permissionGroup');
+ var message = require('../models/message');
 
  function createTopic(topic){
     return (new forum_topic_model(topic)).save();
@@ -151,6 +148,69 @@ function getPost(id){
         return result;
 
     })
+}
+
+function markPost(postId,type,markingUserId){
+    //get the proper array/
+    //if the marking user is in the array then unmark
+    var query;
+    if(type==="agree"){
+
+        query = forum_post_model.find({_id:postId,agreedBy:markingUserId},'id');
+    }
+    else if(type==="informative"){
+        query = forum_post_model.find({_id:postId,markedInformativeBy:markingUserId},'id');
+    }
+    else if(type==="funny"){
+        query = forum_post_model.find({_id:postId,markedFunnyBy:markingUserId},'id');
+    }
+    else if(type==="thumbsUp"){
+        query = forum_post_model.find({_id:postId,thumbedUpBy:markingUserId},'id');
+    }
+    else{
+        return new Promise(function(resolve,reject){
+            reject("Invalid type");
+        })
+    }
+    return query.then(function(documents){
+        var postUpdate={},incrementAmount,arrayVerb,userUpdate;
+        var unmark = documents.length>0;
+        if(unmark){
+            arrayVerb = '$pull';
+            incrementAmount = -1;
+        }else{
+            arrayVerb = '$push';
+            incrementAmount = 1;
+        }
+        postUpdate[arrayVerb]={};
+        if(type==="agree"){
+            postUpdate[arrayVerb].agreedBy = markingUserId;
+            userUpdate = {$inc:{"forum.agree":incrementAmount}};
+        }
+        else if(type==="informative"){
+            postUpdate[arrayVerb].markedInformativeBy = markingUserId;
+            userUpdate = {$inc:{"forum.informative":incrementAmount}};
+        }
+        else if(type==="funny"){
+            postUpdate[arrayVerb].markedFunnyBy = markingUserId;
+            userUpdate = {$inc:{"forum.funny":incrementAmount}};
+        }
+        else if(type==="thumbsUp"){
+            postUpdate[arrayVerb].thumbedUpBy = markingUserId;
+            userUpdate = {$inc:{"forum.thumbsUp":incrementAmount}};
+        }
+        else{
+            return new Promise(function(resolve,reject){
+                reject("Invalid type");
+            })
+        }
+
+        return Promise.all([
+            forum_post_model.findByIdAndUpdate(postId,postUpdate),
+            forum_post_model.findById(postId,'creator').then(function(post){return user.findByIdAndUpdate(post.creator._id,userUpdate)})
+        ])
+    });
+
 }
 
 function getThread(id){
@@ -296,7 +356,7 @@ module.exports = {
 
     },
     search:function(req,es){
-//TODO:
+        //TODO:
     },
     replyToPost:function(req,res){
         var reply = req.body;
@@ -306,9 +366,24 @@ module.exports = {
             .then(function(){
                 res.status(201).send();
             },function(err){
-                console.log(err);
+                console.error(err);
                 res.status(400).send(err);//assumes that the information that was submitted violates the schema and caused an error when submitting
             });
     },
+    markPost:function(req,res){
+        var postId = req.params.postId;
+        var type = req.params.type;
+        var markingUserId = req.user._id;
+        markPost(postId,type,markingUserId)
+            .then(function(){
+                getPost(postId).then(function(postDocument){
+                    res.json(postDocument);
+                })
+            },
+            function(err){
+                console.error(err);
+                res.status(500).send("Error marking the post");
+            });
+    }
 
 };

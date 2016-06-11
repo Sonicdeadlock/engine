@@ -104,14 +104,36 @@ blockquote hr{
     margin-top: 5px;
 }
 
-.forum-post-button-group{
-    margin:3px;
-    padding:3px;
-    border: 1px solid  #ccc;
+.forum-post-button-group a.unselected{
+    color:#999;
+}
+.forum-post-button-group a.unselected:hover,.forum-post-button-group a.selected{
+    color:rgb(43, 140, 70);
 }
 
 room *{
     text-overflow:ellipsis;
     overflow: hidden;
     white-space: nowrap;
+}
+
+.forum-post-options{
+    border-radius: 5px;
+    background-color:#eee;
+    padding:3px;
+    border:1px solid #ddd;
+}
+.forum-post-options hr{
+    margin-bottom: 2px;
+    margin-top: 2px;
+    border-top:1px solid #888;
+}
+.subposts{
+    margin:0;
+    padding: 5px 10px;
+}
+
+hr{
+    margin-top: 2px;
+    margin-bottom: 2px;
 }

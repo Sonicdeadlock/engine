@@ -28,6 +28,12 @@ var userSchema = new schema({
     strikes:{
         chat:{default:0,type:Number},
         bans:{default:0,type:Number}
+    },
+    forum:{
+        agree:{default:0,type:Number},
+        informative:{default:0,type:Number},
+        funny:{default:0,type:Number},
+        thumbsUp:{default:0,type:Number}
     }
 });
 
