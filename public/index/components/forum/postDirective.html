@@ -33,7 +33,7 @@
             <a ng-click="delete(post)" ><span  ng-if="logged_in_user && post.creator._id==logged_in_user._id">&nbsp<span class="fa fa-trash fa-lg" bs-tooltip data-title="Delete Post" data-type="danger" data-placement="bottom"></span></span></a>
         </div>
         <hr>
-        <div class=" clearfix forum-post-button-group">
+        <div class=" clearfix forum-post-button-group" ng-show="logged_in_user">
             <a ng-class="hasMarkedType('agree',post)?'selected':'unselected'" ng-click="mark('agree',post)"><i class="fa fa-lg fa-check-circle-o" bs-tooltip data-title="Agree" data-placement="bottom"></i></a>
             <a ng-class="hasMarkedType('informative',post)?'selected':'unselected'" ng-click="mark('informative',post)"><i class="fa fa-lg fa-info-circle" bs-tooltip data-title="Mark as informative" data-placement="bottom"></i></a>
             <a ng-class="hasMarkedType('funny',post)?'selected':'unselected'" ng-click="mark('funny',post)"><i class="fa fa-lg fa-smile-o" bs-tooltip data-title="Mark as funny" data-placement="bottom"></i></a>
