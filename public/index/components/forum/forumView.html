@@ -8,7 +8,7 @@
 </div>
 <div class="col-md-10 col-md-offset-1">
     <h1>{{header}}</h1>
-    <table class="table forum table-striped" ng-repeat="topic in topics | orderBy:'name'" ng-hide="topic.children.topics.length==0&&!hasPermission('Forum Admin')">
+    <table class="table forum table-striped table-responsive" ng-repeat="topic in topics | orderBy:'name'" ng-hide="topic.children.topics.length==0&&!hasPermission('Forum Admin')">
         <thead>
             <tr>
                 <th class="cell-stat"></th>
@@ -27,7 +27,7 @@
 
         </tbody>
     </table>
-    <table ng-if="topic" class="table table-striped forum" infinite-scroll="getNextPage()" infinite-scroll-distance="1" infinite-scroll-disabled="pageLoading||atBottomOfTopic">
+    <table ng-if="topic" class="table table-striped forum  table-responsive" infinite-scroll="getNextPage()" infinite-scroll-distance="1" infinite-scroll-disabled="pageLoading||atBottomOfTopic">
         <thead>
         <th class="cell-stat"></th>
         <th><button ui-sref="createThread({topicId:topic._id})" class="btn-sm btn btn-primary" ng-show="logged_in_user"><span class="fa fa-plus-square-o"></span> New Thread</button></th>

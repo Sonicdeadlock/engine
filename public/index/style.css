@@ -137,3 +137,7 @@ hr{
     margin-top: 2px;
     margin-bottom: 2px;
 }
+
+forum-post div{
+    padding:0px 10px;
+}
