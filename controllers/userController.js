@@ -43,6 +43,12 @@ module.exports.create = function(req,res){
             userData.password = hash(userData.salt, userData.password);
             permissionGroup.findOne({default:true},'_id')
             .then(function(group){
+                if(!group){
+                    res.status(500).send("No Default Group");
+                    console.error("No Default Group");
+                    throw "No Default Group";
+                }
+
                 var u = new user(userData);
                 u.group = group._id;
                 u.save(function(err,data){

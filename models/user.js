@@ -15,7 +15,8 @@ var userSchema = new schema({
     group:{
         type: schema.Types.ObjectId,
         ref:"permissionGroup",
-        field:'_id'
+        field:'_id',
+        required:true
     },
     chat:{
         nameColor:String,
