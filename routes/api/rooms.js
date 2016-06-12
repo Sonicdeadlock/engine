@@ -4,28 +4,29 @@
 var express = require('express');
 var router = express.Router();
 var roomController = require('../../controllers/roomController');
+var userController = require('../../controllers/userController');
 
 router.route('/')
-    .get(roomController.get)
-    .post(roomController.create);
+    .get(userController.hasAuthorization(['Room Admin']),roomController.get)
+    .post(userController.hasAuthorization(['Room Admin']),roomController.create);
 
 router.route('/delete/:id')
-    .delete(roomController.remove);
+    .delete(userController.hasAuthorization(['Room Admin']),roomController.remove);
 
 router.route('/addBot')
-    .post(roomController.addBot);
+    .post(userController.hasAuthorization(['Room Admin']),roomController.addBot);
 router.route('/removeBot')
-    .post(roomController.removeBot);
+    .post(userController.hasAuthorization(['Room Admin']),roomController.removeBot);
 router.route('/removeBan')
-    .post(roomController.removeBan);
+    .post(userController.hasAuthorization(['Room Admin']),roomController.removeBan);
 router.route('/changeDescription')
-    .post(roomController.changeDescription);
+    .post(userController.hasAuthorization(['Room Admin']),roomController.changeDescription);
 router.route('/changeName')
-    .post(roomController.changeName);
+    .post(userController.hasAuthorization(['Room Admin']),roomController.changeName);
 router.route('/changeOptions')
-    .post(roomController.changeOptions);
+    .post(userController.hasAuthorization(['Room Admin']),roomController.changeOptions);
 router.route('/changePassword')
-    .post(roomController.changePassword);
+    .post(userController.hasAuthorization(['Room Admin']),roomController.changePassword);
 
 
 module.exports = router;
