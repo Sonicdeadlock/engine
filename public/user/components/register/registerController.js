@@ -1,7 +1,7 @@
 /**
  * Created by alexthomas on 7/21/15.
  */
-angular.module('controllers').controller('registerController',function($scope,$http,$state,$stateParams){
+angular.module('controllers').controller('registerController',function($scope,$http,$state,$stateParams,$alert){
     $scope.register = {};
     $scope.submit = function(){
         $http.post('/auth/register',$scope.register).
@@ -12,6 +12,12 @@ angular.module('controllers').controller('registerController',function($scope,$h
                 window.location ="/";
         }).
         error(function(data,status){
+                if(_.isArray(data))
+                data=data.join(',');
+                if(status==500)
+                $scope.error = "Internal Server Error. Get Help";
+            else
+                $scope.error = data;
                 console.log(data);
             });
     };
