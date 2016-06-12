@@ -30,7 +30,7 @@
     <table ng-if="topic" class="table table-striped forum  table-responsive" infinite-scroll="getNextPage()" infinite-scroll-distance="1" infinite-scroll-disabled="pageLoading||atBottomOfTopic">
         <thead>
         <th class="cell-stat"></th>
-        <th><button ui-sref="createThread({topicId:topic._id})" class="btn-sm btn btn-primary" ng-show="logged_in_user"><span class="fa fa-plus-square-o"></span> New Thread</button></th>
+        <th ng-if="topic._id"><button ui-sref="createThread({topicId:topic._id})" class="btn-sm btn btn-primary" ng-show="logged_in_user"><span class="fa fa-plus-square-o"></span> New Thread</button></th>
         <th class="cell-stat"> Views</th>
         <th class="cell-stat"> Posts</th>
         <th class="cell-stat-2x">Created by</th>

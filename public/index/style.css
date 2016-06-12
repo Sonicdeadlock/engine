@@ -48,11 +48,11 @@
 }
 
 .forum.table th.cell-stat {
-    width: 6em;
+    width: 4em;
 }
 
 .forum.table th.cell-stat-2x {
-    width: 14em;
+    width: 10em;
 }
 
 textarea.forumTextArea{
