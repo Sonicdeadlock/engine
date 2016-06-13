@@ -11,16 +11,17 @@ var chat = require('../chat');
 
 var rooms = [];
 var hangmanParts = [
-    'Your hangman now has a head',
-    'Your hangman now has a body',
-    'Your hangman now has a right arm',
-    'Your hangman now has a left arm',
-    'Your hangman now has a right hand',
-    'Your hangman now has a left hand',
-    'Your hangman now has a right leg',
-    'Your hangman now has a left leg',
-    'Your hangman now has a right foot',
-    'Your hangman now has a left foot'
+    '<img class="hangman-image" src="/images/hangman/0.png"alt="Missing Image"></img>',
+    'Your hangman now has a head <img class="hangman-image" src="/images/hangman/1.png"alt="Missing Image"></img>',
+    'Your hangman now has a body <img class="hangman-image" src="/images/hangman/2.png"alt="Missing Image"></img>',
+    'Your hangman now has a right arm <img class="hangman-image" src="/images/hangman/3.png"alt="Missing Image"></img>',
+    'Your hangman now has a left arm <img class="hangman-image" src="/images/hangman/4.png"alt="Missing Image"></img>',
+    'Your hangman now has a right hand <img class="hangman-image" src="/images/hangman/5.png"alt="Missing Image"></img>',
+    'Your hangman now has a left hand <img class="hangman-image" src="/images/hangman/6.png"alt="Missing Image"></img>',
+    'Your hangman now has a right leg <img class="hangman-image" src="/images/hangman/7.png"alt="Missing Image"></img>',
+    'Your hangman now has a left leg <img class="hangman-image" src="/images/hangman/8.png"alt="Missing Image"></img>',
+    'Your hangman now has a right foot <img class="hangman-image" src="/images/hangman/9.png"alt="Missing Image"></img>',
+    'Your hangman now has a left foot <img class="hangman-image" src="/images/hangman/10.png"alt="Missing Image"></img>'
 ];
 
 function setWord(room,word,cb){
@@ -121,11 +122,13 @@ function guessLetter(room,letter,roomChatCallback){
             var chat = preparedWord;
             chat += '<br>';
             chat += finishedWord?'You finished the word!':'Guessed Letters:'+guessedLetters;
+            chat += '<br>';
+            chat += hangmanParts[room.strikes];
             roomChatCallback(chat);
         }
         else{
             room.strikes++;
-            if(room.strikes<hangmanParts.length){
+            if(room.strikes<hangmanParts.length-1){
                 var chat = preparedWord;
                 chat += '<br>';
                 chat += 'Guessed Letters: '+guessedLetters;

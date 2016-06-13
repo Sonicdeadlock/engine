@@ -14,7 +14,7 @@
 .chat{
     padding:4px 5px 4px 5px;
     margin:0;
-
+    position: relative;
 }
 
 .chat:nth-child(even) {
@@ -140,4 +140,10 @@ hr{
 
 forum-post div{
     padding:0px 10px;
+}
+
+.hangman-image{
+    position: absolute;
+    top: 5px;
+    right: 10px;
 }
