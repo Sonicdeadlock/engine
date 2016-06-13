@@ -15,6 +15,7 @@ angular.module('controllers').controller('homeController',function($scope,$http,
     $scope.page = function(page){
         $http.get('/api/update_notes?limit='+page_size+'&skip='+page_size*page).success(function(data){
             $scope.update_notes = data;
+            $scope.currentPage=page;
         });
     };
 
