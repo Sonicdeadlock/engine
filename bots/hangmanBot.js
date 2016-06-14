@@ -92,8 +92,16 @@ function chatInduction(user,room,chat,roomChatCallback,userChatCallback){
             }
             else{
                 var character = chat.substr('!guess '.length);
-
-                if(character.length>1){
+                if(_.lowerCase(character) === _.lowerCase(matchedRoom.word)){
+                    matchedRoom.guessedLetters = _.union(matchedRoom.guessedLetters,character.split(''));
+                    var chat = character;
+                    chat += '<br>';
+                    chat += 'You finished the word!';
+                    chat += '<br>';
+                    chat += hangmanParts[matchedRoom.strikes];
+                    roomChatCallback(chat);
+                }
+                else if(character.length>1){
                     userChatCallback('Please only guess one character');
                 }
                 else if(character.length<1){
@@ -118,10 +126,10 @@ function guessLetter(room,letter,roomChatCallback){
         var preparedWord = prepareWord(room.guessedLetters,room.word);
         var guessedLetters = '[ '+room.guessedLetters.join(', ')+']';
         if(room.word.indexOf(letter)!=-1){
-            var finishedWord = _.replace(preparedWord,'&nbsp&nbsp',' ') == room.word;
+            var isFinishedWord = _.replace(preparedWord,'&nbsp&nbsp',' ') == room.word;
             var chat = preparedWord;
             chat += '<br>';
-            chat += finishedWord?'You finished the word!':'Guessed Letters:'+guessedLetters;
+            chat += isFinishedWord?'You finished the word!':'Guessed Letters:'+guessedLetters;
             chat += '<br>';
             chat += hangmanParts[room.strikes];
             roomChatCallback(chat);
