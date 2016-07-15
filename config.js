@@ -1,3 +1,4 @@
+var path = require('path');
 module.exports = {
     web: {
         entryPointFile: 'index.html',
@@ -38,5 +39,10 @@ module.exports = {
     },
     chat:{
         hookTimeout:1000
+    },
+    imageEngine:{
+        classPath:path.join(__dirname,'/bin/','ImageEngineInterpreter.jar'),
+        enabled:true,
+        dir:'/images/'
     }
 };

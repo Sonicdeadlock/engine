@@ -46,8 +46,8 @@ app.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$urlRo
                     controller:"homeController"
                 }
             }
-        }).
-        state('remove_character',{
+        })
+        .state('remove_character',{
         url:'/remove_character',
         views:{
             navbar:{
@@ -59,8 +59,8 @@ app.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$urlRo
                 controller:"remove_characterController"
             }
         }
-    }).
-        state('replace_character',{
+    })
+        .state('replace_character',{
         url:'/replace_character',
         views:{
             navbar:{
@@ -72,9 +72,21 @@ app.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$urlRo
                 controller:"replace_characterController"
             }
         }
-    });
+    })
+        .state('image',{
+           url:"/image",
+        views:{
+            navbar:{
+                templateUrl:'components/navbar/navbarView.html',
+                controller:'navbarController'
+            },
+            content:{
+                templateUrl:'components/image/imageView.html',
+                controller:'image_controller'
+            }
+        }});
 }]);
 
-angular.module('controllers',['ngAnimate','mgcrea.ngStrap','ngCookies']);
+angular.module('controllers',['ngAnimate','mgcrea.ngStrap','ngCookies','ngFileUpload']);
 angular.module('directives',['ngAnimate','mgcrea.ngStrap']);
 angular.module('services',[]);

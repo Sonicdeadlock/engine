@@ -25,8 +25,8 @@ var auth = require('./routes/auth');
 
 //Configure Express
 app.use('/bower_components', express.static(__dirname + '/bower_components'));
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.use(session({
     store:new SessionStore({mongooseConnection:db}),
     secret:config.session.secret,

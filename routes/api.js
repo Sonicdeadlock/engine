@@ -11,6 +11,7 @@ var hangman = require('./api/hangman');
 var rooms = require('./api/rooms');
 var update_notes = require('./api/update_notes');
 var forum = require('./api/forum');
+var imageEngine = require('./api/imageEngine');
 
 
 //route apis
@@ -22,5 +23,6 @@ router.use('/hangman',hangman);
 router.use('/rooms',rooms);
 router.use('/update_notes',update_notes);
 router.use('/forum',forum);
+router.use('/imageEngine',imageEngine);
 
 module.exports = router;
