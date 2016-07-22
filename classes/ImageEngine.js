@@ -21,7 +21,7 @@ function renderImage(file_dir,tolerance,charset){
         });
         renderer.on("close",function(code){
             if(code===0){
-                var new_dir = config.imageEngine.dir+ _.last(file_dir.split(new RegExp('[\\\\\\/]'))).split('.')[0]+"_ascii.png";
+                var new_dir = config.imageEngine.dir+ _.last(file_dir.split(new RegExp('[\\\\\\/]'))).split('.')[0]+"_Ascii.png";
                 resolve(new_dir)
             }else{
                 reject()
