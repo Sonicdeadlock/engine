@@ -5,6 +5,7 @@
 var config = require('./config');
 var _ = require('lodash');
 var express = require('express');
+var compression = require('compression');
 var bodyParser = require('body-parser');
 var app = express();
 var session = require('express-session');
@@ -23,7 +24,9 @@ var api = require('./routes/api');
 var auth = require('./routes/auth');
 
 
+
 //Configure Express
+app.use(compression());
 app.use('/bower_components', express.static(__dirname + '/bower_components'));
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
