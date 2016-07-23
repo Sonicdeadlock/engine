@@ -98,7 +98,7 @@ forum_postSchema
     .pre('find', populateCreator);
 
 function populateCreator(next){
-    this.populate('creator');
+    this.populate('creator','username group');
     next();
 }
 module.exports = mongoose.model('forum_post',forum_postSchema);

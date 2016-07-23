@@ -181,7 +181,6 @@ module.exports.self = function(req,res){
             message: 'User is not logged in'
         });
     }
-
     next();
 };
 
@@ -214,8 +213,18 @@ module.exports.self = function(req,res){
 });
 
  passport.deserializeUser(function(id, done) {
-    user.findById(id).populate('group').exec( function(err, user) {
-        done(err, user);
+    user.findById(id)
+        .populate('group','permissions userAccess').exec( function(err, user) {
+        permissionGroup.populate(user,{
+            path:'group',
+            select:"userAccess permissions",
+            model:permissionGroup
+        }).then(function(user){
+            done(err, user);
+        },function(err){
+            done(err, user);
+        });
+
     });
 });
 

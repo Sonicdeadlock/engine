@@ -187,7 +187,7 @@ app.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$urlRo
             }
         })
         .state('thread',{
-            url:'/forum/thread/:threadId?limit&skip',
+            url:'/forum/thread/:threadId?limit&skip&postId',
             views:{
                 navbar:{
                     templateUrl:"components/navbar/navbarView.html",

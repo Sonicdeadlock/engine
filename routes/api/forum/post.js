@@ -19,6 +19,8 @@ var userController = require('../../../controllers/userController');
 
 router.route('/')
     .post(userController.requiresLogin,forumController.createPost);
+router.route('/user/:userId')
+    .get(forumController.getPostByUser);
 
 router.route('/:postId')
     .get(forumController.getPost)
@@ -51,5 +53,7 @@ router.route('/:postId/reply')
 
 router.route("/:postId/mark/:type")
     .patch(userController.requiresLogin,forumController.markPost);
+
+
 
 module.exports = router;

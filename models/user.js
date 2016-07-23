@@ -43,7 +43,7 @@ userSchema
     .pre('find', populateGroup);
 
 function populateGroup(next){
-    this.populate('group');
+    this.populate('group','name');
     next();
 }
 

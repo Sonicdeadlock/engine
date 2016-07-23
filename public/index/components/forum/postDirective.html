@@ -1,4 +1,4 @@
-<div class="clearfix">
+<div class="clearfix" id="{{post._id}}">
     <p>
         <a ng-class="{'creator':post.creator._id==thread.creator._id}" ui-sref="userPage({userId:post.creator._id})" class="post-user">{{post.creator.username}}</a>
         <span class="post-role"><span ng-if="post.creator.group.name.indexOf('Admin')>-1" class="fa fa-shield"></span>&nbsp{{post.creator.group.name}}</span>

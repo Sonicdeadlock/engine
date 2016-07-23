@@ -110,7 +110,7 @@ angular.module('controllers').controller('threadController',function($scope,$htt
         $('html, body').animate({
             scrollTop: $("#main-reply-panel").offset().top
         }, 700);
-        $("#main-reply-panel textarea").focus();
+        $("#main-reply-panel").find("textarea").focus();
         $scope.replyPost = post;
     };
 
@@ -127,16 +127,16 @@ angular.module('controllers').controller('threadController',function($scope,$htt
     };
 
     $scope.hasMarkedType = function(type,post){
-        if(type==="agree" && post.agreedBy.indexOf($rootScope.logged_in_user._id)!=-1){
+        if(type==="agree" && $rootScope.logged_in_user && post.agreedBy.indexOf($rootScope.logged_in_user._id)!=-1){
             return true;
         }
-        else if(type==="informative" && post.markedInformativeBy.indexOf($rootScope.logged_in_user._id)!=-1){
+        else if(type==="informative" && $rootScope.logged_in_user && post.markedInformativeBy.indexOf($rootScope.logged_in_user._id)!=-1){
             return true;
         }
-        else if(type==="funny" && post.markedFunnyBy.indexOf($rootScope.logged_in_user._id)!=-1){
+        else if(type==="funny" && $rootScope.logged_in_user && post.markedFunnyBy.indexOf($rootScope.logged_in_user._id)!=-1){
             return true;
         }
-        else if(type==="thumbsUp" && post.thumbedUpBy.indexOf($rootScope.logged_in_user._id)!=-1){
+        else if(type==="thumbsUp" && $rootScope.logged_in_user && post.thumbedUpBy.indexOf($rootScope.logged_in_user._id)!=-1){
             return true;
         }
         return false;

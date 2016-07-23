@@ -214,9 +214,17 @@ function markPost(postId,type,markingUserId){
 }
 
 function getThread(id){
-
+//TODo:
 }
 
+
+function getPoststByUser(userId,limit,skip){
+    return forum_post_model.find({creator:userId},'body thread creator lastUpdateTime creationTime').populate('creator','username')
+        .populate('thread','title')
+        .sort('-creationTime')
+        .skip(skip)
+        .limit(limit);
+}
 
 module.exports = {
     getPost:function(req,res){
@@ -383,6 +391,15 @@ module.exports = {
             function(err){
                 console.error(err);
                 res.status(500).send("Error marking the post");
+            });
+    },
+    getPostByUser:function(req,res){
+        var limit = req.query.limit || 15;
+        if(limit>100)
+            limit = 100;
+        getPoststByUser(req.params.userId,limit,req.query.skip||0)
+            .then(function(results){
+                res.json(results);
             });
     }
 

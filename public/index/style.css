@@ -147,3 +147,18 @@ forum-post div{
     top: 5px;
     right: 10px;
 }
+
+hr.hr-tall{
+    margin-top:20px;
+    margin-bottom: 20px;
+    border-top:1px solid #ccc;
+}
+
+.user-page-activity{
+    padding:5px;
+}
+
+.user-page-activity:nth-child(even){
+    background-color: #dedede;
+    border-radius: 5px;
+}

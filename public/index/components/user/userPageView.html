@@ -26,66 +26,18 @@
             </tr>
         </table>
     </div>
-    <!--<table class="table table-striped">-->
-        <!--<tr ng-if="userData.firstName">-->
-            <!--<td>First Name</td>-->
-            <!--<td>{{userData.firstName}}</td>-->
-        <!--</tr>-->
-        <!--<tr ng-if="userData.lastName">-->
-            <!--<td>Last Name</td>-->
-            <!--<td>{{userData.lastName}}</td>-->
-        <!--</tr>-->
-        <!--<tr ng-if="userData.email">-->
-            <!--<td>Email</td>-->
-            <!--<td>{{userData.email}}</td>-->
-        <!--</tr>-->
-    <!--</table>-->
-    <!--<div ng-if="userData.strikes">-->
-        <!--<hr>-->
-        <!--<table class="table table-striped">-->
-            <!--<tr>-->
-                <!--<td>Banned Words Strikes</td>-->
-                <!--<td>{{userData.strikes.chat}}</td>-->
-            <!--</tr>-->
-            <!--<tr>-->
-                <!--<td>Bans</td>-->
-                <!--<td>{{userData.strikes.bans}}</td>-->
-            <!--</tr>-->
-        <!--</table>-->
-    <!--</div>-->
-    <!--<div ng-if="userData.group">-->
-        <!--<hr>-->
-        <!--<h3>Group</h3>-->
-        <!--<table class="table table-striped">-->
-            <!--<tr>-->
-                <!--<td>Group Name</td>-->
-                <!--<td>{{userData.group.name}}</td>-->
-            <!--</tr>-->
-            <!--<tr>-->
-                <!--<td>ID</td>-->
-                <!--<td>{{userData.group._id}}</td>-->
-            <!--</tr>-->
-            <!--<tr>-->
-                <!--<td>Default Group</td>-->
-                <!--<td>{{userData.group.default}}</td>-->
-            <!--</tr>-->
-            <!--<tr>-->
-                <!--<td>Has Access to User data </td>-->
-                <!--<td>-->
-                    <!--<ul>-->
-                        <!--<li ng-repeat="access in userData.group.userAccess.split(' ')">{{access}}</li>-->
-                    <!--</ul>-->
-                <!--</td>-->
-            <!--</tr>-->
-            <!--<tr>-->
-                <!--<td>Permissions</td>-->
-                <!--<td>-->
-                    <!--<ul>-->
-                        <!--<li ng-repeat="permission in userData.group.permissions">{{permission}}</li>-->
-                    <!--</ul>-->
-                <!--</td>-->
-            <!--</tr>-->
-        <!--</table>-->
+    <div infinite-scroll="getNextForumPostPage()" infinite-scroll-distance="1" infinite-scroll-disabled="forumPostPageLoading||bottomOfForumPostData">
+        <div class="col-md-9">
+            <div ng-repeat="activity in activities"  class=" container user-page-activity">
+                <div ng-switch="activity.activityType">
+                    <div ng-switch-when="post">
+                        <a ui-sref="thread({threadId:activity.thread._id,postId:activity._id})">{{activity.thread.title}}</a>
+                        <p>{{userData.username}} posted on {{activity.thread.title}} on {{activity.creationTime|date:'medium'}}</p>
+                        <div ng-bind-html="getHTMLMarkdown(activity)" ></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <!--</div>-->
 </div>

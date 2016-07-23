@@ -37,7 +37,7 @@ router.route('/:threadId')
                 });
 
                 var getThreadPostsQuery = forum_post_model.find({thread:req.params.threadId});
-                getThreadPostsQuery.sort('-createTime');
+                getThreadPostsQuery.sort('-creationTime');
                 if(req.query.skip)
                     getThreadPostsQuery.skip(req.query.skip);
 
