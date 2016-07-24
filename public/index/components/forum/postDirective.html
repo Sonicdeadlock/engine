@@ -5,7 +5,7 @@
         <small class="pull-right" bs-tooltip data-title="{{post.lastUpdateTime| date:'medium'}}">{{post.lastUpdateTime===post.creationTime?'posted':'last edited'}}&nbsp{{post.lastUpdateTime|timeAgo}}</small>
 
     </p>
-    <div ng-hide="post._id&&postEditing._id==post._id" ng-bind-html="getHTMLMarkdown(post)">
+    <div ng-hide="post._id&&postEditing._id==post._id" ng-bind-html="post.htmlMarkdown">
 
     </div>
     <div ng-show="post._id&&postEditing._id==post._id" class="clearfix">

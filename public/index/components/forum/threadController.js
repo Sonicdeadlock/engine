@@ -18,7 +18,9 @@ angular.module('controllers').controller('threadController',function($scope,$htt
                     data.history.forEach(function(event){
                        data.posts.push({htmlBody:event.actor.username+" "+event.action+'ed this post at '+event.date,creationTime:event.date,lastUpdateTime:event.date})
                     });
+                    data.posts = [];
                     $scope.thread = data;
+                    $scope.getNextPage();
 
                 }).error(function(err){$scope.errs.push(err);$scope.pageLoading=false;$scope.atBottomOfThread=true;});
         }
@@ -68,14 +70,16 @@ angular.module('controllers').controller('threadController',function($scope,$htt
     };
     $scope.getNextPage= function(){
       $scope.pageLoading = true;
-        page++;
+
         $http.get('/api/forum/threads/'+$stateParams.threadId+'?limit='+pageSize+'&skip='+(page*pageSize))
             .success(function(data){
+                page++;
                 $scope.pageLoading = false;
                 if(_.isEmpty(data.posts))
                 $scope.atBottomOfThread=true;
                data.posts.forEach(function(post){
                    if(post.body){
+                       populatePostHTML(post);
                        $scope.thread.posts.push(post);
                    }
 
@@ -113,8 +117,15 @@ angular.module('controllers').controller('threadController',function($scope,$htt
         $("#main-reply-panel").find("textarea").focus();
         $scope.replyPost = post;
     };
-
-    $scope.getHTMLMarkdown=function(post){
+    function populatePostHTML(post){
+        post.htmlMarkdown = getHTMLMarkdown(post);
+        if(post.replies){
+            post.replies.forEach(function(reply){
+                populatePostHTML(reply);
+            });
+        }
+    }
+    function getHTMLMarkdown (post){
         if(post.body)
         return markdown.toHTML(post.body);
         else

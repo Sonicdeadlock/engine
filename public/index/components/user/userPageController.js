@@ -24,18 +24,27 @@ angular.module('controllers').controller('userPageController',function($scope,$h
             }else{
                 data.forEach(function(post){
                     post.activityType = 'post';
+                   populatePostHTML(post);
                     $scope.activities.push(post);
                 })
             }
         })
         .error(function(err){
+            console.error(err);
             $scope.forumPostPageLoading =false;
             $scope.bottomOfForumPostData = true;
         });
         forumPostPage++;
     };
-
-    $scope.getHTMLMarkdown=function(post){
+    function populatePostHTML(post){
+        post.htmlMarkdown = getHTMLMarkdown(post);
+        if(post.replies){
+            post.replies.forEach(function(reply){
+               populatePostHTML(reply); 
+            });
+        }
+    }
+    function getHTMLMarkdown(post){
         if(post.body)
             return markdown.toHTML(post.body);
         else

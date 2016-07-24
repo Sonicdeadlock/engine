@@ -33,7 +33,7 @@
                     <div ng-switch-when="post">
                         <a ui-sref="thread({threadId:activity.thread._id,postId:activity._id})">{{activity.thread.title}}</a>
                         <p>{{userData.username}} posted on {{activity.thread.title}} on {{activity.creationTime|date:'medium'}}</p>
-                        <div ng-bind-html="getHTMLMarkdown(activity)" ></div>
+                        <div ng-bind-html="activity.htmlMarkdown" ></div>
                     </div>
                 </div>
             </div>

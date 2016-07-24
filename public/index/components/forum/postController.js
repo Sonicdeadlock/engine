@@ -5,6 +5,7 @@ angular.module('controllers').controller('postController',function($scope,$http,
 
     function update(){
         $http.get('/api/forum/posts/'+$stateParams.postId).success(function(data){
+            populatePostHTML(data);
             $scope.post = data;
         }).error(function(err){
             $scope.err =err;
@@ -28,10 +29,18 @@ angular.module('controllers').controller('postController',function($scope,$http,
             $scope.err =err;
         });
     };
+    function populatePostHTML(post){
+        post.htmlMarkdown = getHTMLMarkdown(post);
+        if(post.replies){
+            post.replies.forEach(function(reply){
+                populatePostHTML(reply);
+            });
+        }
+    }
     $scope.edit = function(post){
         $scope.postEditing = _.cloneDeep(post);
     };
-    $scope.getHTMLMarkdown=function(post){
+    function getHTMLMarkdown(post){
         return markdown.toHTML(post.body);
     };
 
