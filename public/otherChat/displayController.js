@@ -12,6 +12,7 @@ angular.module('userApp').controller("displayController",["$rootScope","$scope",
             addItem({text:username+" has left the room"});
         });
         socket.on('chatServerToClient',function(message){
+            message.text = message.text.split('&nbsp;').join(' ');
             addItem(message);
         });
         socket.on('chatRooms',function(chatRooms){
@@ -50,6 +51,6 @@ angular.module('userApp').controller("displayController",["$rootScope","$scope",
                 $scope.items.push(buffer.shift());
             }
 
-        },40)
+        },10)
 
 }]);
