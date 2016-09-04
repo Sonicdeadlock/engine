@@ -41,8 +41,7 @@ function init(){
     Room.find({bots:{"$elemMatch":{name:"battleship"}}}).then(function(roomResults){
         roomResults.forEach(function(room){
             //room init
-            room.players = [];
-            room.currentPlayerIndex=0;
+            clearGame(room);
             //hook init
             chat.on('enterRoom',room._id,function(user,chatToRoom,chatToUser){
                chatToUser("WARNING: Battleship is not suitable for mobile devices. YOU HAVE BEEN WARNED!")
@@ -218,8 +217,15 @@ function preChat(user,room,text,chatToUser,chatToRoom){
                 }else{
                     var result = attack(room.players[playerIndex==0?1:0],parts[1]);
                     if(result.success){
-                        setTimeout(chatToRoom.bind(this,result.response),20);//delay to let the user's chat go first
-                        room.currentPlayerIndex = playerIndex==0?1:0;
+                        setTimeout(function(){
+                            chatToRoom(result.response);
+                            if(result.win)
+                            {
+                                chatToRoom(room.players[playerIndex].username+" just won!");
+                                clearGame(room);
+                            }
+                        },20);//delay to let the user's chat go first
+                        if(!result.win) room.currentPlayerIndex = playerIndex==0?1:0;
                     }else{
                         chatToUser(result.response);
                         return false;
@@ -228,6 +234,11 @@ function preChat(user,room,text,chatToUser,chatToRoom){
             }
         }
     }
+}
+
+function clearGame(room){
+    room.players = [];
+    room.currentPlayerIndex=0;
 }
 
 function makeBoard(grid,masked){
@@ -354,6 +365,11 @@ function attack(player,coord){
                 ship.hits+=1;
                 if(ship.hits==ship.size){
                     response+=" You sunk my "+ship.type;
+                    ship.sunk = true;
+                    var hasUnsunkShip = _(player.ships).map('sunk').reduce(function(hasFoundUnsunk,currentIsSunk){return hasFoundUnsunk || !currentIsSunk},true).value();
+                    if(!hasUnsunkShip){
+                        return {response:response,success:true,win:true};
+                    }
                 }
             }
         });
