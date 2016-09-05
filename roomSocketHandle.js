@@ -33,20 +33,6 @@ function updateRooms(){
 function connect(socket){
     emitRooms(socket);
 
-    var user = socket.client.request.user;
-    socket.on('deleteRoom',function(roomId){
-        room.findOne({_id:roomId}).then(function(result){
-            if(result){
-                if(user.hasPermission('Room Admin') && (result.deletable || user.hasPermission('god'))){
-                    room.findOneAndRemove({_id:roomId}).then(function(){
-                            emitRooms(io);
-
-                    })
-
-                }
-            }
-        })
-    });
     socket.on('getRooms',function(){
         emitRooms(socket);
     });

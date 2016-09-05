@@ -1,27 +1,4 @@
-<div ng-hide="chatRoom!= undefined">
-    <div class="col-md-2">
-       <div>
-           <h3>Room Bot filter</h3>
-           <div class="btn-group btn-group-vertical">
-               <label class="btn btn-default" ng-repeat="bot in bots"  bs-checkbox ng-model="roomFilter.bots[bot]" >{{bot}} </label>
-           </div>
-       </div>
-    </div>
-    <div class="col-md-9" >
-        <div class="input-group">
-            <span class="input-group-addon"><span class="fa fa-search"></span></span>
-            <input ng-model="roomFilter.searchText" class="form-control">
-        </div>
-        <br>
-        <div>
-            <room ng-repeat="room in displayRooms">
-
-            </room>
-        </div>
-    </div>
-</div>
-
-<div style="height: 70%; z-index: 2" id="topDiv" ng-show="chatRoom!= undefined" class="am-slide-right">
+<div style="height: 70%; z-index: 2" id="topDiv" ng-show="chatRoom">
     <div class=" col-sm-12 col-md-11">
         <h1 class="col-md-offset-1">{{chatRoom.name}}</h1>
         <small class="col-md-offset-1">{{chatRoom.description}}</small>

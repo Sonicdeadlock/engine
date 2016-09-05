@@ -70,8 +70,21 @@ app.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$urlRo
                     controller:"homeController"
                 }
             }
-        }).state('chat',{
-            url:'/chat',
+        }).state('rooms',{
+        url:"/rooms?filters",
+        views:{
+            navbar:{
+                templateUrl:'components/navbar/navbarView.html',
+                controller:'navbarController'
+            },
+            content:{
+                templateUrl:'components/chat/roomView.html',
+                controller:'chatController'
+            }
+        }
+    })
+        .state('chat',{
+            url:'/chat/:roomId?filters&hasPassword',
             views:{
                 navbar:{
                     templateUrl:"components/navbar/navbarView.html",
@@ -82,8 +95,7 @@ app.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$urlRo
                     controller:"chatController"
                 }
             }
-        })
-        .state('userPage',{
+        })        .state('userPage',{
             url:'/user/:userId',
             views:{
                 navbar:{

@@ -1,12 +1,12 @@
 
 if ('Notification' in window && Notification.permission !== "granted")
     Notification.requestPermission();
-angular.module('controllers').controller('chatController',function($scope,$http,$state,$rootScope,$cookies,socket,$alert,$modal){
+angular.module('controllers').controller('chatController',function($scope,$http,$state,$rootScope,$cookies,socket,$alert,$modal,$stateParams){
 
     $scope.chats = [];
     $scope.distplayHistory = [];
     $scope.mods = [];
-    $scope.roomFilter = {bots:{}};
+    $scope.roomFilter = ($stateParams.filters && $stateParams.filters!='')?JSON.parse($stateParams.filters): {bots:{}};
     $scope.modTypes = [
         {
             name:'removeCharacter',
@@ -58,13 +58,19 @@ angular.module('controllers').controller('chatController',function($scope,$http,
     });
 
     socket.on('chatRooms',function(rooms){
-        $scope.rooms = rooms;
-        $scope.bots = _.chain(rooms).map(function(o){
-            return _.map(o.bots,'name')
-        })
-            .flatten().uniq()
-            .value();
-        filterRooms();
+        if($stateParams.roomId && $stateParams.roomId!==""){
+            if(!($scope.enteringRoom || $scope.chatRoom))
+            $scope.enterRoom(_.find(rooms,{_id:$stateParams.roomId}));
+        }else{
+            $scope.rooms = rooms;
+            $scope.bots = _.chain(rooms).map(function(o){
+                return _.map(o.bots,'name')
+            })
+                .flatten().uniq()
+                .value();
+            filterRooms();
+        }
+
     });
     socket.on('connect',function(){
        if($scope.chatRoom){
@@ -94,6 +100,7 @@ angular.module('controllers').controller('chatController',function($scope,$http,
         $scope.chatRoom = undefined;
         $scope.chats = [];
         socket.emit('getRooms',{});
+        $state.go("rooms",{filters:$stateParams.filters});
     };
     $scope.sendChat = function(){
         socket.emit('chatClientToServer',{text:$scope.chatBox,mods:$scope.mods});
@@ -149,17 +156,8 @@ angular.module('controllers').controller('chatController',function($scope,$http,
         _.pull($scope.mods,mod);
     };
 
-
-    $scope.deleteRoom = function(room,$event){
-        var roomId = room._id;
-      socket.emit('deleteRoom',roomId);
-        $event.stopPropagation();
-        setTimeout(function(){
-            socket.emit('getRooms',{})
-        },200);
-    };
-
     $scope.enterRoom = function(room,password){
+        $scope.enteringRoom = true;
         if(room.hasPassword){
             if(password){
                 socket.emit('chatEnterRoom',{room:room,password:password});
@@ -169,12 +167,13 @@ angular.module('controllers').controller('chatController',function($scope,$http,
                 $scope.passwordModal.$promise.then($scope.passwordModal.show);
                 $scope.selectedRoom = room;
             }
-
-
         }
         else
             socket.emit('chatEnterRoom',{room:room});
-
+    };
+    
+    $scope.goToRoom=function(room){
+        $state.go('chat',{roomId:room._id,hasPassword:room.hasPassword,filters:JSON.stringify($scope.roomFilter)});
     };
 
     $scope.hasUsername = function(chat){
