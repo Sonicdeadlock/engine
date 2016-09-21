@@ -24,7 +24,8 @@ router.route('/ITAI')
                 var dir = path.join(__dirname,'/../..',config.web.publicPath,config.imageEngine.dir,file.name);
                 var dirParts = dir.split('.');
                 dir = dirParts[0]+uid(5)+'.'+dirParts[1];
-                fs.rename(file.path,dir,function(){
+                fs.rename(file.path,dir,function(err){
+                    console.error(err);
                     ImageEngine.renderImage(dir,req.body.tolerance,req.body.charset).then(function(new_dir){
                         res.status(200).send(new_dir);
                     },function(error){
