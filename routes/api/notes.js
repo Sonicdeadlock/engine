@@ -8,12 +8,13 @@ var notesDirController = require('../../controllers/noteDirController');
 var express = require('express');
 var router = express.Router();
 
-router.route('/')
+router.route('/note')
     .post(userController.requiresLogin,notesController.create);
 
 router.route('/note/:id')
     .get(notesController.getNote)
-    .patch(userController.requiresLogin,notesController.updateNote);
+    .patch(userController.requiresLogin,notesController.updateNote)
+    .delete(userController.requiresLogin,notesController.deleteNote);
 
 router.route('/note/:id/append')
     .post(userController.requiresLogin,notesController.append);

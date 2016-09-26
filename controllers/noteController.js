@@ -21,14 +21,25 @@ function updateNote(req,res){
     if(!req.body){
         res.status(412).send("Missing Body");
     }else{
+        if(req.body.body)
         notes.updateNoteBody(req.params.id,req.body.body)
             .then(function(note){
                 res.json(note);
             },function(err){
-                res.status(500).send(err);
+                res.status(412).send(err);
             });
+        if(req.body.title){
+            notes.updateNoteTitle(req.params.id,req.body.title)
+                .then(function(note){
+                    res.json(note);
+                },function(err){
+                    res.status(412).send(err);
+                });
+        }
     }
 }
+
+
 
 function getNote(req,res){
     Note.findById(req.params.id).then(function(note){
@@ -60,7 +71,7 @@ function patchPrivate(req,res){
     Note.findById(req.params.id).then(function(note){
         if(!note)
             throw "Invalid note";
-        if(note.owner != req.user._id && req.user.hasPermission("sudo")){
+        if(note.owner != req.user._id && !req.user.hasPermission("sudo")){
             throw "Invalid user to edit this note";
         }
         if(!req.body && !_.isSet(req.body.private))
@@ -78,7 +89,7 @@ function patchSharedEditable(req,res){
     Note.findById(req.params.id).then(function(note){
         if(!note)
             throw "Invalid note";
-        if(note.owner != req.user._id && req.user.hasPermission("sudo")){
+        if(note.owner != req.user._id && !req.user.hasPermission("sudo")){
             throw "Invalid user to edit this note";
         }
         if(!req.body && !_.isSet(req.body.sharedEditable))
@@ -92,11 +103,26 @@ function patchSharedEditable(req,res){
     });
 }
 
+function deleteNote(req,res){
+    Note.findById(req.params.id).then(function(note){
+        if(note.owner != req.user._id && !req.user.hasPermission("sudo")){
+            res.status(401).send();
+        }else{
+            Note.findByIdAndRemove(req.params.id).then(function(){
+                res.send("");
+            })
+        }
+    });
+
+
+}
+
 module.exports = {
     create:create,
     updateNote:updateNote,
     getNote:getNote,
     append:append,
     patchPrivate:patchPrivate,
-    patchSharedEditable:patchSharedEditable
+    patchSharedEditable:patchSharedEditable,
+    deleteNote:deleteNote
 };

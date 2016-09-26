@@ -36,7 +36,21 @@ function updateNoteBody(noteId,body){
     })
 }
 
+function updateNoteTitle(noteId,title){
+    return Note.findById(noteId).then(function(note){
+        if(!note)
+            throw "Invalid note ID";
+        else{
+            note.lastUpdateTime = Date.now();
+            note.title = title;
+            return note.save();
+        }
+    });
+}
+
+
 module.exports = {
     createNewNote:createNewNote,
-    updateNoteBody:updateNoteBody
+    updateNoteBody:updateNoteBody,
+    updateNoteTitle:updateNoteTitle
 };

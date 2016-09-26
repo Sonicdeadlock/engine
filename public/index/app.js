@@ -224,6 +224,19 @@ app.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$urlRo
                     controller:"forumSearchController"
                 }
             }
+        })
+        .state("notes",{
+            url:'/notes',
+            views:{
+                navbar:{
+                    templateUrl:"components/navbar/navbarView.html",
+                    controller:'navbarController'
+                },
+                content:{
+                    templateUrl:"components/notes/notesView.html",
+                    controller:"notesController"
+                }
+            }
         });
 }]);
 app.factory('socket', function (socketFactory) {

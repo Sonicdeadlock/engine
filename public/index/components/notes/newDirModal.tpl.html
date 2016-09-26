@@ -1,0 +1,18 @@
+<div class="modal" tabindex="-1">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <p>New Directory</p>
+            </div>
+            <div class="modal-body">
+                <form ng-submit="createDir(newDirNameInput)">
+                    <label>Name:</label>
+                    <input class="form-control" ng-model='newDirNameInput'/><br/>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class='btn btn-primary' ng-click='createDir(newDirNameInput)'>Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
