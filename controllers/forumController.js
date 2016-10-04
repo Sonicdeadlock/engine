@@ -317,10 +317,10 @@ module.exports = {
         })
     },
     getTopicChildren:function(req,res){
-        var limit = req.query.limit||15;
+        var limit = Number(req.query.limit)||15;
         if(limit>100)
             limit=15;
-        getTopicChildren(req.params.topicId,limit,req.query.skip)
+        getTopicChildren(req.params.topicId,limit,Number(req.query.skip))
         .then(function(results){
             res.json(results);
         },function(err){
@@ -338,10 +338,10 @@ module.exports = {
         else{
             throw 'No Tags';
         }
-        var limit = req.query.limit || 15;
+        var limit = Number(req.query.limit) || 15;
         if(limit>100)
         limit=15;
-        var skip = req.query.skip || 0;
+        var skip = Number(req.query.skip) || 0;
         forum_thread_model.find({tags:{$in:tags}})
             .sort('-creationTime')
             .limit(limit)
@@ -394,10 +394,10 @@ module.exports = {
             });
     },
     getPostByUser:function(req,res){
-        var limit = req.query.limit || 15;
+        var limit = Number(req.query.limit) || 15;
         if(limit>100)
             limit = 100;
-        getPoststByUser(req.params.userId,limit,req.query.skip||0)
+        getPoststByUser(req.params.userId,limit,Number(req.query.skip)||0)
             .then(function(results){
                 res.json(results);
             });

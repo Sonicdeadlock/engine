@@ -11,8 +11,8 @@ var permissionGroupModel = require('../models/permissionGroup');
 var permissionGroup = db.model('permissionGroup');
 
 var get = function(req,res){
-    var skip = req.query.skip || 0;
-    var limit = req.query.limit || 10;
+    var skip = Number(req.query.skip) || 0;
+    var limit = Number(req.query.limit) || 10;
     if(limit>25){
         limit = 25;
     }
@@ -28,8 +28,8 @@ var get = function(req,res){
                 model:permissionGroup
             }).then(function(results){
                 res.json(results);
-            })
-        });
+            },function(err){console.error(err);})
+        },function(err){console.error(err);});
 };
 
 var create = function(req,res){

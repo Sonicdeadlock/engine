@@ -25,7 +25,7 @@ router.route('/:threadId')
         var getThreadQuery = forum_thread_model.findById(req.params.threadId);
         getThreadQuery.populate('creator','username group');
         getThreadQuery.populate('history.actor','username');
-        var limit = req.query.limit || 15;
+        var limit = Number(req.query.limit) || 15;
         if(limit>100)
         limit = 15;
         getThreadQuery.then(function(result){
@@ -38,8 +38,8 @@ router.route('/:threadId')
 
                 var getThreadPostsQuery = forum_post_model.find({thread:req.params.threadId});
                 getThreadPostsQuery.sort('-creationTime');
-                if(req.query.skip)
-                    getThreadPostsQuery.skip(req.query.skip);
+                if(Number(req.query.skip))
+                    getThreadPostsQuery.skip(Number(req.query.skip));
 
                 getThreadPostsQuery.limit(limit);
 
