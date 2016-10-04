@@ -69,7 +69,8 @@ io.use(passportSocketIo.authorize({
     cookieParser: require('cookie-parser'),
     key:          'connect.sid',       //make sure is the same as in your session settings in app.js
     secret:       config.session.secret,      //make sure is the same as in your session settings in app.js
-    store:        new SessionStore({mongooseConnection:db})
+    store:        new SessionStore({mongooseConnection:db}),
+    fail: function(data, message, error, accept){if(error)  throw new Error(message);return accept();}
 }));
 
 io.on("connection",function(socket){

@@ -236,7 +236,46 @@ app.config(['$stateProvider','$urlRouterProvider',function($stateProvider,$urlRo
                     controller:"forumSearchController"
                 }
             }
-        });
+        })
+        .state("notes",{
+            url:'/notes',
+            views:{
+                navbar:{
+                    templateUrl:"components/navbar/navbarView.html",
+                    controller:'navbarController'
+                },
+                content:{
+                    templateUrl:"components/notes/notesView.html",
+                    controller:"notesController"
+                }
+            }
+        }).
+        state('appenderBuilder',{
+        url:'/appenderBuilder',
+        views:{
+            navbar:{
+                templateUrl:"components/navbar/navbarView.html",
+                controller:"navbarController"
+            },
+            content:{
+                templateUrl:"components/notes/appenderBuilderView.html",
+                controller:'appenderBuilderController'
+            }
+        }
+    }).
+    state('appenders',{
+        url:'/appenders',
+        views:{
+            navbar:{
+                templateUrl:"components/navbar/navbarView.html",
+                controller:"navbarController"
+            },
+            content:{
+                templateUrl:"components/notes/appenderView.html",
+                controller:'appenderController'
+            }
+        }
+    });
 }]);
 app.factory('socket', function (socketFactory) {
     return socketFactory({ioSocket: io.connect()});

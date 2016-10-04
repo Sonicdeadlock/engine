@@ -12,6 +12,7 @@ var rooms = require('./api/rooms');
 var update_notes = require('./api/update_notes');
 var forum = require('./api/forum');
 var imageEngine = require('./api/imageEngine');
+var notes = require('./api/notes');
 
 
 //route apis
@@ -24,5 +25,6 @@ router.use('/rooms',rooms);
 router.use('/update_notes',update_notes);
 router.use('/forum',forum);
 router.use('/imageEngine',imageEngine);
+router.use('/notes',notes);
 
 module.exports = router;
