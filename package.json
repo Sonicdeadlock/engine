@@ -21,6 +21,7 @@
     "connect-multiparty": "^2.0.0",
     "cookie-parser": "^1.4.1",
     "crypto": "0.0.3",
+    "dateformat": "^1.0.12",
     "express": "^4.13.4",
     "express-session": "^1.13.0",
     "lodash": "^4.6.1",

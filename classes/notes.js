@@ -48,9 +48,13 @@ function updateNoteTitle(noteId,title){
     });
 }
 
+function getByUser(userId){
+    return Note.find({owner:userId});
+}
 
 module.exports = {
     createNewNote:createNewNote,
     updateNoteBody:updateNoteBody,
-    updateNoteTitle:updateNoteTitle
+    updateNoteTitle:updateNoteTitle,
+    getByUser:getByUser
 };

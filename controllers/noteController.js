@@ -117,6 +117,12 @@ function deleteNote(req,res){
 
 }
 
+function getByUser(req,res){
+    notes.getByUser(req.user._id).then(function(notes){
+        res.json(notes);
+    });
+}
+
 module.exports = {
     create:create,
     updateNote:updateNote,
@@ -124,5 +130,6 @@ module.exports = {
     append:append,
     patchPrivate:patchPrivate,
     patchSharedEditable:patchSharedEditable,
-    deleteNote:deleteNote
+    deleteNote:deleteNote,
+    getByUser:getByUser
 };

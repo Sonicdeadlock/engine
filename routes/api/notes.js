@@ -5,11 +5,13 @@ var _ = require('lodash');
 var userController = require('../../controllers/userController');
 var notesController = require('../../controllers/noteController');
 var notesDirController = require('../../controllers/noteDirController');
+var appenderController = require('../../controllers/appenderController');
 var express = require('express');
 var router = express.Router();
 
 router.route('/note')
-    .post(userController.requiresLogin,notesController.create);
+    .post(userController.requiresLogin,notesController.create)
+    .get(userController.requiresLogin,notesController.getByUser);
 
 router.route('/note/:id')
     .get(notesController.getNote)
@@ -32,6 +34,13 @@ router.route('/noteDir')
 
 router.route('/noteDir/:id')
     .get(notesDirController.getDir);
+
+router.route('/appender')
+    .post(userController.requiresLogin,appenderController.create)
+    .get(userController.requiresLogin,appenderController.getByUser);
+
+router.route('/appender/:id')
+    .get(userController.requiresLogin,appenderController.append);
 
 
 

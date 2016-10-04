@@ -1,0 +1,29 @@
+<div class="container">
+	<div class="form">
+		<div class="form-group">
+			<label>Note:</label>
+			<button class="btn btn-default" ng-model="note" bs-options="n._id as n.title for n in notes" bs-select></button>
+		</div>
+		<div class="form-group">
+			<label>Button Style</label>
+			<button class="btn btn-default" ng-model="buttonStyle" bs-options="b.style as b.name for b in buttonStyles" bs-select></button>
+		</div>
+        <div class="form-group">
+            <label>Appender name:</label>
+            <input class="form-control" ng-model="name" type="text">
+        </div>
+        <div class="form-group">
+            <label>Appender Description:</label>
+            <input class="form-control" ng-model="description" type="text">
+        </div>
+		<div class="form-group">
+			<label>Append Text:</label>
+			<input class="form-control" ng-model="appendString" type="text">
+		</div>
+		<div class="form-group">
+			<button class="btn btn-primary" bs-checkbox ng-model="appendNewLine">Append new Line</button>
+		</div>
+	</div>
+
+    <button class="btn btn-primary pull-right" ng-click="create()">Create</button>
+</div>
