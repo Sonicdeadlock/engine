@@ -75,6 +75,11 @@ angular.module('controllers').controller('notesController',function($scope,$http
                 $scope.note = data;
                 $scope.dir.notes.push(data);
             })
+        }else{
+            $http.post('/api/notes/note',{}).success(function(data){
+                $scope.note = data;
+                $scope.dir.notes.push(data);
+            })
         }
     };
 
