@@ -21,6 +21,8 @@ angular.module('userApp').controller("displayController",["$rootScope","$scope",
                 .forEach(function(line){
                    addItem(line);
                 });
+            message.text = message.text.split('&nbsp;').join(' ');
+            addItem(message);
         });
         socket.on('chatRooms',function(chatRooms){
             chatRooms.forEach(function(room){
@@ -58,6 +60,6 @@ angular.module('userApp').controller("displayController",["$rootScope","$scope",
                 $scope.items.push(buffer.shift());
             }
 
-        },40)
+        },10)
 
 }]);
