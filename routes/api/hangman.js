@@ -22,7 +22,7 @@ router.route('/set')
             if(!token || !token.tokenData.room){
                 res.status(403).send('Invalid Token!');
             }
-            else if(token.tokenData.userId.id != req.user._id.id){
+            else if(!token.tokenData.userId.equals( req.user._id)){
                 res.status(403).send('Invalid user!');
             }
             else{

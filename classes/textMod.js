@@ -13,10 +13,10 @@ function leet(chance,text){
     return char_replace.find({}).cache().exec().then(function(replacements){
         var result = _.map(text.split(' '),function(word){
             word = _.map(word,function(character){
-                if(Math.random()>chance)//if the chance is not meet dont chance the character
+                if(Math.random()>chance)//if the chance is not meet don't chance the character
                     return character;
                 var options = _.find(replacements,{character: _.toLower(character)});
-                if(options ==undefined )//if the character has no replacements dont' change it
+                if(options ==undefined )//if the character has no replacements don't change it
                     return character;
                 return _.sample(options.replacements);
 
