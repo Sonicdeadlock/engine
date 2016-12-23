@@ -23,13 +23,12 @@ var config = require('./config');
  module.exports = {connect:connect,disconnect:disconnect,on:addHookListener,removeHooks:removeHooks};
  function connect(socket){
     var user = socket.client.request.user;
-    var chatRoom = undefined;
     var userCollectionObj = {user:user,socket:socket};
     users.push(userCollectionObj);
 
     socket.on('chatClientToServer',function(message){
-        if(!chatRoom.bans || (chatRoom.bans && !_.find(chatRoom.bans,function(id){return id.id == user._id.id}))){
-            if(message.text && chatRoom){
+        if(!userCollectionObj.chatRoom.bans || (userCollectionObj.chatRoom.bans && !_.find(userCollectionObj.chatRoom.bans,function(id){return id.id == user._id.id}))){
+            if(message.text && userCollectionObj.chatRoom){
                 var impersonate = undefined;
                 if(message.text.indexOf('!impersonate')==0 && user.hasPermission('impersonate')){
                     var split = message.text.split(' ');
@@ -37,7 +36,7 @@ var config = require('./config');
                     message.text = _.slice(split,2).join(' ');
                 }
                 var prom = new Promise(function(resolve,reject){resolve(message.text)});
-                prom = prom.then(preChatHook.bind(this,user,chatRoom));
+                prom = prom.then(preChatHook.bind(this,user,userCollectionObj.chatRoom));
                 if(message.mods)
                 for(var i=0;i<message.mods.length;i++){
                     var mod = message.mods[i];
@@ -51,20 +50,20 @@ var config = require('./config');
                     }
                 }
                 prom.then(function(text){
-                    (new chatObj(user,chatRoom,text)).then(function(chat){
+                    (new chatObj(user,userCollectionObj.chatRoom,text)).then(function(chat){
                         if(impersonate)
                             chat.username = impersonate.name;
 
-                       chatToRoom(chatRoom,chat);
+                       chatToRoom(userCollectionObj.chatRoom,chat);
                         if(commands.isCommand(text))
                             commands.execute(text,function(serverText){
-                                _.forEach(getUsersForCommunication(chatRoom),function(u){
-                                    (new chatObj(serverUser,chatRoom,serverText)).then(function(serverChat){
+                                _.forEach(getUsersForCommunication(userCollectionObj.chatRoom),function(u){
+                                    (new chatObj(serverUser,userCollectionObj.chatRoom,serverText)).then(function(serverChat){
                                         u.socket.emit('chatServerToClient',serverChat);
                                     })
                                 })
                             },user);
-                        chatHook(user,chatRoom,chat.text);
+                        chatHook(user,userCollectionObj.chatRoom,chat.text);
                     });
                 })
             }
@@ -87,7 +86,7 @@ var config = require('./config');
             }
             var allowedInRoom = true;
             if(roomDoc.bans){
-                if(_.find(roomDoc.bans,function(id){return id.id == user._id.id})){
+                if(_.find(roomDoc.bans,function(id){return user._id.equals(id)})){
                     allowedInRoom = false;
                     socket.emit('chatError',{error:'You are banned from this room!'});
                 }
@@ -99,11 +98,11 @@ var config = require('./config');
                 }
             }
             if(allowedInRoom){ //TODO: check permissions to enter the room
-                chatRoom = roomDoc;
+                userCollectionObj.chatRoom = roomDoc;
                 userCollectionObj.room = roomData;
                 socket.emit('chatEnterRoom',{room:roomData});
-                roomEnterHook(user,chatRoom);
-                _.forEach(getUsersForCommunication(chatRoom),function(u){
+                roomEnterHook(user,userCollectionObj.chatRoom);
+                _.forEach(getUsersForCommunication(userCollectionObj.chatRoom),function(u){
                     u.socket.emit('chatRoomEntrance',user.username);
                 })
             }
@@ -111,12 +110,12 @@ var config = require('./config');
 
     });
     socket.on('chatLeaveRoom',function(){
-        if(chatRoom){
-            _.forEach(getUsersForCommunication(chatRoom),function(u){
+        if(userCollectionObj.chatRoom){
+            _.forEach(getUsersForCommunication(userCollectionObj.chatRoom),function(u){
                 u.socket.emit('chatRoomExit',user.username);
             });
-            var hookWait = roomExitHook.bind(this,user,chatRoom);
-            chatRoom = undefined;
+            var hookWait = roomExitHook.bind(this,user,userCollectionObj.chatRoom);
+            userCollectionObj.chatRoom = undefined;
             userCollectionObj.room = undefined;
             hookWait();
         }
@@ -124,10 +123,13 @@ var config = require('./config');
     });
     socket.on('chatBanUser',function(message){
      var user_id = message.user_id;
-     if(user.hasPermission('Chat Admin') && chatRoom){
+     if(user.hasPermission('Chat Admin') && userCollectionObj.chatRoom && userCollectionObj.chatRoom.bans.indexOf(user_id)===-1){
         User.update({_id:user_id},{$inc: {'strikes.bans':1}}).then();
-        chatRoom.bans.push(user_id);
-        chatRoom.save();
+        var bannedUser = _.find(users,function(u){return u.user._id.equals(user_id)});
+        bannedUser.chatRoom=undefined;
+         bannedUser.socket.emit('chatError',{error:'You have been banned from this room!'});
+        userCollectionObj.chatRoom.bans.push(user_id);
+        userCollectionObj.chatRoom.save();
     }
 });
 }
