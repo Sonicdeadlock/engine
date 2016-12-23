@@ -29,7 +29,7 @@ router.route('/:postId')
             if(!result)
                 res.status(404).send('Thread not found');
             else{
-                if(!(req.user.hasPermission('Forum Admin')||req.user._id.id ===result.creator.id)){
+                if(!(req.user.hasPermission('Forum Admin')||req.user._id.equals(result.creator.id))){
                     res.status(403).send({
                         message: 'User is not authorized'
                     });

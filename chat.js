@@ -27,7 +27,7 @@ var config = require('./config');
     users.push(userCollectionObj);
 
     socket.on('chatClientToServer',function(message){
-        if(!userCollectionObj.chatRoom.bans || (userCollectionObj.chatRoom.bans && !_.find(userCollectionObj.chatRoom.bans,function(id){return id.id == user._id.id}))){
+        if(!userCollectionObj.chatRoom.bans || (userCollectionObj.chatRoom.bans && !_.find(userCollectionObj.chatRoom.bans,function(id){return id.equals(user._id)}))){
             if(message.text && userCollectionObj.chatRoom){
                 var impersonate = undefined;
                 if(message.text.indexOf('!impersonate')==0 && user.hasPermission('impersonate')){
