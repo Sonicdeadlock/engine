@@ -115,7 +115,7 @@ angular.module('controllers').controller('chatController', function ($scope, $ht
     $scope.sendChat = function () {
         socket.emit('chatClientToServer', {text: $scope.chatBox, mods: $scope.mods});
         history.push($scope.chatBox);
-        historyId = history.length - 1;
+        historyId = - 1;
         $scope.distplayHistory = _.chain(history)
             .uniq()
             .takeRight(5)
