@@ -2,26 +2,40 @@
     <div ng-repeat="err in errs">
         <p class="alert alert-danger">{{err}}</p>
     </div>
-    <h2><i ng-if="thread.pinned " class="fa fa-thumb-tack text-danger"></i>&nbsp<i ng-if="thread.locked " class="fa fa-lock text-primary"></i>&nbsp{{thread.title}}&nbsp
-        <button ng-click="deleteThread()" class="btn btn-danger" ng-if="logged_in_user._id==thread.creator._id||hasPermission('Forum Admin')">Delete Thread</button>
-        <button ng-click="pin()" class="btn btn-primary" ng-show="!thread.pinned && hasPermission('Forum Admin')">Pin Thread</button>
-        <button ng-click="unpin()" class="btn btn-primary" ng-show="thread.pinned && hasPermission('Forum Admin')">Unpin Thread</button>
-        <button ng-click="lock()" class="btn btn-primary" ng-show="!thread.locked && hasPermission('Forum Admin')">Lock Thread</button>
-        <button ng-click="unlock()" class="btn btn-primary" ng-show="thread.locked && hasPermission('Forum Admin')">Unlock Thread</button>
-    </h2><br>
+    <h2><i ng-if="thread.pinned " class="fa fa-thumb-tack text-danger"></i>&nbsp<i ng-if="thread.locked "
+                                                                                   class="fa fa-lock text-primary"></i>&nbsp{{thread.title}}&nbsp
+        <button ng-click="deleteThread()" class="btn btn-danger"
+                ng-if="logged_in_user._id==thread.creator._id||hasPermission('Forum Admin')">Delete Thread
+        </button>
+        <button ng-click="pin()" class="btn btn-primary" ng-show="!thread.pinned && hasPermission('Forum Admin')">Pin
+            Thread
+        </button>
+        <button ng-click="unpin()" class="btn btn-primary" ng-show="thread.pinned && hasPermission('Forum Admin')">Unpin
+            Thread
+        </button>
+        <button ng-click="lock()" class="btn btn-primary" ng-show="!thread.locked && hasPermission('Forum Admin')">Lock
+            Thread
+        </button>
+        <button ng-click="unlock()" class="btn btn-primary" ng-show="thread.locked && hasPermission('Forum Admin')">
+            Unlock Thread
+        </button>
+    </h2>
+    <br>
     <small ng-repeat="tag in thread.tags"><a ui-sref="forumTagSearch({tag:tag})">#{{tag}}&nbsp</a></small>
     <hr>
-    <div infinite-scroll="getNextPage()" infinite-scroll-distance="1" infinite-scroll-disabled="pageLoading||atBottomOfThread">
+    <div infinite-scroll="getNextPage()" infinite-scroll-distance="1"
+         infinite-scroll-disabled="pageLoading||atBottomOfThread">
         <div ng-repeat="post in thread.posts |orderBy:'creationTime'" class="clearfix" ng-if="!post.replyTo">
-            <forum-post ></forum-post>
+            <forum-post></forum-post>
             <br>
             <hr>
         </div>
-        <div style="text-align: center"><p ng-show="pageLoading" class="fa fa-spin fa-circle-o-notch fa-3x"  ></p></div>
+        <div style="text-align: center"><p ng-show="pageLoading" class="fa fa-spin fa-circle-o-notch fa-3x"></p></div>
 
     </div>
 
-    <div class="reply-panel clearfix" ng-show="logged_in_user && thread&&!(thread.locked&&!hasPermission('Forum Admin'))" id="main-reply-panel">
+    <div class="reply-panel clearfix"
+         ng-show="logged_in_user && thread&&!(thread.locked&&!hasPermission('Forum Admin'))" id="main-reply-panel">
         <b class="text-info" ng-show="replyPost">Replying to {{replyPost.creator.username}}</b>
         <div>
             <div class="textarea-addon well-sm well">
@@ -37,6 +51,7 @@
             <textarea class="forumTextArea form-control" ng-model="replyText" rows="5"></textarea>
         </div>
         <br>
-        <button class="btn btn-primary pull-right" ng-click="reply()"><span class="fa fa-reply"></span>&nbspReply</button>
+        <button class="btn btn-primary pull-right" ng-click="reply()"><span class="fa fa-reply"></span>&nbspReply
+        </button>
     </div>
 </div>

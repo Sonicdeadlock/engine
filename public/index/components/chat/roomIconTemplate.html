@@ -2,6 +2,7 @@
     <b>{{room.name | limitTo:15}}<span ng-if="room.name.length>15">...</span></b>
     <br>
     <small>{{room.description }}</small>
-    <p ng-show="room.requirements && room.requirements.rank" class="text-danger" style="position:absolute">{{room.requirements.rank}} only*</p><br>
+    <p ng-show="room.requirements && room.requirements.rank" class="text-danger" style="position:absolute">
+        {{room.requirements.rank}} only*</p><br>
 
 </div>

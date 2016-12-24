@@ -6,9 +6,9 @@ var schema = mongoose.Schema;
 var db = require('../db');
 
 var contentSchema = new schema({
-    type:String,
-    content:String
+    type: String,
+    content: String
 });
 
 
-module.exports = mongoose.model('content',contentSchema);
+module.exports = mongoose.model('content', contentSchema);

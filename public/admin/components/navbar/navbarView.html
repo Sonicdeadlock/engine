@@ -16,7 +16,10 @@
             <li><a ui-sref="room">Room</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-            <li class="" ng-if="!logged_in_user"><a title="Login" data-template-url="components/login/loginDirective.html"   data-placement="bottom" data-animation="am-flip-x" data-container='body' bs-popover>Login</a></li>
+            <li class="" ng-if="!logged_in_user"><a title="Login"
+                                                    data-template-url="components/login/loginDirective.html"
+                                                    data-placement="bottom" data-animation="am-flip-x"
+                                                    data-container='body' bs-popover>Login</a></li>
             <li ng-if="!logged_in_user"><a href="#/register?next={{$state.$current.url.source}}">Register</a></li>
             <li class="" ng-if="logged_in_user"><a ng-click="logout()">Logout</a></li>
             <li class="" ng-if="logged_in_user"><a>Welcome {{logged_in_user.firstName}}</a></li>

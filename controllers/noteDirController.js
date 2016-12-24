@@ -7,29 +7,29 @@ var NoteDir = require('../models/note_dir');
 var notes = require('../classes/notes');
 var _ = require('lodash');
 
-function getUserBase(req,res){
-    NoteDir.findOne({owner:req.user,parent:undefined}).then(function(noteDir){
-       _getDir(noteDir._id).then(function(noteDir){
-           res.json(noteDir);
-       })
+function getUserBase(req, res) {
+    NoteDir.findOne({owner: req.user, parent: undefined}).then(function (noteDir) {
+        _getDir(noteDir._id).then(function (noteDir) {
+            res.json(noteDir);
+        })
     });
 }
 
-function getDir(req,res){
-    _getDir(req.params.id).then(function(noteDir){
+function getDir(req, res) {
+    _getDir(req.params.id).then(function (noteDir) {
         res.json(noteDir);
     })
 
 }
 
-function _getDir(id){
+function _getDir(id) {
     var _noteDir;
-    return NoteDir.findById(id).then(function(noteDir){
+    return NoteDir.findById(id).then(function (noteDir) {
         _noteDir = noteDir;
-        var getChildDirsPromise = NoteDir.find({parent:noteDir});
-        var getChildNotesPromise = Note.find({parent:noteDir});
-        return Promise.all([getChildDirsPromise,getChildNotesPromise]);
-    }).then(function(results){
+        var getChildDirsPromise = NoteDir.find({parent: noteDir});
+        var getChildNotesPromise = Note.find({parent: noteDir});
+        return Promise.all([getChildDirsPromise, getChildNotesPromise]);
+    }).then(function (results) {
         _noteDir = JSON.parse(JSON.stringify(_noteDir));
         _noteDir.dirs = results[0];
         _noteDir.notes = results[1];
@@ -37,12 +37,12 @@ function _getDir(id){
     });
 }
 
-function createDir(req,res){
-    if(!req.body || !req.body.parent)
+function createDir(req, res) {
+    if (!req.body || !req.body.parent)
         res.status(412).send("Invalid request");
-    else{
+    else {
         req.body.owner = req.user._id;
-        (new NoteDir(req.body)).save().then(function(noteDir){
+        (new NoteDir(req.body)).save().then(function (noteDir) {
             res.json(noteDir);
         });
     }
@@ -51,8 +51,8 @@ function createDir(req,res){
 
 
 module.exports = {
-    getUserBase:getUserBase,
-    getDir:getDir,
-    createDir:createDir
+    getUserBase: getUserBase,
+    getDir: getDir,
+    createDir: createDir
 };
 

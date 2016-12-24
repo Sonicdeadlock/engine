@@ -16,15 +16,15 @@ var notes = require('./api/notes');
 
 
 //route apis
-router.use('/users',users);
-router.use('/permissionGroups',permissionGroups);
-router.use('/messages',messages);
-router.use('/textEngine',textEngine);
-router.use('/hangman',hangman);
-router.use('/rooms',rooms);
-router.use('/update_notes',update_notes);
-router.use('/forum',forum);
-router.use('/imageEngine',imageEngine);
-router.use('/notes',notes);
+router.use('/users', users);
+router.use('/permissionGroups', permissionGroups);
+router.use('/messages', messages);
+router.use('/textEngine', textEngine);
+router.use('/hangman', hangman);
+router.use('/rooms', rooms);
+router.use('/update_notes', update_notes);
+router.use('/forum', forum);
+router.use('/imageEngine', imageEngine);
+router.use('/notes', notes);
 
 module.exports = router;

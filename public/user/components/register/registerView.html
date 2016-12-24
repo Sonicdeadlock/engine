@@ -18,8 +18,9 @@
             <input class="form-control" type="text" required ng-model="register.lastName">
             <label>
                 Username<span class="text-danger">*</span>
-                <span data-animation="am-flip-x" class="fa fa-question-circle" bs-tooltip data-placement="right" data-title="Usernames are case sensitive"
-                        data-trigger="hover"></span>
+                <span data-animation="am-flip-x" class="fa fa-question-circle" bs-tooltip data-placement="right"
+                      data-title="Usernames are case sensitive"
+                      data-trigger="hover"></span>
                 <span class="text-success fa fa-check" ng-show="!checkingUsername && usernameTaken==false"></span>
                 <span class="text-success" ng-show="checkingUsername"><span class="fa fa-circle-o-notch fa-spin"></span></span>
                 <span class="text-danger" ng-show="usernameTaken"> Username Taken</span>
@@ -34,7 +35,8 @@
             </label>
             <input class="form-control" type="password" required ng-model="register.password">
             <label>
-                Retype Password<span class="text-danger">*</span><span class="text-danger" ng-hide="register.password==register.passwordAgain"> Passwords do not match</span>
+                Retype Password<span class="text-danger">*</span><span class="text-danger"
+                                                                       ng-hide="register.password==register.passwordAgain"> Passwords do not match</span>
             </label>
             <input class="form-control" type="password" required ng-model="register.passwordAgain">
         </div>

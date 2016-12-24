@@ -2,7 +2,7 @@
     <div id="alerts-container" style="height:100px; overflow-y: hidden"></div>
     <div style="margin-top:10px;">
         <div ng-repeat="appender in appenders">
-            <button  ng-click="btnClick(appender._id)" ng-class="appender.buttonStyle">
+            <button ng-click="btnClick(appender._id)" ng-class="appender.buttonStyle">
                 <h1>{{appender.name}}</h1>
                 <small>({{appender.description}})</small>
             </button>

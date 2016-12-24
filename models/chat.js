@@ -8,19 +8,19 @@ var userModel = require('./user');
 var user = db.model('user');
 
 var chatSchema = new schema({
-    text:String,
-    time:Date,
-    user:{
-        type:schema.Types.ObjectId,
-        ref:'user',
-        field:'_id'
+    text: String,
+    time: Date,
+    user: {
+        type: schema.Types.ObjectId,
+        ref: 'user',
+        field: '_id'
     },
-    room:{
-        type:schema.Types.ObjectId,
-        ref:'room',
-        field:"_id"
+    room: {
+        type: schema.Types.ObjectId,
+        ref: 'room',
+        field: "_id"
     }
 });
 
 
-module.exports = mongoose.model('chat',chatSchema);
+module.exports = mongoose.model('chat', chatSchema);

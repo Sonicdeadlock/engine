@@ -1,9 +1,13 @@
 <div>
     <div>
-        <button ng-repeat="type in modTypes" ng-click="addMod(type)" class="btn btn-default">{{type.name | startCase}}</button>
+        <button ng-repeat="type in modTypes" ng-click="addMod(type)" class="btn btn-default">{{type.name | startCase}}
+        </button>
     </div>
     <div ng-repeat="mod in mods">
-        <h3>{{mod.name}} <button class="btn btn-danger pull-right" ng-click="removeMod(mod)"><span class="fa fa-times"></span></button></h3>
+        <h3>{{mod.name}}
+            <button class="btn btn-danger pull-right" ng-click="removeMod(mod)"><span class="fa fa-times"></span>
+            </button>
+        </h3>
         <div ng-repeat="(key,value) in mod.attributes">
             <div class="form-group">
                 <label>{{key | startCase}}:</label>

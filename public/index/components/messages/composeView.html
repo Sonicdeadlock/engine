@@ -1,35 +1,42 @@
 <div>
-	<div class="panel panel-default col-md-offset-3 col-md-6 col-sm-12">
-		<div class="panel-body">
-		<form autocomplete='false'>
-				<div class="form-group">
-					<label>Username </label>
-					<input class="form-control" type="text" placeholder="Username" ng-model='user' bs-typeahead bs-options="u as u.username for u in usernames">
-				</div>
-				<div class="form-group">
-					<label>Title </label>
-					<input class="form-control" type="text" placeholder="Title" ng-model='title'>
-				</div>
-				<div class="form-group">
-					<label>Message</label>
-					<div>
-						<div class="textarea-addon well-sm well">
-							<a><span class="fa fa-link fa-lg" ng-click="addTextToBody(' [Link text](link url) ')"></span></a>
-							<a><span class="fa fa-picture-o fa-lg" ng-click="addTextToBody(' ![alt text](image url) ')"></span></a>
-							<a><span class="fa fa-header fa-lg" ng-click="addTextToBody(' \r###heading ')"></span></a>
-							<a><span class="fa fa-bold fa-lg" ng-click="addTextToBody(' __Bold text__ ')"></span></a>
-							<a><span class="fa fa-italic fa-lg" ng-click="addTextToBody(' _italic text_ ')"></span></a>
-							<a><span class="fa fa-list-ol fa-lg" ng-click="addTextToBody(' \r1. item\r2. item\r3. item ')"></span></a>
-							<a><span class="fa fa-list-ul fa-lg" ng-click="addTextToBody(' \r* item\r* item\r* item ')"></span></a>
-							<a><span class="fa fa-code fa-lg" ng-click="addTextToBody(' `code`')"></span></a>
-						</div>
-						<textarea class="forumTextArea form-control" ng-model="body" rows="5"></textarea>
-					</div>
-				</div>
-				<button  class="btn btn-primary pull-right" ng-click="send();" ng-class="{'disabled':loadingPrecursor}">Send</button>
+    <div class="panel panel-default col-md-offset-3 col-md-6 col-sm-12">
+        <div class="panel-body">
+            <form autocomplete='false'>
+                <div class="form-group">
+                    <label>Username </label>
+                    <input class="form-control" type="text" placeholder="Username" ng-model='user' bs-typeahead
+                           bs-options="u as u.username for u in usernames">
+                </div>
+                <div class="form-group">
+                    <label>Title </label>
+                    <input class="form-control" type="text" placeholder="Title" ng-model='title'>
+                </div>
+                <div class="form-group">
+                    <label>Message</label>
+                    <div>
+                        <div class="textarea-addon well-sm well">
+                            <a><span class="fa fa-link fa-lg"
+                                     ng-click="addTextToBody(' [Link text](link url) ')"></span></a>
+                            <a><span class="fa fa-picture-o fa-lg"
+                                     ng-click="addTextToBody(' ![alt text](image url) ')"></span></a>
+                            <a><span class="fa fa-header fa-lg" ng-click="addTextToBody(' \r###heading ')"></span></a>
+                            <a><span class="fa fa-bold fa-lg" ng-click="addTextToBody(' __Bold text__ ')"></span></a>
+                            <a><span class="fa fa-italic fa-lg" ng-click="addTextToBody(' _italic text_ ')"></span></a>
+                            <a><span class="fa fa-list-ol fa-lg"
+                                     ng-click="addTextToBody(' \r1. item\r2. item\r3. item ')"></span></a>
+                            <a><span class="fa fa-list-ul fa-lg"
+                                     ng-click="addTextToBody(' \r* item\r* item\r* item ')"></span></a>
+                            <a><span class="fa fa-code fa-lg" ng-click="addTextToBody(' `code`')"></span></a>
+                        </div>
+                        <textarea class="forumTextArea form-control" ng-model="body" rows="5"></textarea>
+                    </div>
+                </div>
+                <button class="btn btn-primary pull-right" ng-click="send();" ng-class="{'disabled':loadingPrecursor}">
+                    Send
+                </button>
 
-		</form>
-		</div>
+            </form>
+        </div>
 
-	</div>
+    </div>
 </div>

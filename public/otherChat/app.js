@@ -10,16 +10,16 @@ var app = angular.module('userApp', [
     "luegg.directives"
 ]);
 
-app.run(['$rootScope','$http', function ($rootScope,$http) {
-    $http.get('/auth/self').success(function(data){
+app.run(['$rootScope', '$http', function ($rootScope, $http) {
+    $http.get('/auth/self').success(function (data) {
         $rootScope.logged_in_user = data;
     });
-    $rootScope.hasPermission = function(perm){
+    $rootScope.hasPermission = function (perm) {
         var user = $rootScope.logged_in_user;
-        if(!user || !user.group || !user.group.permissions) return false;
+        if (!user || !user.group || !user.group.permissions) return false;
         var permissions = user.group.permissions;
-        if(permissions.indexOf('god')!=-1 || permissions.indexOf('sudo')!=-1) return true;
-        if(permissions.indexOf(perm)!=-1) return true;
+        if (permissions.indexOf('god') != -1 || permissions.indexOf('sudo') != -1) return true;
+        if (permissions.indexOf(perm) != -1) return true;
         return false;
     }
 }]);

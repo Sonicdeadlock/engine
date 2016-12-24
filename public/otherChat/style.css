@@ -1,50 +1,48 @@
-#input{
+#input {
     display: table;
-    width:100%
+    width: 100%
 }
 
-#input > *{
+#input > * {
     display: table-cell;
 }
 
-#input > input{
-     width: 100%;
-    border:0;
-    color:#f1f1f1;
+#input > input {
+    width: 100%;
+    border: 0;
+    color: #f1f1f1;
     background-color: black;
     font-size: small;
- }
+}
 
-#input > span{
+#input > span {
     width: 1px;
     white-space: nowrap;
 }
 
-
-
-p{
-    margin:0;
+p {
+    margin: 0;
 }
 
-p.danger{
-    color:darkred;
+p.danger {
+    color: darkred;
 }
 
-#display{
+#display {
     max-height: 95%;
     overflow: auto;
 }
 
-::-webkit-scrollbar ,::-webkit-scrollbar-thumb{
+::-webkit-scrollbar, ::-webkit-scrollbar-thumb {
     display: none;
 }
 
-body{
-    color:#f1f1f1;
+body {
+    color: #f1f1f1;
     background-color: black;
     font-size: small;
 }
 
-*{
-    font-family: 'Source Code Pro' ;
+* {
+    font-family: 'Source Code Pro';
 }

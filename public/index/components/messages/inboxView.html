@@ -2,23 +2,27 @@
     <div class="panel panel-default col-md-2 col-sm-4" id="sidePanel">
         <br>
         <ul class="nav nav-pills nav-stacked"> <!-- Select sent received  -->
-            <li ng-class="{active:showReceived}"><a ng-click="toggleView('received')" >Received <span class="badge">{{received.length}}</span></a></li>
-            <li ng-class="{active:showSent}"><a ng-click="toggleView('sent')">Sent <span class="badge">{{sent.length}}</span></a></li>
+            <li ng-class="{active:showReceived}"><a ng-click="toggleView('received')">Received <span class="badge">{{received.length}}</span></a>
+            </li>
+            <li ng-class="{active:showSent}"><a ng-click="toggleView('sent')">Sent <span
+                    class="badge">{{sent.length}}</span></a></li>
         </ul>
         <br>
-        <button type="button" class="btn btn-primary" ui-sref="compose">Compose <span class="fa fa-pencil-square-o"></span></button>
+        <button type="button" class="btn btn-primary" ui-sref="compose">Compose <span
+                class="fa fa-pencil-square-o"></span></button>
         <br/>
         <br/>
         <div class="input-group"> <!-- search -->
             <div class="input-group-addon"><span class='fa fa-search'></span></div>
-            <input type="text" class="form-control"  placeholder="Search" ng-model='searchText'>
+            <input type="text" class="form-control" placeholder="Search" ng-model='searchText'>
         </div>
         <br/>
     </div>
 
     <div class="col-md-10 col-sm-8" ng-hide="activeMessage" style="max-height: 500px;overflow-y: auto;">
-        <ul class="list-group message-list" ng-show="showSent" > <!-- list of sent -->
-            <li class="list-group-item" ng-repeat="message in sent | orderBy:'-time' | filter:searchText" ng-class="{selected:message._id==activeMessage._id}" ng-click="setActiveMessage(message);">
+        <ul class="list-group message-list" ng-show="showSent"> <!-- list of sent -->
+            <li class="list-group-item" ng-repeat="message in sent | orderBy:'-time' | filter:searchText"
+                ng-class="{selected:message._id==activeMessage._id}" ng-click="setActiveMessage(message);">
                 <b>{{message.title}}</b>
                 <br/>
                 <p>{{message.toUser.username}}</p>
@@ -27,7 +31,8 @@
         </ul>
 
         <ul class="list-group message-list" ng-show="showReceived"> <!-- list of received -->
-            <li class="list-group-item" ng-repeat="message in received | orderBy:'-time' | filter:searchText" ng-class="{selected:message._id==activeMessage._id}" ng-click="setActiveMessage(message);">
+            <li class="list-group-item" ng-repeat="message in received | orderBy:'-time' | filter:searchText"
+                ng-class="{selected:message._id==activeMessage._id}" ng-click="setActiveMessage(message);">
                 <b ng-if="!message.read">{{message.title}}</b>
                 <span ng-if="message.read">{{message.title}}</span>
                 <br/>
@@ -37,19 +42,22 @@
             </li>
         </ul>
     </div>
-<div class="panel panel-default col-md-10 col-sm-8" ng-if="activeMessage">
-    <div class=" panel-body">
-        <div class="container-fluid pull-right">
-            <a ng-click="delete(activeMessage)"><span class="fa fa-trash fa-2x text-danger"></span></a>
-            <a ui-sref='compose({messageId:activeMessage._id,from:showSent})'><span class="fa fa-reply fa-2x"></span></a>
+    <div class="panel panel-default col-md-10 col-sm-8" ng-if="activeMessage">
+        <div class=" panel-body">
+            <div class="container-fluid pull-right">
+                <a ng-click="delete(activeMessage)"><span class="fa fa-trash fa-2x text-danger"></span></a>
+                <a ui-sref='compose({messageId:activeMessage._id,from:showSent})'><span
+                        class="fa fa-reply fa-2x"></span></a>
+            </div>
+            <h2 class="pull-left">{{activeMessage.title}}</h2>
         </div>
-        <h2 class="pull-left">{{activeMessage.title}}</h2>
-    </div>
 
-    <br/>
-    <p><b>{{showSent?"To":"From"}}:</b> <a ui-sref="userPage({userId:showSent?activeMessage.toUser._id:activeMessage.fromUser._id})">{{showSent?activeMessage.toUser.username:activeMessage.fromUser.username}}</a></p>
-    <p ng-bind-html="activeMessage.body"></p>
-    <hr ng-show="activeMessage.replyBody">
-    <p ng-bind-html="activeMessage.replyBody"></p>
-</div>
+        <br/>
+        <p><b>{{showSent?"To":"From"}}:</b> <a
+                ui-sref="userPage({userId:showSent?activeMessage.toUser._id:activeMessage.fromUser._id})">{{showSent?activeMessage.toUser.username:activeMessage.fromUser.username}}</a>
+        </p>
+        <p ng-bind-html="activeMessage.body"></p>
+        <hr ng-show="activeMessage.replyBody">
+        <p ng-bind-html="activeMessage.replyBody"></p>
+    </div>
 </div>

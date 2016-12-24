@@ -9,33 +9,33 @@ var chat = require('../chat');
 
 var rooms = [];
 var modes = {
-    dice:require('./gamblingModes/dice'),
-    slots:require('./gamblingModes/slots')
+    dice: require('./gamblingModes/dice'),
+    slots: require('./gamblingModes/slots')
 };
-function userEnterRoom(user,room){//required to be exposed
-    var matchedRoom = _.find(rooms,{roomId:room._id});
-    if(!matchedRoom){
+function userEnterRoom(user, room) {//required to be exposed
+    var matchedRoom = _.find(rooms, {roomId: room._id});
+    if (!matchedRoom) {
         var newRoom = {};
         newRoom.roomId = room._id;
-        newRoom.players =[];
+        newRoom.players = [];
         matchedRoom = newRoom;
         rooms.push(newRoom);
     }
-    playerModel.findOne({user:user._id}).populate('user','username').exec().then(function(result){
-        if(result){
+    playerModel.findOne({user: user._id}).populate('user', 'username').exec().then(function (result) {
+        if (result) {
             matchedRoom.players.push(result);
-        } else{
+        } else {
             var player = new playerModel({
-                user:user._id,
-                stats:{
-                    level:1,
-                    strength:_.random(1, 10),
-                    intelligence:_.random(1, 10),
-                    constitution:_.random(1, 10),
-                    wisdom:_.random(1, 10),
-                    dexterity:_.random(1, 10),
-                    agility:_.random(1, 10),
-                    BEN:_.random(1, 3)
+                user: user._id,
+                stats: {
+                    level: 1,
+                    strength: _.random(1, 10),
+                    intelligence: _.random(1, 10),
+                    constitution: _.random(1, 10),
+                    wisdom: _.random(1, 10),
+                    dexterity: _.random(1, 10),
+                    agility: _.random(1, 10),
+                    BEN: _.random(1, 3)
                 }
             });
             player.save();
@@ -44,15 +44,14 @@ function userEnterRoom(user,room){//required to be exposed
     });
 
 
-
 }
 
-function userExitRoom(user,room){//required to be exposed
-    var matchRoom = _.find(rooms,{roomId:room._id});
-    matchRoom.players = _.reject(matchRoom.players,{_id:user._id});
+function userExitRoom(user, room) {//required to be exposed
+    var matchRoom = _.find(rooms, {roomId: room._id});
+    matchRoom.players = _.reject(matchRoom.players, {_id: user._id});
 }
 
-function chatInduction(user,room,chat,roomChatCallback,userChatCallback) {
+function chatInduction(user, room, chat, roomChatCallback, userChatCallback) {
     room = _.find(rooms, {roomId: room._id});
     var player = _.find(room.players, ['user._id', user._id]);
 
@@ -65,13 +64,13 @@ function chatInduction(user,room,chat,roomChatCallback,userChatCallback) {
             userChatCallback('Mode not set, please speak to a room admin');
         } else {
             var mode = modes[room.mode];
-            if(mode.chat)
+            if (mode.chat)
                 mode.chat(user, player, room, chat, roomChatCallback, userChatCallback);
         }
     }
 }
 
-function preChat(user,room,chatToRoom,chatToUser,text){
+function preChat(user, room, chatToRoom, chatToUser, text) {
     room = _.find(rooms, {roomId: room._id});
     var player = _.find(room.players, ['user._id', user._id]);
     if (_.startsWith(text, '!money')) {
@@ -93,14 +92,13 @@ function preChat(user,room,chatToRoom,chatToUser,text){
         }
         return false;
     }
-    if(room && room.mode){
+    if (room && room.mode) {
         var mode = modes[room.mode];
-        if(mode.preChat)
-           return mode.preChat(user, player, room, chat, chatToRoom, chatToUser);
+        if (mode.preChat)
+            return mode.preChat(user, player, room, chat, chatToRoom, chatToUser);
     }
 
 }
-
 
 
 function init() {
@@ -116,46 +114,46 @@ function init() {
                 chatInduction(user, room, text, chatToRoom, chatToUser);
             });
 
-            chat.on('preChat', room._id,function (user, chatToRoom, chatToUser, text) {
-                return preChat(user,room,chatToRoom,chatToUser,text);
+            chat.on('preChat', room._id, function (user, chatToRoom, chatToUser, text) {
+                return preChat(user, room, chatToRoom, chatToUser, text);
             });
         });
     });
-    Room.find({}).then(function(roomResults){
+    Room.find({}).then(function (roomResults) {
         var players = [];
         roomResults.forEach(function (room) {
             chat.on('enterRoom', room._id, function (user, chatToRoom, chatToUser) {
-                playerModel.findOne({user:user._id},'tokens user').then(function(result){
-                    if(!result){
+                playerModel.findOne({user: user._id}, 'tokens user').then(function (result) {
+                    if (!result) {
                         var player = new playerModel({
-                            user:user._id,
-                            stats:{
-                                level:1,
-                                strength:_.random(1, 10),
-                                intelligence:_.random(1, 10),
-                                constitution:_.random(1, 10),
-                                wisdom:_.random(1, 10),
-                                dexterity:_.random(1, 10),
-                                agility:_.random(1, 10),
-                                BEN:_.random(1, 3)
+                            user: user._id,
+                            stats: {
+                                level: 1,
+                                strength: _.random(1, 10),
+                                intelligence: _.random(1, 10),
+                                constitution: _.random(1, 10),
+                                wisdom: _.random(1, 10),
+                                dexterity: _.random(1, 10),
+                                agility: _.random(1, 10),
+                                BEN: _.random(1, 3)
                             }
                         });
                         player.save();
                         result = player;
                     }
-                    if(!_.find(players,{_id:result._id})){
+                    if (!_.find(players, {_id: result._id})) {
                         players.push(result);
                     }
                 });
             });
             chat.on('exitRoom', room._id, function (user, chatToRoom) {
-                players = _.reject({user:user._id});
+                players = _.reject({user: user._id});
             });
             chat.on("preChat", room._id, function (user, chatToRoom, chatToUser, text) {
-                if(text==="!tokens"){
-                    playerModel.findOne({user:user._id},'tokens user').then(function(result){
-                        if(result)
-                        chatToUser(result.tokens);
+                if (text === "!tokens") {
+                    playerModel.findOne({user: user._id}, 'tokens user').then(function (result) {
+                        if (result)
+                            chatToUser(result.tokens);
                     });
                     return false;
                 }
@@ -163,10 +161,10 @@ function init() {
 
 
         });
-        setInterval(function(){
-            var ids = _.map(players,'_id');
-            playerModel.update({_id:{$in:ids}},{$inc:{tokens:1}},{multi:true}).then();
-        },1000*60 *10);//every 10 minutes
+        setInterval(function () {
+            var ids = _.map(players, '_id');
+            playerModel.update({_id: {$in: ids}}, {$inc: {tokens: 1}}, {multi: true}).then();
+        }, 1000 * 60 * 10);//every 10 minutes
     });
 }
 

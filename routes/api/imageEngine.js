@@ -12,23 +12,23 @@ var config = require('../../config');
 var uid = require('uid');
 
 router.route('/ITAI')
-    .post(multipartyMiddleware,function(req,res){
+    .post(multipartyMiddleware, function (req, res) {
 
-        if(!req.files || !req.files.file){
+        if (!req.files || !req.files.file) {
             res.status(400).send()
-        }else{
+        } else {
             var file = req.files.file;
-            if(!req.body.tolerance){
+            if (!req.body.tolerance) {
                 res.status(400).send()
-            }else{
-                var dir = path.join(__dirname,'/../..',config.web.publicPath,config.imageEngine.dir,file.name);
+            } else {
+                var dir = path.join(__dirname, '/../..', config.web.publicPath, config.imageEngine.dir, file.name);
                 var dirParts = dir.split('.');
-                dir = dirParts[0]+uid(5)+'.'+dirParts[1];
-                fs.rename(file.path,dir,function(err){
+                dir = dirParts[0] + uid(5) + '.' + dirParts[1];
+                fs.rename(file.path, dir, function (err) {
                     console.error(err);
-                    ImageEngine.renderImage(dir,req.body.tolerance,req.body.charset).then(function(new_dir){
+                    ImageEngine.renderImage(dir, req.body.tolerance, req.body.charset).then(function (new_dir) {
                         res.status(200).send(new_dir);
-                    },function(error){
+                    }, function (error) {
                         console.error("failed to render image");
                         res.status(500).send("Internal server error occurred when rendering image");
                     });

@@ -1,20 +1,240 @@
 [
-  {"_id":{"$oid":"56f73acf701e00b0edc35a91"},"character":"a","replacements":["a","A","@","/-\\"]},
-{"_id":{"$oid":"56f73c06701e00b0edc35a92"},"character":"b","replacements":["b","B","8","13","l3"]},
-{"_id":{"$oid":"56f73c3c701e00b0edc35a93"},"character":"c","replacements":["c","C","¢","("]},
-{"_id":{"$oid":"56f73c99701e00b0edc35a94"},"character":"d","replacements":["d","D","[)","|)"]},
-{"_id":{"$oid":"56f73ccd701e00b0edc35a95"},"character":"e","replacements":["e","E","3","3","3","3","3","3","3","3","3","3","3","3","3","3","3","3","3","3","3","3","3","3"]},
-{"_id":{"$oid":"56f73d3b701e00b0edc35a96"},"character":"g","replacements":["g","G","C-","gee"]},
-{"_id":{"$oid":"56f74976701e00b0edc35a97"},"character":"h","replacements":["h","H","#","[-]","(-)","{-}","|-|","\\-\\","/-/"]},
-{"_id":{"$oid":"56f749d6701e00b0edc35a98"},"character":"i","replacements":["i","I","!","1"]},
-{"_id":{"$oid":"56f74a0e701e00b0edc35a99"},"character":"j","replacements":["j","J",",|"]},
-{"_id":{"$oid":"56f74a4d701e00b0edc35a9a"},"character":"k","replacements":["k","K","|\u003c","]{"]},
-{"_id":{"$oid":"56f74b0b701e00b0edc35a9b"},"character":"l","replacements":["l","L"]},
-{"_id":{"$oid":"56f74b61701e00b0edc35a9c"},"character":"m","replacements":["(\\/)","[V]","m","M"]},
-{"_id":{"$oid":"56f74b9d701e00b0edc35a9d"},"character":"n","replacements":["n","N","(\\)"]},
-{"_id":{"$oid":"56f74bd9701e00b0edc35a9e"},"character":"o","replacements":["o","O","0","oh","()"]},
-{"_id":{"$oid":"56f74c27701e00b0edc35a9f"},"character":"p","replacements":["p","P","[]D","|D"]},
-{"_id":{"$oid":"56f74c53701e00b0edc35aa0"},"character":"q","replacements":["q","Q","(,)"]},
-{"_id":{"$oid":"56f74c91701e00b0edc35aa1"},"character":"r","replacements":["r","R","12","|2"]},
-{"_id":{"$oid":"56f74cbf701e00b0edc35aa2"},"character":"s","replacements":["s","S","5","$"]}
-  ]
+  {
+    "_id": {
+      "$oid": "56f73acf701e00b0edc35a91"
+    },
+    "character": "a",
+    "replacements": [
+      "a",
+      "A",
+      "@",
+      "/-\\"
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "56f73c06701e00b0edc35a92"
+    },
+    "character": "b",
+    "replacements": [
+      "b",
+      "B",
+      "8",
+      "13",
+      "l3"
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "56f73c3c701e00b0edc35a93"
+    },
+    "character": "c",
+    "replacements": [
+      "c",
+      "C",
+      "¢",
+      "("
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "56f73c99701e00b0edc35a94"
+    },
+    "character": "d",
+    "replacements": [
+      "d",
+      "D",
+      "[)",
+      "|)"
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "56f73ccd701e00b0edc35a95"
+    },
+    "character": "e",
+    "replacements": [
+      "e",
+      "E",
+      "3",
+      "3",
+      "3",
+      "3",
+      "3",
+      "3",
+      "3",
+      "3",
+      "3",
+      "3",
+      "3",
+      "3",
+      "3",
+      "3",
+      "3",
+      "3",
+      "3",
+      "3",
+      "3",
+      "3",
+      "3",
+      "3"
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "56f73d3b701e00b0edc35a96"
+    },
+    "character": "g",
+    "replacements": [
+      "g",
+      "G",
+      "C-",
+      "gee"
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "56f74976701e00b0edc35a97"
+    },
+    "character": "h",
+    "replacements": [
+      "h",
+      "H",
+      "#",
+      "[-]",
+      "(-)",
+      "{-}",
+      "|-|",
+      "\\-\\",
+      "/-/"
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "56f749d6701e00b0edc35a98"
+    },
+    "character": "i",
+    "replacements": [
+      "i",
+      "I",
+      "!",
+      "1"
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "56f74a0e701e00b0edc35a99"
+    },
+    "character": "j",
+    "replacements": [
+      "j",
+      "J",
+      ",|"
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "56f74a4d701e00b0edc35a9a"
+    },
+    "character": "k",
+    "replacements": [
+      "k",
+      "K",
+      "|\u003c",
+      "]{"
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "56f74b0b701e00b0edc35a9b"
+    },
+    "character": "l",
+    "replacements": [
+      "l",
+      "L"
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "56f74b61701e00b0edc35a9c"
+    },
+    "character": "m",
+    "replacements": [
+      "(\\/)",
+      "[V]",
+      "m",
+      "M"
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "56f74b9d701e00b0edc35a9d"
+    },
+    "character": "n",
+    "replacements": [
+      "n",
+      "N",
+      "(\\)"
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "56f74bd9701e00b0edc35a9e"
+    },
+    "character": "o",
+    "replacements": [
+      "o",
+      "O",
+      "0",
+      "oh",
+      "()"
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "56f74c27701e00b0edc35a9f"
+    },
+    "character": "p",
+    "replacements": [
+      "p",
+      "P",
+      "[]D",
+      "|D"
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "56f74c53701e00b0edc35aa0"
+    },
+    "character": "q",
+    "replacements": [
+      "q",
+      "Q",
+      "(,)"
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "56f74c91701e00b0edc35aa1"
+    },
+    "character": "r",
+    "replacements": [
+      "r",
+      "R",
+      "12",
+      "|2"
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "56f74cbf701e00b0edc35aa2"
+    },
+    "character": "s",
+    "replacements": [
+      "s",
+      "S",
+      "5",
+      "$"
+    ]
+  }
+]

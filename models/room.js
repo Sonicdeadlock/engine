@@ -5,16 +5,20 @@ var mongoose = require('mongoose');
 var schema = mongoose.Schema;
 
 var roomSchema = new schema({
-    name:String,
-    deletable:Boolean,
-    description:String,
-    password:String,
-    bots:{type:[{name:String}],default:[]},
-    bans:{type:[{type:schema.Types.ObjectId,
-            ref:'user',
-            field:'_id'}],
-        default:[]},
-    options:Object
+    name: String,
+    deletable: Boolean,
+    description: String,
+    password: String,
+    bots: {type: [{name: String}], default: []},
+    bans: {
+        type: [{
+            type: schema.Types.ObjectId,
+            ref: 'user',
+            field: '_id'
+        }],
+        default: []
+    },
+    options: Object
 });
 
-module.exports = mongoose.model('room',roomSchema);
+module.exports = mongoose.model('room', roomSchema);

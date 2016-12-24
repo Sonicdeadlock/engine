@@ -10,19 +10,17 @@ var message = db.model('message');
 var messageController = require('../../controllers/messageController');
 
 router.route('/')
-.post(userController.requiresLogin,messageController.create);
+    .post(userController.requiresLogin, messageController.create);
 
 router.route('/mine')
-    .get(userController.requiresLogin,messageController.mine);
+    .get(userController.requiresLogin, messageController.mine);
 
 router.route('/mark')
-    .post(userController.requiresLogin,messageController.markRead);
+    .post(userController.requiresLogin, messageController.markRead);
 
 router.route('/:id')
-    .get(userController.requiresLogin,messageController.get)
-    .delete(userController.requiresLogin,messageController.delete);
-
-
+    .get(userController.requiresLogin, messageController.get)
+    .delete(userController.requiresLogin, messageController.delete);
 
 
 module.exports = router;

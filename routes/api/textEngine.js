@@ -8,13 +8,13 @@ var _ = require('lodash');
 var textMod = require('../../classes/textMod');
 
 
-router.route('/remove').post(function(req,res){
-    res.send(textMod.remove(req.body.remove,req.body.text));
+router.route('/remove').post(function (req, res) {
+    res.send(textMod.remove(req.body.remove, req.body.text));
 });
 
-router.route('/leet').post(function(req,res){
-    textMod.leet(req.body.chance,req.body.text)
-        .then(function(result){
+router.route('/leet').post(function (req, res) {
+    textMod.leet(req.body.chance, req.body.text)
+        .then(function (result) {
             res.send(result);
         })
 });

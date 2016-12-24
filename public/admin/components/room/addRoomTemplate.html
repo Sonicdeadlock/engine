@@ -1,10 +1,9 @@
-
-
 <div class="modal fade">
     <div class="modal-dialog clearfix">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" ng-click="$hide"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                <button type="button" class="close" ng-click="$hide"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span>
                 </button>
                 <h4 class="modal-title">Add Room</h4>
             </div>
@@ -19,25 +18,33 @@
                 </div>
                 <div class="form-group">
                     <label for="roomPassword">Room Password</label>
-                    <input ng-model='newRoom.password' class="form-control" id='roomPassword' placeholder='Leave Blank for no Password'>
+                    <input ng-model='newRoom.password' class="form-control" id='roomPassword'
+                           placeholder='Leave Blank for no Password'>
                 </div>
                 <!--<label>*Green means the room is deletable. Red means that it is not.</label>-->
                 <!--</br>-->
                 <!--<button type="button" class="btn " ng-class="newRoom.deletable ? 'btn-success active' : 'btn-danger'" data-toggle='button' ng-click="newRoom.deletable = !(newRoom.deletable == true)" id='isDeletable'>Is Deletable</button>-->
                 <label>Deletable:</label>
-                <button type="button" class="btn btn-default" ng-model="newRoom.deletable" bs-checkbox>Deletable</button>
+                <button type="button" class="btn btn-default" ng-model="newRoom.deletable" bs-checkbox>Deletable
+                </button>
                 </br>
                 </br>
                 <label>Entrance Messages:</label>
-                <button type="button" class="btn btn-default" ng-model="newRoom.options.entranceMessages" bs-checkbox>Entrance Messages</button>
+                <button type="button" class="btn btn-default" ng-model="newRoom.options.entranceMessages" bs-checkbox>
+                    Entrance Messages
+                </button>
                 </br>
                 </br>
                 <label>Exit Messages:</label>
-                <button type="button" class="btn btn-default" ng-model="newRoom.options.exitMessages" bs-checkbox>Exit Messages</button>
+                <button type="button" class="btn btn-default" ng-model="newRoom.options.exitMessages" bs-checkbox>Exit
+                    Messages
+                </button>
                 </br>
                 </br>
                 <label>Bots: </label>
-                <button class="btn btn-default" ng-model="newRoom.bots" bs-select data-multiple="1" data-iconCheckmark=" fa fa-ok" data-all-none-buttons="true" bs-options="botOption for botOption in botOptions"></button>
+                <button class="btn btn-default" ng-model="newRoom.bots" bs-select data-multiple="1"
+                        data-iconCheckmark=" fa fa-ok" data-all-none-buttons="true"
+                        bs-options="botOption for botOption in botOptions"></button>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" ng-click="$hide">Close</button>

@@ -1,54 +1,71 @@
 <div class="col-md-10 col-md-offset-1">
-    <h3>Select Room <a bs-modal data-title="Add Room" data-container="body" data-placement="center" data-template-url="components/room/addRoomTemplate.html"><span class="fa fa-plus-square" data-title="Add Room"></span></a></h3>
+    <h3>Select Room <a bs-modal data-title="Add Room" data-container="body" data-placement="center"
+                       data-template-url="components/room/addRoomTemplate.html"><span class="fa fa-plus-square"
+                                                                                      data-title="Add Room"></span></a>
+    </h3>
 
     <div id="rooms" class="col-md-4">
         <div class="input-group"> <!-- search -->
             <div class="input-group-addon"><span class='fa fa-search fa-1x'></span></div>
-            <input type="text" class="form-control"  placeholder="Search" ng-model='searchText'>
+            <input type="text" class="form-control" placeholder="Search" ng-model='searchText'>
         </div>
-        <div ng-repeat="room in rooms | orderBy:'name' | filter:{name:searchText}" ng-click="selectRoom(room)" ng-class="{selected:room==selectedRoom}">
+        <div ng-repeat="room in rooms | orderBy:'name' | filter:{name:searchText}" ng-click="selectRoom(room)"
+             ng-class="{selected:room==selectedRoom}">
             <b>{{room.name}}</b>
         </div>
     </div>
-    <div class="col-md-8 pull-right" ng-if="selectedRoom" >
-        <button class="btn btn-danger pull-right" ng-click="deleteRoom(selectedRoom._id)">Delete <span class="fa fa-trash"></span></button>
+    <div class="col-md-8 pull-right" ng-if="selectedRoom">
+        <button class="btn btn-danger pull-right" ng-click="deleteRoom(selectedRoom._id)">Delete <span
+                class="fa fa-trash"></span></button>
         <br>
-        <form >
+        <form>
             <!--room name-->
             <div class="form-group">
                 <label>Name:</label>
-                <input class="form-control" type="text" ng-model="selectedRoom.name" placeholder="Room Name" ng-blur="updateName()">
+                <input class="form-control" type="text" ng-model="selectedRoom.name" placeholder="Room Name"
+                       ng-blur="updateName()">
             </div>
             <hr>
             <!--room description-->
             <div class="form-group">
                 <label>Description:</label>
-                <input  class="form-control" type="text" ng-model="selectedRoom.description" placeholder="Room Description" ng-blur="updateDescription()">
+                <input class="form-control" type="text" ng-model="selectedRoom.description"
+                       placeholder="Room Description" ng-blur="updateDescription()">
             </div>
             <hr>
             <!--room password-->
             <div class="form-group">
                 <label>Password:</label>
-                <input  class="form-control" type="text" ng-model="selectedRoom.password" placeholder="Room Passowrd" ng-blur="updatePassword()">
+                <input class="form-control" type="text" ng-model="selectedRoom.password" placeholder="Room Passowrd"
+                       ng-blur="updatePassword()">
             </div>
             <hr>
             <!--room options-->
             <label>Entrance Messages:</label>
-            <button type="button" class="btn btn-default" ng-model="selectedRoom.options.entranceMessages" bs-checkbox ng-click="updateOptions()">Entrance Messages</button>
+            <button type="button" class="btn btn-default" ng-model="selectedRoom.options.entranceMessages" bs-checkbox
+                    ng-click="updateOptions()">Entrance Messages
+            </button>
             <hr>
             <label>Exit Messages:</label>
-            <button type="button" class="btn btn-default" ng-model="selectedRoom.options.exitMessages" bs-checkbox ng-click="updateOptions()">Exit Messages</button>
+            <button type="button" class="btn btn-default" ng-model="selectedRoom.options.exitMessages" bs-checkbox
+                    ng-click="updateOptions()">Exit Messages
+            </button>
             <hr>
             <!--room bots-->
             <div class="btn-group">
-                <button ng-repeat="option in botOptions" class="btn btn-default" ng-class="{active:_.find(selectedRoom.bots,{name:option})}" ng-click="toggleBot(option)">{{option | startCase}}</button>
+                <button ng-repeat="option in botOptions" class="btn btn-default"
+                        ng-class="{active:_.find(selectedRoom.bots,{name:option})}" ng-click="toggleBot(option)">
+                    {{option | startCase}}
+                </button>
             </div>
             <hr>
             <!--room bans-->
 
             <div>
                 <h3>Bans</h3>
-                <h5 ng-repeat="ban in selectedRoom.bans"><a class="fa fa-trash-o text-danger" ng-click="removeBan(ban.id)" title="Remove Ban"></a> {{ban.username}}</h5>
+                <h5 ng-repeat="ban in selectedRoom.bans"><a class="fa fa-trash-o text-danger"
+                                                            ng-click="removeBan(ban.id)" title="Remove Ban"></a>
+                    {{ban.username}}</h5>
             </div>
 
         </form>

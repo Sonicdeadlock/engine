@@ -1,8 +1,7 @@
-
-
 <div class="container">
     <div class="pull-right container-fluid">
-        <button type="button" class="btn btn-primary" ui-sref="compose({userId:userData._id})">Compose <span class="fa fa-pencil-square-o"></span></button>
+        <button type="button" class="btn btn-primary" ui-sref="compose({userId:userData._id})">Compose <span
+                class="fa fa-pencil-square-o"></span></button>
     </div>
     <h2>{{userData.username}}</h2>
     <div class="col-md-3 well">
@@ -26,14 +25,16 @@
             </tr>
         </table>
     </div>
-    <div infinite-scroll="getNextForumPostPage()" infinite-scroll-distance="1" infinite-scroll-disabled="forumPostPageLoading||bottomOfForumPostData">
+    <div infinite-scroll="getNextForumPostPage()" infinite-scroll-distance="1"
+         infinite-scroll-disabled="forumPostPageLoading||bottomOfForumPostData">
         <div class="col-md-9">
-            <div ng-repeat="activity in activities"  class=" container user-page-activity">
+            <div ng-repeat="activity in activities" class=" container user-page-activity">
                 <div ng-switch="activity.activityType">
                     <div ng-switch-when="post">
                         <a ui-sref="thread({threadId:activity.thread._id,postId:activity._id})">{{activity.thread.title}}</a>
-                        <p>{{userData.username}} posted on {{activity.thread.title}} on {{activity.creationTime|date:'medium'}}</p>
-                        <div ng-bind-html="activity.htmlMarkdown" ></div>
+                        <p>{{userData.username}} posted on {{activity.thread.title}} on
+                            {{activity.creationTime|date:'medium'}}</p>
+                        <div ng-bind-html="activity.htmlMarkdown"></div>
                     </div>
                 </div>
             </div>

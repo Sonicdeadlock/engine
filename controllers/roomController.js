@@ -8,146 +8,150 @@ var room = db.model('room');
 var roomSocketHandle = require('../roomSocketHandle');
 var botReset = require('../bots/bots');
 
-function create(req,res){
+function create(req, res) {
     var user = req.user;
-    if(user.hasPermission('Room Admin')){
-        (new room(req.body).save()).then(function(){//resolve
-            roomSocketHandle.updateRooms();
-            res.status(200).send();
-        },
-        function(error){//reject
-            console.error(error);
-            res.status(500).send('There was an error saving the room');
-        })
-    }else{
+    if (user.hasPermission('Room Admin')) {
+        (new room(req.body).save()).then(function () {//resolve
+                roomSocketHandle.updateRooms();
+                res.status(200).send();
+            },
+            function (error) {//reject
+                console.error(error);
+                res.status(500).send('There was an error saving the room');
+            })
+    } else {
         res.status(403).send('Invalid Authorization')
     }
 }
 
 
-function remove(req,res){
+function remove(req, res) {
     var user = req.user;
-    if(user.hasPermission('Room Admin')){
-        room.findOneAndRemove({_id:req.params.id}).then(function(){
+    if (user.hasPermission('Room Admin')) {
+        room.findOneAndRemove({_id: req.params.id}).then(function () {
             roomSocketHandle.updateRooms();
             res.status(200).send();
         })
-    }else{
+    } else {
         res.status(403).send('Invalid Authorization')
     }
 
 }
 
-function get(req,res){
-    room.find({}).then(function(rooms){
+function get(req, res) {
+    room.find({}).then(function (rooms) {
         res.json(rooms);
     })
 }
 
-function addBot(req,res){
+function addBot(req, res) {
     var id = req.body.id,
         bot = req.body.bot;
-        bot = {name:bot};
-        var user = req.user;
-        if(user.hasPermission('Room Admin')){
-            room.findByIdAndUpdate(id,{$push:{bots:bot}}).then(function(){
-                res.status(200).send();
-                botReset();
-                roomSocketHandle.updateRooms();
-            },function(error){console.error(error);});
-        }else{
-            res.status(403).send('Invalid Authorization')
-        }
-    
-}
-
-function removeBot(req,res){
-    var id = req.body.id,
-        bot = req.body.bot;
-        bot = {name:bot};
+    bot = {name: bot};
     var user = req.user;
-    if(user.hasPermission('Room Admin')){
-        room.findByIdAndUpdate(id,{$pull:{bots:bot}}).then(function(){
+    if (user.hasPermission('Room Admin')) {
+        room.findByIdAndUpdate(id, {$push: {bots: bot}}).then(function () {
             res.status(200).send();
             botReset();
             roomSocketHandle.updateRooms();
-        },function(error){console.error(error);});
-    }else{
+        }, function (error) {
+            console.error(error);
+        });
+    } else {
+        res.status(403).send('Invalid Authorization')
+    }
+
+}
+
+function removeBot(req, res) {
+    var id = req.body.id,
+        bot = req.body.bot;
+    bot = {name: bot};
+    var user = req.user;
+    if (user.hasPermission('Room Admin')) {
+        room.findByIdAndUpdate(id, {$pull: {bots: bot}}).then(function () {
+            res.status(200).send();
+            botReset();
+            roomSocketHandle.updateRooms();
+        }, function (error) {
+            console.error(error);
+        });
+    } else {
         res.status(403).send('Invalid Authorization')
     }
 }
 
-function removeBan(req,res){
+function removeBan(req, res) {
     var id = req.body.id,
         ban = req.body.ban;
 
     var user = req.user;
-    if(user.hasPermission('Room Admin')){
-        room.findByIdAndUpdate(id,{$pull:{bans:ban}}).then(function(){
+    if (user.hasPermission('Room Admin')) {
+        room.findByIdAndUpdate(id, {$pull: {bans: ban}}).then(function () {
             res.status(200).send();
             roomSocketHandle.updateRooms();
         });
-    }else{
+    } else {
         res.status(403).send('Invalid Authorization')
     }
 }
 
-function changeDescription(req,res){
+function changeDescription(req, res) {
     var id = req.body.id,
         description = req.body.description;
 
     var user = req.user;
-    if(user.hasPermission('Room Admin')){
-        room.findByIdAndUpdate(id,{description:description}).then(function(){
+    if (user.hasPermission('Room Admin')) {
+        room.findByIdAndUpdate(id, {description: description}).then(function () {
             res.status(200).send();
             roomSocketHandle.updateRooms();
         });
-    }else{
+    } else {
         res.status(403).send('Invalid Authorization')
     }
 }
 
-function changeName(req,res){
+function changeName(req, res) {
     var id = req.body.id,
         name = req.body.name;
 
     var user = req.user;
-    if(user.hasPermission('Room Admin')){
-        room.findByIdAndUpdate(id,{name:name}).then(function(){
+    if (user.hasPermission('Room Admin')) {
+        room.findByIdAndUpdate(id, {name: name}).then(function () {
             res.status(200).send();
             roomSocketHandle.updateRooms();
         });
-    }else{
+    } else {
         res.status(403).send('Invalid Authorization')
     }
 }
 
-function changePassword(req,res){
+function changePassword(req, res) {
     var id = req.body.id,
         password = req.body.password;
 
     var user = req.user;
-    if(user.hasPermission('Room Admin')){
-        room.findByIdAndUpdate(id,{password:password}).then(function(){
+    if (user.hasPermission('Room Admin')) {
+        room.findByIdAndUpdate(id, {password: password}).then(function () {
             res.status(200).send();
             roomSocketHandle.updateRooms();
         });
-    }else{
+    } else {
         res.status(403).send('Invalid Authorization')
     }
 }
 
-function changeOptions(req,res){
+function changeOptions(req, res) {
     var id = req.body.id,
         options = req.body.options;
 
     var user = req.user;
-    if(user.hasPermission('Room Admin')){
-        room.findByIdAndUpdate(id,{options:options}).then(function(){
+    if (user.hasPermission('Room Admin')) {
+        room.findByIdAndUpdate(id, {options: options}).then(function () {
             res.status(200).send();
             roomSocketHandle.updateRooms();
         });
-    }else{
+    } else {
         res.status(403).send('Invalid Authorization')
     }
 }

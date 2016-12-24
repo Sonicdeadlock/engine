@@ -9,117 +9,117 @@ var bannedWordModel = require('../models/banned_word');
 var banned_word = db.model('banned_word');
 
 var commands = {
-    '!test':function(text,emitCallback){
+    '!test': function (text, emitCallback) {
         emitCallback('This is a test');
     },
-    '!commands':function(text,emitCallback){
-      emitCallback('General commands are:<br>'+_.chain(commands).keys().sort().join('<br>').value());
+    '!commands': function (text, emitCallback) {
+        emitCallback('General commands are:<br>' + _.chain(commands).keys().sort().join('<br>').value());
     },
-    '!joke':function(text,emitCallback,user){
-        if(user.hasPermission('Joke')){
-            content.count({type:'joke'}).exec().then(function(count){
-                content.findOne({type:'joke'}).skip(_.random(count-1)).then(function(result){
+    '!joke': function (text, emitCallback, user) {
+        if (user.hasPermission('Joke')) {
+            content.count({type: 'joke'}).exec().then(function (count) {
+                content.findOne({type: 'joke'}).skip(_.random(count - 1)).then(function (result) {
                     emitCallback(result.content)
                 });
             });
-        }else{
+        } else {
             emitCallback('You Don\'t have permission to request jokes!');
         }
     },
-    '!addJoke':function(text,emitCallback,user){
-        if(user.hasPermission('Joke Admin')){
+    '!addJoke': function (text, emitCallback, user) {
+        if (user.hasPermission('Joke Admin')) {
             var joke = text.substr('!addJoke'.length);
-            (new content({type:'joke',content:joke})).save()
-            .then(function(){
-                emitCallback('Joke Added');
-            })
-        }else{
+            (new content({type: 'joke', content: joke})).save()
+                .then(function () {
+                    emitCallback('Joke Added');
+                })
+        } else {
             emitCallback('You Don\'t have permission to add jokes!');
         }
     },
-    '!proverb':function(text,emitCallback,user){
-        if(user.hasPermission('Proverb')){
-            content.count({type:'proverb'}).exec().then(function(count){
-                content.findOne({type:'proverb'}).skip(_.random(count-1)).then(function(result){
+    '!proverb': function (text, emitCallback, user) {
+        if (user.hasPermission('Proverb')) {
+            content.count({type: 'proverb'}).exec().then(function (count) {
+                content.findOne({type: 'proverb'}).skip(_.random(count - 1)).then(function (result) {
                     emitCallback(result.content)
                 });
             });
-        }else{
+        } else {
             emitCallback('You Don\'t have permission to request proverbs!');
         }
     },
-    '!addProverb':function(text,emitCallback,user){
-        if(user.hasPermission('Proverb Admin')){
+    '!addProverb': function (text, emitCallback, user) {
+        if (user.hasPermission('Proverb Admin')) {
             var joke = text.substr('!addProverb'.length);
-            (new content({type:'proverb',content:joke})).save()
-            .then(function(){
-                emitCallback('Proverb Added');
-            })
-        }else{
+            (new content({type: 'proverb', content: joke})).save()
+                .then(function () {
+                    emitCallback('Proverb Added');
+                })
+        } else {
             emitCallback('You Don\'t have permission to add proverbs!');
         }
     },
-    '!pickupLine':function(text,emitCallback,user){
-        if(user.hasPermission('Pickup Line')){
-            content.count({type:'pickupLine'}).exec().then(function(count){
-                content.findOne({type:'pickupLine'}).skip(_.random(count-1)).then(function(result){
+    '!pickupLine': function (text, emitCallback, user) {
+        if (user.hasPermission('Pickup Line')) {
+            content.count({type: 'pickupLine'}).exec().then(function (count) {
+                content.findOne({type: 'pickupLine'}).skip(_.random(count - 1)).then(function (result) {
                     emitCallback(result.content)
                 });
             });
-        }else{
+        } else {
             emitCallback('You Don\'t have permission to request Pickup Lines!');
         }
     },
-    '!addPickupLine':function(text,emitCallback,user){
-        if(user.hasPermission('Pickup Line Admin')){
+    '!addPickupLine': function (text, emitCallback, user) {
+        if (user.hasPermission('Pickup Line Admin')) {
             var joke = text.substr('!addPickupLine'.length);
-            (new content({type:'pickupLine',content:joke})).save()
-                .then(function(){
+            (new content({type: 'pickupLine', content: joke})).save()
+                .then(function () {
                     emitCallback('Pickup Line Added');
                 })
-        }else{
+        } else {
             emitCallback('You Don\'t have permission to add Pickup Lines!');
         }
     },
-    '!addBannedWord':function(text,emitCallback,user){
-        if(user.hasPermission('Chat Admin')){
+    '!addBannedWord': function (text, emitCallback, user) {
+        if (user.hasPermission('Chat Admin')) {
             var word = text.substr('!addBannedWord'.length);
-            (new banned_word({word:word})).save()
-                .then(function(){
+            (new banned_word({word: word})).save()
+                .then(function () {
                     emitCallback('Banned Word Added');
-                },function(err){
+                }, function (err) {
                     console.log(err);
                 })
-        }else{
+        } else {
             emitCallback('You Don\'t have permission to ban words!');
         }
     },
-    '!addHangmanWord':function(text,emitCallback,user){
-        if(user.hasPermission('Hangman Admin')){
+    '!addHangmanWord': function (text, emitCallback, user) {
+        if (user.hasPermission('Hangman Admin')) {
             var word = text.substr('!addHangmanWord'.length);
-            (new content({type:'hangmanWord',content:word})).save()
-                .then(function(){
+            (new content({type: 'hangmanWord', content: word})).save()
+                .then(function () {
                     emitCallback('Hangman Word Added');
-                },function(err){
+                }, function (err) {
                     console.log(err);
                 })
-        }else{
+        } else {
             emitCallback('You Don\'t have permission to hangman words!');
         }
     }
 };
-function isCommand(text){
+function isCommand(text) {
     var cmds = _.keys(commands);
-    return (cmds.indexOf(text.split(' ')[0])!=-1);
+    return (cmds.indexOf(text.split(' ')[0]) != -1);
 }
 
-function execute(text,emitCallback,user){
-    if(isCommand(text)){
-        commands[text.split(' ')[0]](text,emitCallback,user);
+function execute(text, emitCallback, user) {
+    if (isCommand(text)) {
+        commands[text.split(' ')[0]](text, emitCallback, user);
     }
 }
 
 module.exports = {
-    isCommand:isCommand,
-    execute:execute
+    isCommand: isCommand,
+    execute: execute
 };

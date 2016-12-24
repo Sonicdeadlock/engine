@@ -7,7 +7,7 @@ var userController = require('../controllers/userController');
 
 router.route('/')
     .post(userController.create)
-    .put(userController.requiresLogin,userController.updateSelf)
+    .put(userController.requiresLogin, userController.updateSelf)
     .get(userController.get);
 
 router.route('/register')

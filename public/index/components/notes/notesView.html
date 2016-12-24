@@ -1,33 +1,34 @@
 <div class="container-fluid" style="height:100%">
     <div class="col-md-2 col-lg-1 col-sm-12" ng-if="dir" style="max-height: 50%;overflow-y: auto">
         <ol class="breadcrumb">
-           <li ng-repeat="breadcrumb in breadcrumbs"><a ng-click="selectDir(breadcrumb.id)">{{breadcrumb.name}}</a></li>
+            <li ng-repeat="breadcrumb in breadcrumbs"><a ng-click="selectDir(breadcrumb.id)">{{breadcrumb.name}}</a>
+            </li>
         </ol>
         <button class="btn btn-primary" ng-click="newNote()">
-            <i class="fa fa-file" ></i>
+            <i class="fa fa-file"></i>
         </button>
         <button class="btn btn-primary" ng-click="newDir()">
-            <i class="fa fa-folder" ></i>
+            <i class="fa fa-folder"></i>
         </button>
         <button class="btn btn-danger" ng-click="deleteNote()">
             <i class="fa fa-trash"></i>
         </button>
         <table class="table table-striped">
             <thead>
-                <tr>
-                    <th></th>
-                    <th>Name</th>
-                </tr>
+            <tr>
+                <th></th>
+                <th>Name</th>
+            </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="subDir in dir.dirs" ng-click="selectDir(subDir._id)">
-                    <td><b class="fa fa-folder-open"></b></td>
-                    <td>{{subDir.name}}</td>
-                </tr>
-                <tr ng-repeat="childNote in dir.notes" ng-click="selectNote(childNote)">
-                    <td>&nbsp;</td>
-                    <td><a >{{childNote.title || "||UNTITLED||"}}</a></td>
-                </tr>
+            <tr ng-repeat="subDir in dir.dirs" ng-click="selectDir(subDir._id)">
+                <td><b class="fa fa-folder-open"></b></td>
+                <td>{{subDir.name}}</td>
+            </tr>
+            <tr ng-repeat="childNote in dir.notes" ng-click="selectNote(childNote)">
+                <td>&nbsp;</td>
+                <td><a>{{childNote.title || "||UNTITLED||"}}</a></td>
+            </tr>
             </tbody>
         </table>
     </div>

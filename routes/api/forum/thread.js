@@ -18,87 +18,95 @@ var permissionGroup = db.model('permissionGroup');
 var userController = require('../../../controllers/userController');
 
 router.route('/')
-    .post(userController.requiresLogin,forumController.createThread);
+    .post(userController.requiresLogin, forumController.createThread);
 
 router.route('/:threadId')
-    .get(function(req,res){
+    .get(function (req, res) {
         var getThreadQuery = forum_thread_model.findById(req.params.threadId);
-        getThreadQuery.populate('creator','username group');
-        getThreadQuery.populate('history.actor','username');
+        getThreadQuery.populate('creator', 'username group');
+        getThreadQuery.populate('history.actor', 'username');
         var limit = Number(req.query.limit) || 15;
-        if(limit>100)
-        limit = 15;
-        getThreadQuery.then(function(result){
-            if(result){
-               var threadUserPopulateQuery = user.populate(result,{
-                    path:'creator.group',
-                    select:'name',
-                    model:permissionGroup
+        if (limit > 100)
+            limit = 15;
+        getThreadQuery.then(function (result) {
+            if (result) {
+                var threadUserPopulateQuery = user.populate(result, {
+                    path: 'creator.group',
+                    select: 'name',
+                    model: permissionGroup
                 });
 
-                var getThreadPostsQuery = forum_post_model.find({thread:req.params.threadId});
+                var getThreadPostsQuery = forum_post_model.find({thread: req.params.threadId});
                 getThreadPostsQuery.sort('-creationTime');
-                if(Number(req.query.skip))
+                if (Number(req.query.skip))
                     getThreadPostsQuery.skip(Number(req.query.skip));
 
                 getThreadPostsQuery.limit(limit);
 
-                getThreadPostsQuery.populate('creator','username group');
+                getThreadPostsQuery.populate('creator', 'username group');
 
-                getThreadPostsQuery = getThreadPostsQuery.then(function(results){
-                    if(results==[])
-                    return results;
-                    return user.populate(results,{
-                        path:'creator.group',
-                        select:'name',
-                        model:permissionGroup
+                getThreadPostsQuery = getThreadPostsQuery.then(function (results) {
+                    if (results == [])
+                        return results;
+                    return user.populate(results, {
+                        path: 'creator.group',
+                        select: 'name',
+                        model: permissionGroup
                     });
                 }).then(forumController.populatePostReplies);
 
-                Promise.all([threadUserPopulateQuery,getThreadPostsQuery]).then(function(results){
-                   var thread = JSON.parse(JSON.stringify(results[0]));
+                Promise.all([threadUserPopulateQuery, getThreadPostsQuery]).then(function (results) {
+                    var thread = JSON.parse(JSON.stringify(results[0]));
                     thread.posts = results[1];
                     res.json(thread);
                 });
-            }else res.status(404).send('Thread not found');
-        },function(){
+            } else res.status(404).send('Thread not found');
+        }, function () {
             res.status(404).send('Thread not found');
         })
     })
-    .delete(userController.requiresLogin,function(req,res){
+    .delete(userController.requiresLogin, function (req, res) {
         var id = req.params.threadId;
         forum_thread_model.findById(req.params.threadId)
-            .then(function(result){
-                if(!result)
+            .then(function (result) {
+                if (!result)
                     res.status(404).send('Thread not found');
-                else{
-                    if(!(req.user.hasPermission('Forum Admin')||req.user._id.equals(result.creator.id))){
+                else {
+                    if (!(req.user.hasPermission('Forum Admin') || req.user._id.equals(result.creator.id))) {
                         res.status(403).send({
                             message: 'User is not authorized'
                         });
-                    }else{
-                        forum_thread_model.findOneAndRemove({_id:req.params.threadId})
-                            .then(function(){res.status(200).send()},
-                                function(err){res.send(400).send()})
+                    } else {
+                        forum_thread_model.findOneAndRemove({_id: req.params.threadId})
+                            .then(function () {
+                                    res.status(200).send()
+                                },
+                                function (err) {
+                                    res.send(400).send()
+                                })
                     }
                 }
             })
     });
 
 router.route('/:threadId/view')
-    .patch(function(req,res){
-        forum_thread_model.findByIdAndUpdate(req.params.threadId,{$inc:{views:1}})
-            .then(function(){res.status(200).send()},
-                function(err){res.status(400).send()});
+    .patch(function (req, res) {
+        forum_thread_model.findByIdAndUpdate(req.params.threadId, {$inc: {views: 1}})
+            .then(function () {
+                    res.status(200).send()
+                },
+                function (err) {
+                    res.status(400).send()
+                });
     });
 
 router.route('/:threadId/lock')
-    .patch(userController.hasAuthorization(['Forum Admin']),forumController.lockThread);
+    .patch(userController.hasAuthorization(['Forum Admin']), forumController.lockThread);
 router.route('/:threadId/unlock')
-    .patch(userController.hasAuthorization(['Forum Admin']),forumController.unlockThread);
+    .patch(userController.hasAuthorization(['Forum Admin']), forumController.unlockThread);
 router.route('/:threadId/pin')
-    .patch(userController.hasAuthorization(['Forum Admin']),forumController.pinThread);
+    .patch(userController.hasAuthorization(['Forum Admin']), forumController.pinThread);
 router.route('/:threadId/unpin')
-    .patch(userController.hasAuthorization(['Forum Admin']),forumController.unpinThread);
+    .patch(userController.hasAuthorization(['Forum Admin']), forumController.unpinThread);
 
 module.exports = router;

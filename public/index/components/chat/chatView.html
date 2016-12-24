@@ -11,37 +11,48 @@
         <br><br>
     </div>
     <div class="pull-left container-fluid">
-        <a bs-aside="menuAside" data-content-template="components/chat/menuTemplate.html"  data-container="#chatArea" data-placement="left"  data-animation="am-fade-and-slide-left"><span bs-tooltip data-title="Settings" data-placement="right" class="fa fa-cog fa-3x"></span></a>
-        <a bs-aside="{title:'Mods'}" data-title="Mods" data-content-template="components/chat/chatModMenuTemplate.html"  data-container="#topDiv" data-placement="left"  data-animation="am-fade-and-slide-left"><span bs-tooltip data-title="Mods" data-placement="right" class="fa fa-cog fa-3x"></span></a>
+        <a bs-aside="menuAside" data-content-template="components/chat/menuTemplate.html" data-container="#chatArea"
+           data-placement="left" data-animation="am-fade-and-slide-left"><span bs-tooltip data-title="Settings"
+                                                                               data-placement="right"
+                                                                               class="fa fa-cog fa-3x"></span></a>
+        <a bs-aside="{title:'Mods'}" data-title="Mods" data-content-template="components/chat/chatModMenuTemplate.html"
+           data-container="#topDiv" data-placement="left" data-animation="am-fade-and-slide-left"><span bs-tooltip
+                                                                                                        data-title="Mods"
+                                                                                                        data-placement="right"
+                                                                                                        class="fa fa-cog fa-3x"></span></a>
         <br class="hidden-sm hidden-xs"/>
         <br class="hidden-sm hidden-xs"/>
         <a ng-click="exitRoom()"><span class="fa fa-arrow-circle-left fa-3x"></span></a>
-        <a ng-click="chats=[]"><span bs-tooltip data-title="Clear Chat" data-placement="right" class="fa fa-3x fa-trash"></span></a>
+        <a ng-click="chats=[]"><span bs-tooltip data-title="Clear Chat" data-placement="right"
+                                     class="fa fa-3x fa-trash"></span></a>
     </div>
 
     <div class="col-sm-12 col-md-10 pull-left" style="height:550px">
 
         <div id='chatArea' style="overflow:auto;height:80%;width:100%" scroll-glue>
             <p ng-repeat="chat in chats" ng-class="{'chat-has-username':hasUsername(chat)}" class="chat">
-                <span ng-show="hasPermission('Chat Admin')&&chat.user" ><a class="fa fa-ban text-danger" ng-click="banUser(chat.user)"></a></span>
+                <span ng-show="hasPermission('Chat Admin')&&chat.user"><a class="fa fa-ban text-danger"
+                                                                          ng-click="banUser(chat.user)"></a></span>
                 <small ng-show="showRank && chat.rank">[{{chat.rank}}]</small>
-                <b ng-show="chat.username"><a ui-sref="userPage({userId:chat.user})" >{{chat.username}}</a>:</b>
+                <b ng-show="chat.username"><a ui-sref="userPage({userId:chat.user})">{{chat.username}}</a>:</b>
                 <span ng-bind-html="chat.text"></span>
                 <small class="chat_time pull-right" ng-show="showTime">{{chat.time | date:'mediumTime'}}</small>
             </p>
             <p id='typing' style="position:absolute;bottom:0px;">{{typing}}</p>
         </div>
         <br><br>
-        <form >
+        <form>
             <div ng-show="logged_in_user">
-                <div class='input-group' >
-                    <input class="form-control" ng-model='chatBox'  id='chatBox' ng-keydown="keyHandle($event)">
+                <div class='input-group'>
+                    <input class="form-control" ng-model='chatBox' id='chatBox' ng-keydown="keyHandle($event)">
                     <div class="input-group-btn">
 
                         <button class="btn btn-primary " id="chatButton" ng-click="sendChat()">send</button>
-                        <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+                        <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><span
+                                class="caret"></span></button>
                         <ul class="dropdown-menu" role="menu">
-                            <li ng-repeat="item in distplayHistory" ><a ng-click="$parent.chatBox = item">{{item}}</a></li>
+                            <li ng-repeat="item in distplayHistory"><a ng-click="$parent.chatBox = item">{{item}}</a>
+                            </li>
 
                         </ul>
                     </div>

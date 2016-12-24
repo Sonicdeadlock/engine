@@ -1,19 +1,19 @@
-.ng-invalid.ng-touched{
-    border-color:#ac2925;
+.ng-invalid.ng-touched {
+    border-color: #ac2925;
 }
 
-#groups,#users{
-    max-height:400px;
-    overflow:auto;
+#groups, #users {
+    max-height: 400px;
+    overflow: auto;
     border: 1px solid #e3e3e3;
 }
 
-#groups .selected,#users .selected{
+#groups .selected, #users .selected {
     border: 1px solid #e3e3e3;
     background-color: #EAEAEA;
     padding: 9px
 }
 
-#groups *,#users *{
-    padding:10px;
+#groups *, #users * {
+    padding: 10px;
 }

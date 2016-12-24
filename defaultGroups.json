@@ -1,13 +1,13 @@
 [
   {
-    "name":"User",
-    "permissions":[],
-    "default":true,
-    "userAccess":"username"
+    "name": "User",
+    "permissions": [],
+    "default": true,
+    "userAccess": "username"
   },
   {
-    "name":"Super Admin",
-    "permissions":[
+    "name": "Super Admin",
+    "permissions": [
       "super",
       "sudo",
       "all",
@@ -17,8 +17,11 @@
       "Admin",
       "Super Admin"
     ],
-    "default":false,
-    "userAccess":"",
-    "_id":ObjectId("572d7a3d6f775fb187f549fe")
+    "default": false,
+    "userAccess": "",
+    "_id": ObjectId
+    (
+    "572d7a3d6f775fb187f549fe"
+    )
   }
 ]

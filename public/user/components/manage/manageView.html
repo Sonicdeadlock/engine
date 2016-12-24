@@ -28,10 +28,13 @@
                     <input class="form-control" type="text" ng-model="user.lastName">
                     <label>
                         Username<span class="text-danger">*</span>
-                        <span data-animation="am-flip-x" class="fa fa-question-circle" bs-tooltip data-placement="right" data-title="Usernames are case sensitive"
+                        <span data-animation="am-flip-x" class="fa fa-question-circle" bs-tooltip data-placement="right"
+                              data-title="Usernames are case sensitive"
                               data-trigger="hover"></span>
-                        <span class="text-success fa fa-check" ng-show="!checkingUsername && usernameTaken==false"></span>
-                        <span class="text-success" ng-show="checkingUsername"><span class="fa fa-circle-o-notch fa-spin"></span></span>
+                        <span class="text-success fa fa-check"
+                              ng-show="!checkingUsername && usernameTaken==false"></span>
+                        <span class="text-success" ng-show="checkingUsername"><span
+                                class="fa fa-circle-o-notch fa-spin"></span></span>
                         <span class="text-danger" ng-show="usernameTaken"> Username Taken</span>
                     </label>
                     <input class="form-control" type="text" ng-model="user.username" ng-change="checkUsername()">
@@ -44,7 +47,8 @@
                     </label>
                     <input class="form-control" type="password" ng-model="user.password">
                     <label>
-                        Retype Password<span class="text-danger">*</span><span class="text-danger" ng-hide="user.password==user.passwordAgain"> Passwords do not match</span>
+                        Retype Password<span class="text-danger">*</span><span class="text-danger"
+                                                                               ng-hide="user.password==user.passwordAgain"> Passwords do not match</span>
                     </label>
                     <input class="form-control" type="password" ng-model="user.passwordAgain">
                 </div>
@@ -54,7 +58,8 @@
         <div ng-if="hasPermission('Group Admin')" name="groups" title="Permission Groups" bs-pane class="row no-gutter">
             <h3>Select Group <a class="fa fa-plus-square" ng-click="newGroup()"></a></h3>
             <div id="groups" class="col-md-4">
-                <div ng-repeat="group in groups" ng-click="selectGroup(group)" ng-class="{selected:group==selectedGroup}">
+                <div ng-repeat="group in groups" ng-click="selectGroup(group)"
+                     ng-class="{selected:group==selectedGroup}">
                     <b>{{group.name}}</b>
                 </div>
             </div>
@@ -63,20 +68,25 @@
                 <form class="">
                     <label>Group Name</label>
                     <input ng-model="selectedGroup.name" class="form-control" placeholder="Name">
-                    <label>User Access <span class="fa fa-question-circle" bs-popover title="User Access" data-content="What the user will be allowed to see from other users '' will allow everything to be seen and is not reccomened 'username' is reccomened     "
-                            data-animation="am-flip-x"  data-trigger="hover"></span></label>
+                    <label>User Access <span class="fa fa-question-circle" bs-popover title="User Access"
+                                             data-content="What the user will be allowed to see from other users '' will allow everything to be seen and is not reccomened 'username' is reccomened     "
+                                             data-animation="am-flip-x" data-trigger="hover"></span></label>
                     <input ng-model="selectedGroup.userAccess" class="form-control" placeholder="User Access">
-                    <label>Permissions <a class="fa fa-plus-square" ng-click="selectedGroup.permissions.push('')"></a></label>
+                    <label>Permissions <a class="fa fa-plus-square"
+                                          ng-click="selectedGroup.permissions.push('')"></a></label>
                     <div class="input-group" ng-repeat="permission in selectedGroup.permissions track by $index">
                         <input class="form-control" ng-model="selectedGroup.permissions[$index]">
                         <div class="input-group-btn">
-                            <button class="btn btn-danger" ng-click="selectedGroup.permissions.splice($index,1)"><span class="fa fa-trash"></span></button>
+                            <button class="btn btn-danger" ng-click="selectedGroup.permissions.splice($index,1)"><span
+                                    class="fa fa-trash"></span></button>
                         </div>
 
                     </div>
                     <div class="divider"></div>
                     <br>
-                    <button type="button" class="btn btn-default pull-right" ng-model="selectedGroup.default" bs-checkbox>Default</button>
+                    <button type="button" class="btn btn-default pull-right" ng-model="selectedGroup.default"
+                            bs-checkbox>Default
+                    </button>
                     <br>
                     <button class="btn btn-primary" ng-click="submitGroup()">Save</button>
                     <button class="btn btn-danger" ng-click="deleteGroup()" ng-show="selectedGroup._id">Delete</button>
@@ -94,19 +104,36 @@
             <br class="visible-xs-block visible-sm-block">
             <div ng-show="selectedUser" class="col-md-6 col-sm-12 col-xs-12 pull-right">
                 <div class="">
-                    <p ng-hide="show_username_input"><b>Username: </b>{{selectedUser.username}} <a ng-if="userHasPermission('Edit Users')" ng-click="toggleShowInput('username')">Edit</a></p>
-                    <input ng-if="userHasPermission('Edit Users')" ng-show="show_username_input" focus-me="show_username_input" ng-model="selectedUser.username" ng-blur="toggleShowInput('username')" ng-change="$parent.changed=true">
-                    <p ng-hide="show_firstName_input"><b>First Name: </b>{{selectedUser.firstName}} <a ng-if="userHasPermission('Edit Users')" ng-click="toggleShowInput('firstName')">Edit</a></p>
-                    <input ng-if="userHasPermission('Edit Users')" ng-show="show_firstName_input" focus-me="show_firstName_input" ng-model="selectedUser.firstName" ng-blur="toggleShowInput('firstName')" ng-change="$parent.changed=true">
-                    <p ng-hide="show_lastName_input"><b>Last Name: </b>{{selectedUser.lastName}} <a ng-if="userHasPermission('Edit Users')" ng-click="toggleShowInput('lastName')">Edit</a></p>
-                    <input ng-if="userHasPermission('Edit Users')" ng-show="show_lastName_input" focus-me="show_lastName_input" ng-model="selectedUser.lastName" ng-blur="toggleShowInput('lastName')" ng-change="$parent.changed=true">
-                    <p ng-hide="show_email_input"><b>Email: </b>{{selectedUser.email}} <a ng-if="userHasPermission('Edit Users')" ng-click="toggleShowInput('email')">Edit</a></p>
-                    <input ng-if="userHasPermission('Edit Users')" ng-show="show_email_input" focus-me="show_email_input" ng-model="selectedUser.email" ng-blur="toggleShowInput('email')" ng-change="$parent.changed=true">
-                    <p ng-hide="show_password_input" ng-if="userHasPermission('Super User Edit')"><b>Password: </b> <a ng-click="toggleShowInput('password')">Edit</a></p>
-                    <input ng-if="userHasPermission('Super User Edit')" ng-show="show_password_input" focus-me="show_password_input" ng-model="selectedUser.password" ng-blur="toggleShowInput('password')" ng-change="$parent.changed=true">
+                    <p ng-hide="show_username_input"><b>Username: </b>{{selectedUser.username}} <a
+                            ng-if="userHasPermission('Edit Users')" ng-click="toggleShowInput('username')">Edit</a></p>
+                    <input ng-if="userHasPermission('Edit Users')" ng-show="show_username_input"
+                           focus-me="show_username_input" ng-model="selectedUser.username"
+                           ng-blur="toggleShowInput('username')" ng-change="$parent.changed=true">
+                    <p ng-hide="show_firstName_input"><b>First Name: </b>{{selectedUser.firstName}} <a
+                            ng-if="userHasPermission('Edit Users')" ng-click="toggleShowInput('firstName')">Edit</a></p>
+                    <input ng-if="userHasPermission('Edit Users')" ng-show="show_firstName_input"
+                           focus-me="show_firstName_input" ng-model="selectedUser.firstName"
+                           ng-blur="toggleShowInput('firstName')" ng-change="$parent.changed=true">
+                    <p ng-hide="show_lastName_input"><b>Last Name: </b>{{selectedUser.lastName}} <a
+                            ng-if="userHasPermission('Edit Users')" ng-click="toggleShowInput('lastName')">Edit</a></p>
+                    <input ng-if="userHasPermission('Edit Users')" ng-show="show_lastName_input"
+                           focus-me="show_lastName_input" ng-model="selectedUser.lastName"
+                           ng-blur="toggleShowInput('lastName')" ng-change="$parent.changed=true">
+                    <p ng-hide="show_email_input"><b>Email: </b>{{selectedUser.email}} <a
+                            ng-if="userHasPermission('Edit Users')" ng-click="toggleShowInput('email')">Edit</a></p>
+                    <input ng-if="userHasPermission('Edit Users')" ng-show="show_email_input"
+                           focus-me="show_email_input" ng-model="selectedUser.email" ng-blur="toggleShowInput('email')"
+                           ng-change="$parent.changed=true">
+                    <p ng-hide="show_password_input" ng-if="userHasPermission('Super User Edit')"><b>Password: </b> <a
+                            ng-click="toggleShowInput('password')">Edit</a></p>
+                    <input ng-if="userHasPermission('Super User Edit')" ng-show="show_password_input"
+                           focus-me="show_password_input" ng-model="selectedUser.password"
+                           ng-blur="toggleShowInput('password')" ng-change="$parent.changed=true">
 
 
-                    <button type="button" class="btn btn-default" ng-model="selectedUser.group._id" data-html="false" bs-options="group._id as group.name for group in groups" data-animation="am-flip-x" bs-select ng-change="changed=true">
+                    <button type="button" class="btn btn-default" ng-model="selectedUser.group._id" data-html="false"
+                            bs-options="group._id as group.name for group in groups" data-animation="am-flip-x"
+                            bs-select ng-change="changed=true">
                         Action <span class="caret"></span>
                     </button>
                     <br>

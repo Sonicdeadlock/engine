@@ -4,7 +4,7 @@
 var config = require('./config.js');
 /*global module:false*/
 
-module.exports = function(grunt) {
+module.exports = function (grunt) {
     // Project configuration.
     grunt.initConfig({
         // Task configuration.
@@ -19,13 +19,13 @@ module.exports = function(grunt) {
                 sub: true,
                 boss: true,
                 eqnull: true,
-                esnext:true,
+                esnext: true,
                 globals: {
                     jQuery: true,
-                    it:true,
-                    before:true,
-                    require:true,
-                    describe:true
+                    it: true,
+                    before: true,
+                    require: true,
+                    describe: true
                 }
             },
             gruntfile: {
@@ -45,38 +45,38 @@ module.exports = function(grunt) {
                 tasks: ['jshint:lib_test', 'nodeunit']
             }
         },
-        mongoimport:{
-            options:{
-                db:config.db.name,
-                host:config.db.host,
-                collections:[
+        mongoimport: {
+            options: {
+                db: config.db.name,
+                host: config.db.host,
+                collections: [
                     {
-                        name:"permissiongroups",
-                        type:"json",
-                        file:"defaultGroups.json",
-                        jsonArray:true,
-                        drop:true
+                        name: "permissiongroups",
+                        type: "json",
+                        file: "defaultGroups.json",
+                        jsonArray: true,
+                        drop: true
                     },
                     {
-                        name:"users",
-                        type:"json",
-                        file:"defaultUsers.json",
-                        jsonArray:true,
-                        drop:true
+                        name: "users",
+                        type: "json",
+                        file: "defaultUsers.json",
+                        jsonArray: true,
+                        drop: true
                     },
                     {
-                        name:"character_replacements",
-                        type:'json',
-                        file:"character_replcements.json",
-                        jsonArray:true,
-                        drop:true
+                        name: "character_replacements",
+                        type: 'json',
+                        file: "character_replcements.json",
+                        jsonArray: true,
+                        drop: true
                     },
                     {
-                        name:"forum_topics",
-                        type:'json',
-                        file:"defaultTopics.json",
-                        jsonArray:true,
-                        drop:true
+                        name: "forum_topics",
+                        type: 'json',
+                        file: "defaultTopics.json",
+                        jsonArray: true,
+                        drop: true
                     }
                 ]
             }
@@ -88,9 +88,9 @@ module.exports = function(grunt) {
                 ignoreLeaks: true,
                 ui: 'bdd',
                 reporter: 'spec',
-                harmony:true
+                harmony: true
             },
-            all: { src: ['test/*.js'] }
+            all: {src: ['test/*.js']}
         }
     });
 
@@ -103,9 +103,9 @@ module.exports = function(grunt) {
     // Default task.
     grunt.registerTask('default', ['jshint', 'nodeunit']);
 
-    grunt.registerTask('setupDB',['mongoimport']);
+    grunt.registerTask('setupDB', ['mongoimport']);
 
-    grunt.registerTask('mocha-test', ['jshint','mongoimport', 'simplemocha']);
+    grunt.registerTask('mocha-test', ['jshint', 'mongoimport', 'simplemocha']);
 
 
 };

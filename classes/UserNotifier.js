@@ -1,5 +1,5 @@
 var _ = require('lodash');
 
-function notify(user,message){
-    
+function notify(user, message) {
+
 }

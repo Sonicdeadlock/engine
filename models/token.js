@@ -6,10 +6,10 @@ var schema = mongoose.Schema;
 var db = require('../db');
 
 var tokenSchema = new schema({
-    type:String,
-    token:String,
-    tokenData:Object
+    type: String,
+    token: String,
+    tokenData: Object
 });
 
 
-module.exports = mongoose.model('token',tokenSchema);
+module.exports = mongoose.model('token', tokenSchema);

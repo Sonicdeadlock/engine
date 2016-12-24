@@ -6,9 +6,9 @@ var schema = mongoose.Schema;
 var db = require('../db');
 
 var character_replacementSchema = new schema({
-    character:String,
-    replacements:[String]
+    character: String,
+    replacements: [String]
 });
 
 
-module.exports = mongoose.model('character_replacements',character_replacementSchema);
+module.exports = mongoose.model('character_replacements', character_replacementSchema);

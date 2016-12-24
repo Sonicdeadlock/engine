@@ -14,18 +14,18 @@ var forumController = require('../../../controllers/forumController');
 var userController = require('../../../controllers/userController');
 
 router.route('/')
-    .post(userController.hasAuthorization(['Forum Admin']),forumController.createTopic)
+    .post(userController.hasAuthorization(['Forum Admin']), forumController.createTopic)
     .get(forumController.getRootTopics);
 
 router.route('/:topicId')
-    .get(function(req,res){
-       forum_topic_model.findById(req.params.topicId).then(function(result){
-           if(result)
-           res.json(result);
-           else  res.status(404).send('Topic not found');
-       },function(){
-           res.status(404).send('Topic not found');
-       })
+    .get(function (req, res) {
+        forum_topic_model.findById(req.params.topicId).then(function (result) {
+            if (result)
+                res.json(result);
+            else  res.status(404).send('Topic not found');
+        }, function () {
+            res.status(404).send('Topic not found');
+        })
     });
 
 router.route('/:topicId/children')

@@ -7,51 +7,51 @@ var db = require('../db');
 var _ = require('lodash');
 
 var forum_threadSchema = new schema({
-    title:String,
-    postRequirements:[String],
-    tags:[String],
-    creator:{
-        type:schema.Types.ObjectId,
-        ref:'user',
-        field:'_id',
-        required:true
+    title: String,
+    postRequirements: [String],
+    tags: [String],
+    creator: {
+        type: schema.Types.ObjectId,
+        ref: 'user',
+        field: '_id',
+        required: true
     },
-    topic:{
-        type:schema.Types.ObjectId,
-        ref:'forum_topic',
-        field:'_id',
-        required:true
+    topic: {
+        type: schema.Types.ObjectId,
+        ref: 'forum_topic',
+        field: '_id',
+        required: true
     },
-    creationTime:{
-        type:Date,
+    creationTime: {
+        type: Date,
         default: Date.now
     },
-    lastUpdateTime:{
-        type:Date,
+    lastUpdateTime: {
+        type: Date,
         default: Date.now
     },
-    locked:{
-        type:Boolean,
-        default:false
+    locked: {
+        type: Boolean,
+        default: false
     },
-    pinned:{
-        type:Boolean,
-        default:false
+    pinned: {
+        type: Boolean,
+        default: false
     },
-    views:{
-        type:Number,
-        default:0
+    views: {
+        type: Number,
+        default: 0
     },
-    history:[{
-        date:{type:Date,default:Date.now},
-        actor:{
-            type:schema.Types.ObjectId,
-            ref:'user',
-            field:'_id',
-            required:true
+    history: [{
+        date: {type: Date, default: Date.now},
+        actor: {
+            type: schema.Types.ObjectId,
+            ref: 'user',
+            field: '_id',
+            required: true
         },
-        action:String
+        action: String
     }]
 });
 
-module.exports = mongoose.model('forum_thread',forum_threadSchema);
+module.exports = mongoose.model('forum_thread', forum_threadSchema);

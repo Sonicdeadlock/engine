@@ -3,11 +3,11 @@
         <div>
             <h3>Room Bot filter</h3>
             <div class="btn-group btn-group-vertical">
-                <label class="btn btn-default" ng-repeat="bot in bots"  bs-checkbox ng-model="roomFilter.bots[bot]" >{{bot}} </label>
+                <label class="btn btn-default" ng-repeat="bot in bots" bs-checkbox ng-model="roomFilter.bots[bot]">{{bot}} </label>
             </div>
         </div>
     </div>
-    <div class="col-md-9" >
+    <div class="col-md-9">
         <div class="input-group">
             <span class="input-group-addon"><span class="fa fa-search"></span></span>
             <input ng-model="roomFilter.searchText" class="form-control">

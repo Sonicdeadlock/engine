@@ -10,11 +10,15 @@
         </div>
         <div class="form-group">
             <label>Topic icon:</label>
-            <small>This will appear on the left side of the topic name to add flare. <a href="https://fortawesome.github.io/Font-Awesome/icons/" target="_blank">Font Awesome</a> icons are being used. Simply the icon name "fa" and "fa-*" will already be added</small>
+            <small>This will appear on the left side of the topic name to add flare. <a
+                    href="https://fortawesome.github.io/Font-Awesome/icons/" target="_blank">Font Awesome</a> icons are
+                being used. Simply the icon name "fa" and "fa-*" will already be added
+            </small>
             <input class="form-control" ng-model="newTopic.icon">
         </div>
         <label>Icon Style</label>
-        <button type="button" class="btn btn-default" ng-model="newTopic.iconStyle" bs-options="style as style for style in iconStyles" bs-select></button>
+        <button type="button" class="btn btn-default" ng-model="newTopic.iconStyle"
+                bs-options="style as style for style in iconStyles" bs-select></button>
         <br>
         <button class="btn btn-primary">Submit</button>
     </form>

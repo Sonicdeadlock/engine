@@ -1,5 +1,5 @@
 .chat-has-username.chat,
-.chat:nth-child(even).chat-has-username{
+.chat:nth-child(even).chat-has-username {
     color: #fff;
     background-color: #d9534f;
     border-color: #d43f3a;
@@ -7,13 +7,13 @@
 
 }
 
-.chat.chat-has-username> b>a{
-    color:#fff;
+.chat.chat-has-username > b > a {
+    color: #fff;
 }
 
-.chat{
-    padding:4px 5px 4px 5px;
-    margin:0;
+.chat {
+    padding: 4px 5px 4px 5px;
+    margin: 0;
     position: relative;
 }
 
@@ -21,20 +21,20 @@
     background-color: rgb(194, 194, 194);
 }
 
-.remove-padding{
-    padding:0px;
+.remove-padding {
+    padding: 0px;
 }
 
-#chatArea{
-    padding-top:10px;
-    background-color:#f5f5f5;
-    border:1px solid #e3e3e3;
+#chatArea {
+    padding-top: 10px;
+    background-color: #f5f5f5;
+    border: 1px solid #e3e3e3;
     border-radius: 4px;
 }
 
-#alert-container2{
+#alert-container2 {
     max-width: 300px;
-    right:0;
+    right: 0;
     z-index: 10;
 }
 
@@ -55,110 +55,113 @@
     width: 10em;
 }
 
-textarea.forumTextArea{
-    width:100%;
-    border-top-left-radius:0px !important;
-    border-top-right-radius:0px !important;
+textarea.forumTextArea {
+    width: 100%;
+    border-top-left-radius: 0px !important;
+    border-top-right-radius: 0px !important;
 }
 
-.creator.post-user{
+.creator.post-user {
     background-color: #D9EDF7;
 }
 
-.post-role{
+.post-role {
     color: rgb(43, 140, 70);
 }
 
-pre{
+pre {
     white-space: pre-wrap;
 }
 
-.textarea-addon{
+.textarea-addon {
     border-radius: 4px 4px 0 0 !important;
-    border:1px solid #ccc !important;
+    border: 1px solid #ccc !important;
     border-bottom: none;
-    padding:5px;
+    padding: 5px;
     margin-bottom: 0px;
 }
 
-.textarea-addon a{
+.textarea-addon a {
     padding: 5px;
 }
 
-.reply-panel{
-    border:1px solid #ccc;
-    padding:10px;
+.reply-panel {
+    border: 1px solid #ccc;
+    padding: 10px;
     padding-top: 15px;
 }
 
-.fa-spin.ng-hide-add-active{
+.fa-spin.ng-hide-add-active {
     display: none !important;
 }
 
-blockquote forum-post{
+blockquote forum-post {
     font-size: 14px;
 }
 
-blockquote hr{
+blockquote hr {
     margin-bottom: 5px;
     margin-top: 5px;
 }
 
-.forum-post-button-group a.unselected{
-    color:#999;
-}
-.forum-post-button-group a.unselected:hover,.forum-post-button-group a.selected{
-    color:rgb(43, 140, 70);
+.forum-post-button-group a.unselected {
+    color: #999;
 }
 
-room *{
-    text-overflow:ellipsis;
+.forum-post-button-group a.unselected:hover, .forum-post-button-group a.selected {
+    color: rgb(43, 140, 70);
+}
+
+room * {
+    text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
 }
 
-.forum-post-options{
+.forum-post-options {
     border-radius: 5px;
-    background-color:#eee;
-    padding:3px;
-    border:1px solid #ddd;
+    background-color: #eee;
+    padding: 3px;
+    border: 1px solid #ddd;
 }
-.forum-post-options hr{
+
+.forum-post-options hr {
     margin-bottom: 2px;
     margin-top: 2px;
-    border-top:1px solid #888;
+    border-top: 1px solid #888;
 }
-.subposts{
-    margin:0;
+
+.subposts {
+    margin: 0;
     padding: 5px 10px;
 }
 
-hr{
+hr {
     margin-top: 2px;
     margin-bottom: 2px;
 }
 
-forum-post div{
-    padding:0px 10px;
+forum-post div {
+    padding: 0px 10px;
 }
 
-.hangman-image{
+.hangman-image {
     position: absolute;
     top: 5px;
     right: 10px;
 }
 
-hr.hr-tall{
-    margin-top:20px;
+hr.hr-tall {
+    margin-top: 20px;
     margin-bottom: 20px;
-    border-top:1px solid #ccc;
+    border-top: 1px solid #ccc;
 }
 
-.user-page-activity{
-    padding:5px;
+.user-page-activity {
+    padding: 5px;
 }
 
-.user-page-activity:nth-child(even){
+.user-page-activity:nth-child(even) {
     background-color: #dedede;
     border-radius: 5px;
 }
