@@ -213,17 +213,16 @@ passport.serializeUser(function (user, done) {
 
 passport.deserializeUser(function (id, done) {
     user.findById(id)
-        .populate('group', 'permissions userAccess').exec(function (err, user) {
-        permissionGroup.populate(user, {
+        .exec(function (err, user) {
+           permissionGroup.populate(user, {
             path: 'group',
-            select: "userAccess permissions",
+            select: "userAccess permissions name",
             model: permissionGroup
         }).then(function (user) {
             done(err, user);
         }, function (err) {
             done(err, user);
         });
-
     });
 });
 
