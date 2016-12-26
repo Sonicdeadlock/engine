@@ -105,6 +105,13 @@ angular.module('controllers').controller('threadController', function ($scope, $
                     }
 
                 });
+                if($stateParams.postId){
+                    setTimeout(function(){
+                        $('html, body').animate({
+                            scrollTop: $("#"+$stateParams.postId).offset().top
+                        }, 700);
+                    },10);
+                }
 
             }).error(function (err) {
             $scope.errs.push(err);
