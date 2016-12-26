@@ -5,6 +5,7 @@ angular.module('controllers').controller('chatController', function ($scope, $ht
     $scope.chats = [];
     $scope.distplayHistory = [];
     $scope.mods = [];
+    $scope.typing = [];
     $scope.roomFilter = ($stateParams.filters && $stateParams.filters != '') ? JSON.parse($stateParams.filters) : {bots: {}};
     $scope.modTypes = [
         {
@@ -18,7 +19,12 @@ angular.module('controllers').controller('chatController', function ($scope, $ht
     ];
     var historyId = 0;
     var history = [];
-
+    var isTyping = false;
+    var numbers = ['Zero','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten'];
+    var sendStopTyping = _.debounce(function(){
+        isTyping = false;
+        socket.emit('clientToServerStopTyping');
+    },500,{trailing:true,leading:false});
     function filterRooms() {
         $scope.displayRooms = _.chain($scope.rooms)
             .filter(function (r) {
@@ -197,6 +203,20 @@ angular.module('controllers').controller('chatController', function ($scope, $ht
             return false;
     };
 
+    $scope.onType = function(){
+       if(!isTyping)
+       {
+           isTyping = true;
+           socket.emit('clientToServerStartTyping');
+       }
+       sendStopTyping();
+    };
+
+    $scope.getTextNumber = function(index){
+        if(numbers[index])
+            return numbers[index];
+        return index;
+    };
 
     //settings
     $scope.showRank = $cookies.getObject('showRank');
@@ -214,6 +234,15 @@ angular.module('controllers').controller('chatController', function ($scope, $ht
 
     if ($scope.showTime == undefined)
         $scope.showTime = true;
+
+
+    socket.on('serverToClientStartTyping',function(message){
+       $scope.typing.push(message.name);
+    });
+
+    socket.on('serverToClientStopTyping',function(message){
+        $scope.typing.splice($scope.typing.indexOf(message.name));
+    })
 
 })
     .filter('startCase', function () {

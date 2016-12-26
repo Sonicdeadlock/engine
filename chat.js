@@ -140,6 +140,17 @@ function connect(socket) {
             userCollectionObj.chatRoom.save();
         }
     });
+
+    socket.on('clientToServerStartTyping',function(){
+        _.forEach(getUsersForCommunication(userCollectionObj.chatRoom),function(u){
+            u.socket.emit('serverToClientStartTyping',{name:user.username});
+        });
+    });
+    socket.on('clientToServerStopTyping',function(){
+        _.forEach(getUsersForCommunication(userCollectionObj.chatRoom),function(u){
+            u.socket.emit('serverToClientStopTyping',{name:user.username});
+        });
+    });
 }
 
 function disconnect(socket) {

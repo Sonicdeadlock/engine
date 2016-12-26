@@ -38,13 +38,24 @@
                 <span ng-bind-html="chat.text"></span>
                 <small class="chat_time pull-right" ng-show="showTime">{{chat.time | date:'mediumTime'}}</small>
             </p>
-            <p id='typing' style="position:absolute;bottom:0px;">{{typing}}</p>
+            <p id='typing' style="position:absolute;bottom:0px;" ng-show="typing.length>0">
+                <span ng-show="typing.length>3">{{getTextNumber(typing.length)}} people are currently typing.</span>
+                <span ng-show="typing.length<=3">
+                    <span ng-repeat="name in typing">
+                        <span>{{name}}<span ng-if="$index!==typing.length-1 && typing.length!==2">,</span></span>
+                        <span ng-if="$index===typing.length-2">and</span>
+                    </span>
+                    <span ng-if="typing.length===1">is</span>
+                    <span ng-if="typing.length!==1">are</span>
+                    <span> currently typing.</span>
+                </span>
+            </p>
         </div>
         <br><br>
         <form>
             <div ng-show="logged_in_user">
                 <div class='input-group'>
-                    <input class="form-control" ng-model='chatBox' id='chatBox' ng-keydown="keyHandle($event)">
+                    <input class="form-control" ng-model='chatBox' id='chatBox' ng-keydown="keyHandle($event);onType();">
                     <div class="input-group-btn">
 
                         <button class="btn btn-primary " id="chatButton" ng-click="sendChat()">send</button>
