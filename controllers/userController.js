@@ -11,7 +11,7 @@ var permissionGroupModel = require('../models/permissionGroup');
 var permissionGroup = db.model('permissionGroup');
 
 function hash(salt, raw) {
-    return crypto.pbkdf2Sync(raw, salt, config.hash.itterations, config.hash.length).toString('base64');
+    return crypto.pbkdf2Sync(raw, salt, config.hash.itterations, config.hash.length,'sha1').toString('base64');
 }
 
 module.exports.create = function (req, res) {
