@@ -15,14 +15,16 @@ angular.module('controllers').controller('threadController', function ($scope, $
                     page = 0;
                     $scope.atBottomOfThread = false;
                     $scope.pageLoading = false;
+                    data.posts = [];
                     data.history.forEach(function (event) {
-                        data.posts.push({
+                        var eventPost = {
                             htmlBody: event.actor.username + " " + event.action + 'ed this post at ' + event.date,
                             creationTime: event.date,
                             lastUpdateTime: event.date
-                        })
+                        };
+                        populatePostHTML(eventPost);
+                        data.posts.push(eventPost);
                     });
-                    data.posts = [];
                     $scope.thread = data;
                     $scope.getNextPage();
 
@@ -162,7 +164,7 @@ angular.module('controllers').controller('threadController', function ($scope, $
             return markdown.toHTML(post.body);
         else
             return post.htmlBody;
-    };
+    }
     $scope.mark = function (type, post) {
         $http.patch('/api/forum/posts/' + post._id + '/mark/' + type, {}).success(function (result) {
             _.assign(post, result);
