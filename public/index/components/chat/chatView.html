@@ -8,6 +8,10 @@
         <ul class="list-unstyled">
             <li ng-repeat=" bot in chatRoom.bots">{{bot.name}}</li>
         </ul>
+        <h2>Users</h2>
+        <ul class="list-unstyled">
+            <li ng-if='chatRoom.users' ng-repeat="user in chatRoom.users track by $index">{{user}}</li>
+        </ul>
         <br><br>
     </div>
     <div class="pull-left container-fluid">

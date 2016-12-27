@@ -1,8 +1,8 @@
 <div class="col-md-3 col-lg-2 well clearfix" ng-click="goToRoom(room)">
-    <b>{{room.name | limitTo:15}}<span ng-if="room.name.length>15">...</span></b>
+    <b style="text-overflow: ellipsis">{{room.name}}</b>
     <br>
     <small>{{room.description }}</small>
     <p ng-show="room.requirements && room.requirements.rank" class="text-danger" style="position:absolute">
         {{room.requirements.rank}} only*</p><br>
-
+    <p ng-if="room.users">Users: {{room.users.length}}</p>
 </div>

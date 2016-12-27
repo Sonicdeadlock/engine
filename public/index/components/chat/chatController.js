@@ -21,11 +21,12 @@ angular.module('controllers').controller('chatController', function ($scope, $ht
     var historyId = 0;
     var history = [];
     var isTyping = false;
-    var numbers = ['Zero','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten'];
-    var sendStopTyping = _.debounce(function(){
+    var numbers = ['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten'];
+    var sendStopTyping = _.debounce(function () {
         isTyping = false;
         socket.emit('clientToServerStopTyping');
-    },500,{trailing:true,leading:false});
+    }, 500, {trailing: true, leading: false});
+
     function filterRooms() {
         $scope.displayRooms = _.chain($scope.rooms)
             .filter(function (r) {
@@ -77,10 +78,14 @@ angular.module('controllers').controller('chatController', function ($scope, $ht
 
     socket.on('chatRooms', function (rooms) {
         if ($stateParams.roomId && $stateParams.roomId !== "") {
-            if (!($scope.enteringRoom || $scope.chatRoom))
+            if (!($scope.enteringRoom || $scope.chatRoom)) {
                 $scope.enterRoom(_.find(rooms, {_id: $stateParams.roomId}));
+            }
         } else {
             $scope.rooms = rooms;
+            rooms.forEach(function (room) {
+                socket.emit('getUsersInRoom', {room: room});
+            });
             $scope.bots = _.chain(rooms).map(function (o) {
                 return _.map(o.bots, 'name')
             })
@@ -102,17 +107,37 @@ angular.module('controllers').controller('chatController', function ($scope, $ht
         }, 1000 * 6)
     });
     socket.on('chatEnterRoom', function (message) {
+        if($scope.chatRoom === undefined)
         $scope.chatRoom = message.room;
+        else{
+            $scope.chatRoom = _.merge($scope.chatRoom,message.room);
+        }
+        socket.emit('getUsersInRoom', message);
     });
     socket.on('chatRoomEntrance', function (username) {
+        if ($scope.chatRoom)
+            socket.emit('getUsersInRoom', {room: $scope.chatRoom});
         if ($scope.chatRoom && $scope.chatRoom.options && $scope.chatRoom.options.entranceMessages)
             $scope.chats.push({text: username + ' has entered the room'});
     });
     socket.on('chatRoomExit', function (username) {
+        if ($scope.chatRoom)
+            socket.emit('getUsersInRoom', {room: $scope.chatRoom});
         if ($scope.chatRoom && $scope.chatRoom.options && $scope.chatRoom.options.exitMessages)
             $scope.chats.push({text: username + ' has left the room'});
     });
-
+    socket.on('sendUsersInRoom', function (message) {
+        if ($stateParams.roomId) {
+            if (message.room._id === $stateParams.roomId)
+            {
+                if($scope.chatRoom===undefined)
+                    $scope.chatRoom={};
+                $scope.chatRoom.users = message.users;
+            }
+        } else {
+            _.find($scope.rooms, {_id: message.room._id}).users = message.users;
+        }
+    });
     $scope.exitRoom = function () {
         socket.emit('chatLeaveRoom', {});
         $scope.chatRoom = undefined;
@@ -123,7 +148,7 @@ angular.module('controllers').controller('chatController', function ($scope, $ht
     $scope.sendChat = function () {
         socket.emit('chatClientToServer', {text: $scope.chatBox, mods: $scope.mods});
         history.push($scope.chatBox);
-        historyId = - 1;
+        historyId = -1;
         $scope.distplayHistory = _.chain(history)
             .uniq()
             .takeRight(5)
@@ -205,17 +230,16 @@ angular.module('controllers').controller('chatController', function ($scope, $ht
             return false;
     };
 
-    $scope.onType = function(){
-       if(!isTyping)
-       {
-           isTyping = true;
-           socket.emit('clientToServerStartTyping');
-       }
-       sendStopTyping();
+    $scope.onType = function () {
+        if (!isTyping) {
+            isTyping = true;
+            socket.emit('clientToServerStartTyping');
+        }
+        sendStopTyping();
     };
 
-    $scope.getTextNumber = function(index){
-        if(numbers[index])
+    $scope.getTextNumber = function (index) {
+        if (numbers[index])
             return numbers[index];
         return index;
     };
@@ -238,11 +262,11 @@ angular.module('controllers').controller('chatController', function ($scope, $ht
         $scope.showTime = true;
 
 
-    socket.on('serverToClientStartTyping',function(message){
-       $scope.typing.push(message.name);
+    socket.on('serverToClientStartTyping', function (message) {
+        $scope.typing.push(message.name);
     });
 
-    socket.on('serverToClientStopTyping',function(message){
+    socket.on('serverToClientStopTyping', function (message) {
         $scope.typing.splice($scope.typing.indexOf(message.name));
     })
 

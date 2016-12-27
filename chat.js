@@ -141,6 +141,10 @@ function connect(socket) {
         }
     });
 
+    socket.on('getUsersInRoom',function(message){
+            socket.emit('sendUsersInRoom',{room:message.room,users:_.map(getUsersForCommunication(message.room),'user.username')});
+    });
+
     socket.on('clientToServerStartTyping',function(){
         _.forEach(getUsersForCommunication(userCollectionObj.chatRoom),function(u){
             u.socket.emit('serverToClientStartTyping',{name:user.username});
