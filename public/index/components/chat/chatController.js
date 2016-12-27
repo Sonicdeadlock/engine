@@ -67,6 +67,7 @@ angular.module('controllers').controller('chatController', function ($scope, $ht
                     notification.close();
                 }, settings.notificationDuration || 2000);
                 notification.onClick = function (x) {
+
                     window.focus();
                     this.cancel();
                 };
