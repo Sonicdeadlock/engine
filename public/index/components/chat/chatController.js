@@ -17,6 +17,7 @@ angular.module('controllers').controller('chatController', function ($scope, $ht
             template: {chance: 10}
         }
     ];
+    var settings = {notificationDuration: 2000};
     var historyId = 0;
     var history = [];
     var isTyping = false;
@@ -64,8 +65,9 @@ angular.module('controllers').controller('chatController', function ($scope, $ht
                 });
                 notification.onShow = setTimeout(function () {
                     notification.close();
-                }, settings.notifcationDuration || 2000);
-                notification.onclick = function (x) {
+                }, settings.notificationDuration || 2000);
+                notification.onClick = function (x) {
+
                     window.focus();
                     this.cancel();
                 };
