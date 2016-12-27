@@ -1,6 +1,9 @@
 /**
  * Created by Sonicdeadlock on 5/25/2016.
  */
+$(document).click(function(){
+    $("#input input").focus();
+});
 angular.module('userApp').controller("inputController", ["$rootScope", "$scope", 'socket',
     function ($rootScope, $scope, socket) {
         $scope.inputText = '';
