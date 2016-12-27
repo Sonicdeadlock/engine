@@ -16,10 +16,10 @@ var hangmanParts = [
     'Your hangman now has a body <img class="hangman-image" src="/images/hangman/2.png"alt="Missing Image"></img>',
     'Your hangman now has a right arm <img class="hangman-image" src="/images/hangman/3.png"alt="Missing Image"></img>',
     'Your hangman now has a left arm <img class="hangman-image" src="/images/hangman/4.png"alt="Missing Image"></img>',
-    'Your hangman now has a right hand <img class="hangman-image" src="/images/hangman/5.png"alt="Missing Image"></img>',
-    'Your hangman now has a left hand <img class="hangman-image" src="/images/hangman/6.png"alt="Missing Image"></img>',
-    'Your hangman now has a right leg <img class="hangman-image" src="/images/hangman/7.png"alt="Missing Image"></img>',
-    'Your hangman now has a left leg <img class="hangman-image" src="/images/hangman/8.png"alt="Missing Image"></img>',
+    'Your hangman now has a right leg <img class="hangman-image" src="/images/hangman/5.png"alt="Missing Image"></img>',
+    'Your hangman now has a left leg <img class="hangman-image" src="/images/hangman/6.png"alt="Missing Image"></img>',
+    'Your hangman now has a right hand <img class="hangman-image" src="/images/hangman/7.png"alt="Missing Image"></img>',
+    'Your hangman now has a left hand <img class="hangman-image" src="/images/hangman/8.png"alt="Missing Image"></img>',
     'Your hangman now has a right foot <img class="hangman-image" src="/images/hangman/9.png"alt="Missing Image"></img>',
     'Your hangman now has a left foot <img class="hangman-image" src="/images/hangman/10.png"alt="Missing Image"></img>'
 ];
@@ -95,10 +95,6 @@ function chatInduction(user, room, chat, roomChatCallback, userChatCallback) {
                 if (_.lowerCase(character) === _.lowerCase(matchedRoom.word)) {
                     matchedRoom.guessedLetters = _.union(matchedRoom.guessedLetters, character.split(''));
                     var chat = character;
-                    chat += '<br>';
-                    chat += 'You finished the word!';
-                    chat += '<br>';
-                    chat += hangmanParts[matchedRoom.strikes];
                     roomChatCallback(chat);
                 }
                 else if (character.length > 1) {
@@ -130,8 +126,10 @@ function guessLetter(room, letter, roomChatCallback) {
             var chat = preparedWord;
             chat += '<br>';
             chat += isFinishedWord ? 'You finished the word!' : 'Guessed Letters:' + guessedLetters;
-            chat += '<br>';
-            chat += hangmanParts[room.strikes];
+		if(!isFinishedWord){
+           	chat += '<br>';
+            	chat += hangmanParts[room.strikes];
+		}
             roomChatCallback(chat);
         }
         else {
