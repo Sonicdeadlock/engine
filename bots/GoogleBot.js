@@ -12,7 +12,7 @@ function chatInduction(user, room, chat, roomChatCallback, userChatCallback) {
 }
 
 function init() {
-    Room.find({bots: {"$elemMatch": {name: "basic"}}}).then(function (roomResults) {
+    Room.find({bots: {"$elemMatch": {name: "google"}}}).then(function (roomResults) {
         roomResults.forEach(function (room) {
             chat.on("chat", room._id, function (user, chatToRoom, chatToUser, text) {
                 chatInduction(user, room, text, chatToRoom, chatToUser);
