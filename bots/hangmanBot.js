@@ -26,19 +26,19 @@ var hangmanParts = [
 
 function setWord(room, word, cb) {
     var matchedRoom = _.find(rooms, {roomId: room._id});
-
+	var message = "New hangman word set!<br/>"+prepareWord([], word);
     if (!matchedRoom) {
         matchedRoom = {
             roomId: room._id
         };
         rooms.push(matchedRoom);
         if (cb)
-            cb('New hangman word set!');
+            cb(message);
     } else {
         if (cb)
-            cb('New hangman word set!');
+            cb(message);
         else
-            matchedRoom.mostRecentRoomCallback('New hangman word set!');
+            matchedRoom.mostRecentRoomCallback(message);
     }
     matchedRoom.strikes = 0;
     matchedRoom.word = word;
