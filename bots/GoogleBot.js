@@ -8,6 +8,9 @@ function chatInduction(user, room, chat, roomChatCallback, userChatCallback) {
       var searchQuery = _.tail(chat.split(' '));
       var response = "<a href='https://www.google.com/#q="+searchQuery.join('+')+"' target='_blank'>Find your search here</a>";
        roomChatCallback(response);
+  }else if(_.startsWith(chat,'!lmgtfy')){
+      var searchQuery = _.tail(chat.split(' '));
+      roomChatCallback('<a href="http://lmgtfy.com/?q='+searchQuery.join('+')+'" target="_blank">Find your search here</a>');
   }
 }
 
