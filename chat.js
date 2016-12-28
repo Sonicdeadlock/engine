@@ -27,6 +27,8 @@ function connect(socket) {
     users.push(userCollectionObj);
 
     socket.on('chatClientToServer', function (message) {
+        if(userCollectionObj===undefined || userCollectionObj.chatRoom===undefined)
+            return;
         if (!userCollectionObj.chatRoom.bans || (userCollectionObj.chatRoom.bans && !_.find(userCollectionObj.chatRoom.bans, function (id) {
                 return id.equals(user._id)
             }))) {
@@ -128,16 +130,18 @@ function connect(socket) {
 
     });
     socket.on('chatBanUser', function (message) {
+        if(userCollectionObj===undefined || userCollectionObj.chatRoom===undefined)
+            return;
         var user_id = message.user_id;
         if (user.hasPermission('Chat Admin') && userCollectionObj.chatRoom && userCollectionObj.chatRoom.bans.indexOf(user_id) === -1) {
             User.update({_id: user_id}, {$inc: {'strikes.bans': 1}}).then();
             var bannedUser = _.find(users, function (u) {
                 return u.user._id.equals(user_id)
             });
-            bannedUser.chatRoom = undefined;
             bannedUser.socket.emit('chatError', {error: 'You have been banned from this room!'});
             userCollectionObj.chatRoom.bans.push(user_id);
             userCollectionObj.chatRoom.save();
+            bannedUser.chatRoom = undefined;
         }
     });
 
@@ -146,11 +150,15 @@ function connect(socket) {
     });
 
     socket.on('clientToServerStartTyping',function(){
+         if(userCollectionObj===undefined || userCollectionObj.chatRoom===undefined)
+            return;
         _.forEach(getUsersForCommunication(userCollectionObj.chatRoom),function(u){
             u.socket.emit('serverToClientStartTyping',{name:user.username});
         });
     });
     socket.on('clientToServerStopTyping',function(){
+         if(userCollectionObj===undefined || userCollectionObj.chatRoom===undefined)
+            return;
         _.forEach(getUsersForCommunication(userCollectionObj.chatRoom),function(u){
             u.socket.emit('serverToClientStopTyping',{name:user.username});
         });
