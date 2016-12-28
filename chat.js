@@ -15,7 +15,7 @@ var User = db.model('user');
 var textMod = require('./classes/textMod');
 var commands = require('./classes/commands');
 var config = require('./config');
-
+var validator = require('validator');
 
 var users = [];
 var serverUser = {_id: undefined, username: 'Server', group: {name: undefined}};
@@ -29,6 +29,7 @@ function connect(socket) {
     socket.on('chatClientToServer', function (message) {
         if(userCollectionObj===undefined || userCollectionObj.chatRoom===undefined)
             return;
+	message.text = validator.escape(message.text);
         if (!userCollectionObj.chatRoom.bans || (userCollectionObj.chatRoom.bans && !_.find(userCollectionObj.chatRoom.bans, function (id) {
                 return id.equals(user._id)
             }))) {
