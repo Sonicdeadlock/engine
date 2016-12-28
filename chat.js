@@ -189,11 +189,11 @@ function chatObj(sendUser, chatRoom, text) {
                     sendUser.update({$inc: {'strikes.chat': count}}).then();
             }
         });
-        var reg_exUrl = new RegExp(/(((http|https|ftp|ftps)\:\/\/|www\.)[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?)|(\d{1,3}\.){3}\d{1,3}(\/\S*)?/g);
+        var reg_exUrl = new RegExp(/(((http|https|ftp|ftps)\:(&#x2F;){2}|www\.)[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(&#x2F;\S*)?)|(\d{1,3}\.){3}\d{1,3}(&#x2F;\S*)?/g);
         var matches = formatedText.match(reg_exUrl) || [];
         for (var i = matches.length - 1; i >= 0; i--) {
             var match = matches[i];
-            formatedText = formatedText.replace(match, "<a target='_blank' href='" + match + "'>" + match + "</a>");
+            formatedText = formatedText.replace(match, "<a target='_blank' href='" + match.replace("&#x2F;","/") + "'>" + match + "</a>");
         }
         self.text = formatedText;
         self.username = sendUser.username;
