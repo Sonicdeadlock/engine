@@ -5,11 +5,12 @@ var db = require('../db');
 const baseResponse = {text:'',time:_.now(),username:'GoogleBot',rank:'Bot'};
 function chatInduction(user, room, chat, roomChatCallback, userChatCallback) {
     var responseText=undefined;
-  if(_.startsWith(chat,'!g') || _.startsWith(chat, '!google')){
-      var searchQuery = _.tail(chat.split(' '));
+    var words = chat.split(' ');
+  if(words[0]==='!g' || words[0]=== '!google'){
+      var searchQuery = _.tail(words);
       responseText = "<a href='https://www.google.com/#q="+searchQuery.join('+')+"' target='_blank'>Find your search here</a>";
        roomChatCallback(response);
-  }else if(_.startsWith(chat,'!lmgtfy')){
+  }else if(words[0]==='!lmgtfy'){
       var searchQuery = _.tail(chat.split(' '));
       responseText = '<a href="http://lmgtfy.com/?q='+searchQuery.join('+')+'" target="_blank">Find your search here</a>';
   }
