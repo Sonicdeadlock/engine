@@ -9,7 +9,6 @@ function chatInduction(user, room, chat, roomChatCallback, userChatCallback) {
   if(words[0]==='!g' || words[0]=== '!google'){
       var searchQuery = _.tail(words);
       responseText = "<a href='https://www.google.com/#q="+searchQuery.join('+')+"' target='_blank'>Find your search here</a>";
-       roomChatCallback(response);
   }else if(words[0]==='!lmgtfy'){
       var searchQuery = _.tail(chat.split(' '));
       responseText = '<a href="http://lmgtfy.com/?q='+searchQuery.join('+')+'" target="_blank">Find your search here</a>';
