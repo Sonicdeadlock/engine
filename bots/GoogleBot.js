@@ -5,7 +5,7 @@ var db = require('../db');
 const baseResponse = {text:'',time:_.now(),username:'GoogleBot',rank:'Bot'};
 function chatInduction(user, room, chat, roomChatCallback, userChatCallback) {
     var responseText=undefined;
-  if(_.startsWith(chat,'!g')){
+  if(_.startsWith(chat,'!g') || _.startsWith(chat, '!google')){
       var searchQuery = _.tail(chat.split(' '));
       responseText = "<a href='https://www.google.com/#q="+searchQuery.join('+')+"' target='_blank'>Find your search here</a>";
        roomChatCallback(response);
