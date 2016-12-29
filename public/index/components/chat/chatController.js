@@ -170,6 +170,7 @@ angular.module('controllers').controller('chatController', function ($scope, $ht
                     historyId--;
                 }
                 $scope.chatBox = history[historyId];
+                setTimeout(moveCaretToEndOfChatBox,1);
                 break;
             case 40: //down
                 if (historyId == -1) {
@@ -178,11 +179,17 @@ angular.module('controllers').controller('chatController', function ($scope, $ht
                     historyId++;
                 }
                 $scope.chatBox = history[historyId];
+                setTimeout(moveCaretToEndOfChatBox,1);
                 break;
             default:
                 return;
         }
     };
+
+    function moveCaretToEndOfChatBox(){
+        var pos = $scope.chatBox.length;
+        $('#chatBox')[0].setSelectionRange(pos,pos);
+    }
 
     $scope.menuAside = {
         title: "Settings"
