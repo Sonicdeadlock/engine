@@ -120,7 +120,7 @@ function guessLetter(room, letter, roomChatCallback) {
     else {
         room.guessedLetters.push(_.lowerCase(letter));
         var preparedWord = prepareWord(room.guessedLetters, room.word);
-        var guessedLetters = '[ ' + room.guessedLetters.join(', ') + ']';
+        var guessedLetters = '[' + room.guessedLetters.join(', ') + ']';
         if (room.word.indexOf(letter) != -1) {
             var isFinishedWord = _.replace(preparedWord, '&nbsp&nbsp', ' ') == room.word;
             var chat = preparedWord;
