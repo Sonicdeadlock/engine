@@ -61,7 +61,7 @@ angular.module('controllers').controller('chatController', function ($scope, $ht
         $scope.chats.push(message);
         if (document.body.className == 'blurred') {
             if (Notification && $scope.showAlert) {
-                var notification = new Notification(message.username, {
+                var notification = new Notification(message.username||"", {
                     body: strip(message.text)
                 });
                 notification.onShow = setTimeout(function () {
