@@ -91,11 +91,10 @@ function chatInduction(user, room, chat, roomChatCallback, userChatCallback) {
                 userChatCallback('There is no word set!');
             }
             else {
-                var character = chat.substr('!guess '.length);
-                if (_.lowerCase(character) === _.lowerCase(matchedRoom.word)) {
+                var character = chat.substr('!guess '.length).toLowerCase();
+                if (character === matchedRoom.word.toLowerCase()) {
                     matchedRoom.guessedLetters = _.union(matchedRoom.guessedLetters, character.split(''));
-                    var chat = character;
-                    roomChatCallback(chat);
+                    roomChatCallback(chat.substr('!guess '.length));
                 }
                 else if (character.length > 1) {
                     userChatCallback('Please only guess one character');
@@ -118,10 +117,10 @@ function guessLetter(room, letter, roomChatCallback) {
         roomChatCallback('Please guess a letter that hasn\'t been guessed yet.')
     }
     else {
-        room.guessedLetters.push(_.lowerCase(letter));
+        room.guessedLetters.push(letter);
         var preparedWord = prepareWord(room.guessedLetters, room.word);
         var guessedLetters = '[' + room.guessedLetters.join(', ') + ']';
-        if (room.word.indexOf(letter) != -1) {
+        if (room.word.toLowerCase().indexOf(letter) != -1) {
             var isFinishedWord = _.replace(preparedWord, '&nbsp&nbsp', ' ') == room.word;
             var chat = preparedWord;
             chat += '<br>';
@@ -154,9 +153,8 @@ function prepareWord(guessedLetters, word) {
     return _.map(word, function (char) {
         if (char == ' ')
             return '&nbsp&nbsp';
-        char = _.lowerCase(char);
 
-        if (guessedLetters.indexOf(char) == -1) {
+        if (guessedLetters.indexOf(char.toLowerCase()) == -1) {
             return ' _ ';
         } else {
             return char;
