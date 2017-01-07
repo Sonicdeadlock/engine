@@ -7,7 +7,7 @@ var config = require('../config');
 var spawn = require("child_process").spawn;
 
 function renderImage(file_dir, tolerance, charset) {
-    var args = ['-jar', config.imageEngine.classPath, file_dir, tolerance];
+    var args = ["-Djava.awt.headless=true",'-jar', config.imageEngine.classPath, file_dir, tolerance];
     if (charset && !_.isEmpty(charset))
         args.push(charset);
 
